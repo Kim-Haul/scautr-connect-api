@@ -24,7 +24,7 @@ const Login = () => {
           <div className="logo">
             <img
               src="/images/scautr_dark.svg"
-              alt="빛컨 로고"
+              alt="스카우터 로고"
               onClick={() => {
                 window.location.reload();
               }}

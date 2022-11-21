@@ -54,7 +54,7 @@ const Login = () => {
               isInvalid={!!errors.password}
               id="inputPassword"
               {...register('password', {
-                required: '비밀번호를를 입력해주세요.',
+                required: '비밀번호를 입력해주세요.',
               })}
             />
             {errors.password && (

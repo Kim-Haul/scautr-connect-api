@@ -22,6 +22,7 @@ export const GlobalStyles = createGlobalStyle`
 
   body {
     font-family: 'Noto Sans KR', sans-serif;
+    color: #323232;
   }
 
   button {

@@ -2,15 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
-
-interface FormValues {
-  id: string;
-  password: string;
-}
-
-interface IStyleProps {
-  isInvalid: boolean;
-}
+import { FormValues, IStyleProps } from '../shared/type/ILogin';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -28,17 +20,16 @@ const Login = () => {
   return (
     <Wrap>
       <PostForm onSubmit={handleSubmit(onSubmit)}>
-        <div className="logo">
-          <img
-            src="/images/scautr_dark.svg"
-            alt="빛컨 로고"
-            onClick={() => {
-              window.location.reload();
-            }}
-          />
-        </div>
-
-        <div className="content">
+        <div className="container">
+          <div className="logo">
+            <img
+              src="/images/scautr_dark.svg"
+              alt="빛컨 로고"
+              onClick={() => {
+                window.location.reload();
+              }}
+            />
+          </div>
           <Line>
             <label htmlFor="inputId">ID</label>
             <Input
@@ -81,12 +72,24 @@ const Login = () => {
               />
               <div>아이디 저장</div>
             </div>
-            <div className="find_pw">비밀번호 찾기</div>
+            <div
+              className="find_pw"
+              onClick={() => {
+                navigate('/find_pw');
+              }}
+            >
+              비밀번호 찾기
+            </div>
           </div>
 
           <button className="btn-login">로그인</button>
 
-          <div className="link-agree">
+          <div
+            className="link-agree"
+            onClick={() => {
+              navigate('/agree');
+            }}
+          >
             <span>회원가입</span>
           </div>
         </div>
@@ -133,18 +136,24 @@ const PostForm = styled.form`
   padding: 5rem;
   width: 40rem;
 
-  @media (max-width: ${(props) => props.theme.breakpoints.TabletMin}) {
+  @media (max-width: ${(props) => props.theme.breakpoints.Mobile}) {
     border: none;
     width: 38rem;
   }
 
-  img {
-    width: 20rem;
+  .logo {
+    width: 100%;
+    display: flex;
+    justify-content: center;
     margin-bottom: 4rem;
-    cursor: pointer;
+
+    img {
+      width: 20rem;
+      cursor: pointer;
+    }
   }
 
-  .content {
+  .container {
     width: 32rem;
 
     .toolbox {
@@ -170,7 +179,7 @@ const PostForm = styled.form`
     button {
       width: 100%;
       height: 5rem;
-      margin: 1rem 0;
+      margin: 1.2rem 0;
       font-size: 1.6rem;
       font-weight: 700;
 
@@ -192,7 +201,7 @@ const PostForm = styled.form`
 `;
 
 const Line = styled.div`
-  margin-bottom: 1.6rem;
+  margin-bottom: 1.2rem;
   display: flex;
   flex-direction: column;
 

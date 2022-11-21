@@ -11,6 +11,7 @@ $ yarn add axios
 $ yarn add react-cookie
 $ yarn add react-spinners
 $ yarn add react-icons
+$ yarn add styled-components
 
 
 // package.json
@@ -22,5 +23,6 @@ $ axios : ^1.1.3
 $ react-cookie : ^4.1.1
 $ react-spinners : ^0.13.6
 $ react-icons : ^4.6.0
+$ styled-components : ^5.3.6
 
 ```

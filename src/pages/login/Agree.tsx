@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import { ICheckState } from '../shared/type/IAgree';
+import { ICheckStateProps } from '../../shared/type/IAgree';
 
 const Agree = () => {
   const navigate = useNavigate();
 
-  const [check, setCheck] = useState<ICheckState>({
+  const [check, setCheck] = useState<ICheckStateProps>({
     first: false,
     second: false,
     third: false,

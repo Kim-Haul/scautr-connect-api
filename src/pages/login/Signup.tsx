@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
-import { FormValues, IStyleProps } from '../shared/type/ISginup';
+import { FormValues, IStyleProps } from '../../shared/type/ISginup';
 import { AiOutlineEyeInvisible, AiOutlineEye } from 'react-icons/ai';
 
 const Signup = () => {

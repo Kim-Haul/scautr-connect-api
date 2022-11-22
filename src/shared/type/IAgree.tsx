@@ -1,4 +1,4 @@
-export interface ICheckState {
+export interface ICheckStateProps {
   first: boolean;
   second: boolean;
   third: boolean;

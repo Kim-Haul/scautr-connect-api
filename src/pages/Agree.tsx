@@ -68,7 +68,6 @@ const Agree = () => {
                 </p>
               </div>
             </li>
-
             <li>
               <div className="title">
                 <input
@@ -91,7 +90,6 @@ const Agree = () => {
                 </p>
               </div>
             </li>
-
             <li>
               <div className="title">
                 <input
@@ -118,7 +116,6 @@ const Agree = () => {
                 </p>
               </div>
             </li>
-
             <li>
               <div className="title">
                 <input
@@ -142,7 +139,6 @@ const Agree = () => {
               </div>
             </li>
           </ul>
-
           <div className="btn">
             <button
               className="btn-cancel"
@@ -152,7 +148,6 @@ const Agree = () => {
             >
               취소
             </button>
-
             <button
               className="btn-login"
               onClick={() => {
@@ -179,7 +174,6 @@ const Wrap = styled.div`
   justify-content: center;
   align-items: center;
   font-size: 1.6rem;
-
   .container {
     display: flex;
     flex-direction: column;
@@ -187,22 +181,17 @@ const Wrap = styled.div`
     justify-content: center;
     margin-bottom: 2rem;
     width: 46rem;
-
     .logo {
       margin-bottom: 3rem;
-
       img {
         width: 20rem;
         cursor: pointer;
       }
     }
-
     ul {
       list-style: none;
-
       li {
         margin-bottom: 15px;
-
         .title {
           input {
             margin-right: 3px;
@@ -210,7 +199,6 @@ const Wrap = styled.div`
           }
           margin-bottom: 5px;
         }
-
         .desc {
           width: 46rem;
           height: 8.8rem;
@@ -218,28 +206,23 @@ const Wrap = styled.div`
           border: 1px solid #dadada;
           padding: 12px;
           font-size: 1.44rem;
-
           @media (max-width: ${(props) => props.theme.breakpoints.TabletMin}) {
             width: 36rem;
           }
         }
       }
     }
-
     .btn {
       display: flex;
       justify-content: space-between;
-
       button {
         width: 22.5rem;
         height: 4.8rem;
         font-size: 1.6rem;
-
         @media (max-width: ${(props) => props.theme.breakpoints.TabletMin}) {
           width: 17.6rem;
         }
       }
-
       .btn-cancel {
         background: #8e8e8e;
       }

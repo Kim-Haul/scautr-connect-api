@@ -19,10 +19,13 @@ const Layout = () => {
     }; //  window 에서 스크롤을 감시를 종료
   });
 
+  // 모바일 사이드바 컨트롤
+  const [open_side_bar, setOpenSideBar] = useState<string>('none');
+
   return (
     <>
-      <Header ScrollY={ScrollY} />
-      <Sidebar />
+      <Header ScrollY={ScrollY} setOpenSideBar={setOpenSideBar} />
+      <Sidebar open_side_bar={open_side_bar} setOpenSideBar={setOpenSideBar} />
       <Main>
         <Outlet />
       </Main>

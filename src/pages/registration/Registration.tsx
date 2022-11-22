@@ -10,7 +10,8 @@ const Registration = () => {
       <Title>
         <div className="main">설비등록</div>
         <div className="sub">
-          <span>SCAUTR</span> <IoIosArrowForward /> <span>설비등록</span>
+          <span>SCAUTR</span> <IoIosArrowForward /> <span>설비관리</span>
+          <IoIosArrowForward /> <span>설비등록</span>
         </div>
       </Title>
       <Container>

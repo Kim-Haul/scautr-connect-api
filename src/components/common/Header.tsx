@@ -18,7 +18,8 @@ const Header = (props: IScrollYProps) => {
         <div
           className="bar"
           onClick={() => {
-            alert('준비중인 기능입니다.');
+            // ! : ts오류 커버 = null, undefined 일 경우는 없으니 계속 진행
+            props.setOpenSideBar!('block');
           }}
         >
           <AiOutlineBars />
@@ -113,19 +114,16 @@ const ResponsiveHeader = styled.div`
     // 1200px 이상 화면에서는 display:none;
     display: none;
   }
-
   display: flex;
   align-items: center;
   justify-content: space-between;
   height: 100%;
   font-size: 2.4rem;
-
   .bar,
   .logo,
   .logout {
     cursor: pointer;
   }
-
   img {
     width: 20rem;
   }

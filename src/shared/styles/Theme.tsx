@@ -17,6 +17,7 @@ const Theme = {
     Orange: '#FDAB3D',
     Yellow: '#FFCB00',
     SkyBlue: '#579BFC',
+    PastelBlue: '#35a3dc',
     Blue: '#007bff',
     Green: '#00C875',
     LightGreen: '#9CD326',

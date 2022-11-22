@@ -19,7 +19,7 @@ const Sidebar = () => {
             <NavLink to="/scautr/dashboard">
               <div>
                 <AiOutlineHome />
-                <span>Dashboard</span>
+                <span>대시보드</span>
               </div>
             </NavLink>
           </li>
@@ -27,14 +27,14 @@ const Sidebar = () => {
             <NavLink to="/scautr/management">
               <div>
                 <BsClipboardData />
-                <span>Management</span>
+                <span>설비관리</span>
               </div>
             </NavLink>
           </li>
           <li>
             <NavLink to="/scautr/management/registration">
               <div style={{ marginLeft: '26px' }}>
-                <span>Registration</span>
+                <span>설비등록</span>
               </div>
             </NavLink>
           </li>

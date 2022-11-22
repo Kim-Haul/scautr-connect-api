@@ -32,7 +32,15 @@ const Layout = () => {
 
 export default Layout;
 const Main = styled.main`
-  max-width: 980px;
-  margin: 0 auto;
-  padding: 72px 5px 30px;
+  padding-left: 262px;
+  padding-top: 95px;
+  width: 100%;
+  height: 100%;
+  font-size: 1.6rem; // 기본 1rem이 10px로 지정되어있기 때문에, Outlet을 감싸주면서 font-size를 1.6rem 지정해주기
+  @media (max-width: ${(props) => props.theme.breakpoints.TabletMin}) {
+    width: 100%;
+    height: 100%;
+    padding-left: 10px;
+    padding-top: 95px;
+  }
 `;

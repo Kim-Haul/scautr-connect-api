@@ -14,6 +14,24 @@ const Header = (props: IScrollYProps) => {
 
   return (
     <Wrap ScrollY={props.ScrollY}>
+      <ResponsiveHeader>
+        <div
+          className="bar"
+          onClick={() => {
+            alert('준비중인 기능입니다.');
+          }}
+        >
+          <AiOutlineBars />
+        </div>
+        <img
+          className="logo"
+          src="/images/scautr-blue.png"
+          alt="스카우터 로고"
+        />
+        <div className="logout">
+          <BiLogOut />
+        </div>
+      </ResponsiveHeader>
       <Navbar>
         <NavLeft>
           <div className="notice">
@@ -72,6 +90,11 @@ const Header = (props: IScrollYProps) => {
 export default Header;
 
 const Wrap = styled.div`
+  @media (max-width: ${(props) => props.theme.breakpoints.TabletMin}) {
+    // 1200px 이상 화면에서는 display:none;
+    padding-left: 1.6rem;
+    padding-right: 1.6rem;
+  }
   position: fixed;
   width: 100%;
   height: 7.2rem;
@@ -85,10 +108,37 @@ const Wrap = styled.div`
   color: ${(props: IScrollYProps) => (props.ScrollY > 700 ? '#fff' : '#000')};
 `;
 
+const ResponsiveHeader = styled.div`
+  @media (min-width: ${(props) => props.theme.breakpoints.TabletMin}) {
+    // 1200px 이상 화면에서는 display:none;
+    display: none;
+  }
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  font-size: 2.4rem;
+
+  .bar,
+  .logo,
+  .logout {
+    cursor: pointer;
+  }
+
+  img {
+    width: 20rem;
+  }
+`;
+
 const Navbar = styled.nav`
   height: 100%;
   width: 100%;
   display: flex;
+  @media (max-width: ${(props) => props.theme.breakpoints.TabletMin}) {
+    // 1200px 이하 화면에서는 display:none;
+    display: none;
+  }
 `;
 
 const NavLeft = styled.div`
@@ -98,10 +148,6 @@ const NavLeft = styled.div`
   .notice {
     display: flex;
     align-items: center;
-    @media (max-width: ${(props) => props.theme.breakpoints.TabletMin}) {
-      // 1200px 이하 화면에서는 display:none;
-      display: none;
-    }
     .notice.content {
       padding-bottom: 4px;
     }
@@ -113,10 +159,6 @@ const NavRight = styled.div`
   justify-content: flex-end;
   align-items: center;
   position: relative;
-  @media (max-width: ${(props) => props.theme.breakpoints.TabletMin}) {
-    // 1200px 이하 화면에서는 display:none;
-    display: none;
-  }
 `;
 
 // NavRight 안쪽에 있는 div태그

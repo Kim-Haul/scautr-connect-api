@@ -26,7 +26,10 @@ const Registration = () => {
             <button className="btn_right">초기화</button>
           </div>
           <div className="top_right">
-            <button className="btn_left">등록하기</button>
+            <button className="btn_left btn_desc">
+              <span>등록하기</span>
+              <div className="desc">버튼을 클릭하여 설비를 등록해주세요.</div>
+            </button>
             <button className="btn_right">선택삭제</button>
           </div>
         </Top>
@@ -164,6 +167,41 @@ const Top = styled.div`
   .btn_left {
     margin-right: 7px;
     background-color: ${(props) => props.theme.color.PastelBlue};
+  }
+  .btn_left.btn_desc {
+    position: relative;
+    .desc {
+      display: none;
+      font-size: 1.4rem;
+      position: absolute;
+      width: 260px;
+      padding: 8px;
+      top: 55px;
+      left: -120px;
+      border-radius: 8px;
+      -webkit-border-radius: 8px;
+      -moz-border-radius: 8px;
+      background: #333;
+      color: #fff;
+    }
+    .desc:after {
+      position: absolute;
+      bottom: 100%;
+      right: 30%;
+      width: 0;
+      height: 0;
+      border: solid transparent;
+      border-color: rgba(51, 51, 51, 0);
+      border-bottom-color: #333;
+      border-width: 10px;
+      pointer-events: none;
+      content: ' ';
+    }
+    &:hover {
+      .desc {
+        display: block;
+      }
+    }
   }
   .btn_right {
     background-color: #f6f7fb;

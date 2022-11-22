@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
-import { FormValues, IStyleProps } from '../shared/type/ILogin';
+import { FormValues, IStyleProps } from '../../shared/type/ILogin';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -97,7 +97,14 @@ const Login = () => {
               비밀번호 찾기
             </div>
           </div>
-          <button className="btn-login">로그인</button>
+          <button
+            className="btn-login"
+            onClick={() => {
+              navigate('scautr/dashboard');
+            }}
+          >
+            로그인
+          </button>
           <div
             className="link-agree"
             onClick={() => {

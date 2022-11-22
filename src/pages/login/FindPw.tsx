@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
-import { FormValues, IStyleProps } from '../shared/type/IFindPw';
+import { FormValues, IStyleProps } from '../../shared/type/IFindPw';
 
 const FindPw = () => {
   const navigate = useNavigate();
@@ -132,7 +132,6 @@ const PostForm = styled.form`
     border: none;
     width: 38rem;
   }
-
   .logo {
     width: 100%;
     display: flex;

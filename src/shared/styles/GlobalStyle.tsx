@@ -41,6 +41,11 @@ export const GlobalStyles = createGlobalStyle`
     background: #00c7ae;
     color: #fff;
     border-radius: 3px;
+
+    // 버튼 내부 글자 가운데 정렬
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   a {

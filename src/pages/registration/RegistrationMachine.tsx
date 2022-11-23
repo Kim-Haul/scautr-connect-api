@@ -1,18 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-import { IoIosArrowForward } from 'react-icons/io';
 import Mobile from '../../components/exception/Mobile';
-import ManagementTable from '../../components/table/ManagementTable';
+import RegistrationMachineTable from '../../components/table/RegistrationMachineTable';
 
-const Management = () => {
+const RegistrationMachine = () => {
   return (
     <Wrap>
-      <Title>
-        <div className="main">설비관리</div>
-        <div className="sub">
-          <span>SCAUTR</span> <IoIosArrowForward /> <span>설비관리</span>
-        </div>
-      </Title>
       <Container>
         <Top>
           <div className="top_left">
@@ -26,7 +19,10 @@ const Management = () => {
             <button className="btn_right">초기화</button>
           </div>
           <div className="top_right">
-            <button className="btn_left">등록하기</button>
+            <button className="btn_left btn_desc">
+              <span>등록하기</span>
+              <div className="desc">버튼을 클릭하여 설비를 등록해주세요.</div>
+            </button>
             <button className="btn_right">선택삭제</button>
           </div>
         </Top>
@@ -37,16 +33,16 @@ const Management = () => {
               <tr>
                 <th className="th0"></th>
                 <th className="th1"></th>
-                <th className="th2">출고일</th>
-                <th className="th3">거래처명</th>
-                <th className="th4">기계명</th>
-                <th className="th5">모델명</th>
-                <th className="th6">기계상태</th>
-                <th className="th7">위치</th>
-                <th className="th8">PROGIX</th>
+                <th className="th2">그룹</th>
+                <th className="th3">기계명</th>
+                <th className="th4">모델명</th>
+                <th className="th5">권장사용기간</th>
+                <th className="th6">기계</th>
+                <th className="th7">파일첨부</th>
+                <th className="th8">등록일</th>
               </tr>
             </thead>
-            <ManagementTable />
+            <RegistrationMachineTable />
           </table>
           <Mobile />
         </Content>
@@ -55,30 +51,10 @@ const Management = () => {
   );
 };
 
-export default Management;
+export default RegistrationMachine;
 
 const Wrap = styled.div`
-  width: 98.5%;
-`;
-
-const Title = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 2rem;
-  .main {
-    color: #495057;
-    font-weight: 600;
-    font-size: 2rem;
-  }
-  .sub {
-    color: #495057;
-    font-size: 1.4rem;
-    display: flex;
-    align-items: center;
-    svg {
-      margin: 0 0.3rem;
-    }
-  }
+  width: 100%;
 `;
 
 const Container = styled.div`
@@ -126,11 +102,11 @@ const Top = styled.div`
     }
   }
   .top_right {
-    display: flex;
     @media (max-width: 1300px) {
       //1100px보다 작아지면 display none;
       display: none;
     }
+    display: flex;
   }
   button {
     width: 106.1px;
@@ -144,6 +120,41 @@ const Top = styled.div`
   .btn_left {
     margin-right: 7px;
     background-color: ${(props) => props.theme.color.PastelBlue};
+  }
+  .btn_left.btn_desc {
+    position: relative;
+    .desc {
+      display: none;
+      font-size: 1.4rem;
+      position: absolute;
+      width: 260px;
+      padding: 8px;
+      top: 55px;
+      left: -120px;
+      border-radius: 8px;
+      -webkit-border-radius: 8px;
+      -moz-border-radius: 8px;
+      background: #333;
+      color: #fff;
+    }
+    .desc:after {
+      position: absolute;
+      bottom: 100%;
+      right: 30%;
+      width: 0;
+      height: 0;
+      border: solid transparent;
+      border-color: rgba(51, 51, 51, 0);
+      border-bottom-color: #333;
+      border-width: 10px;
+      pointer-events: none;
+      content: ' ';
+    }
+    &:hover {
+      .desc {
+        display: block;
+      }
+    }
   }
   .btn_right {
     background-color: #f6f7fb;
@@ -166,11 +177,7 @@ const Content = styled.div`
       background-color: #f6f7fb;
       border: 1px solid #e9edf3;
     }
-    td {
-      padding: 10px;
-      border: 1px solid #e9edf3;
-      text-align: center;
-    }
+
     .th0 {
       width: 5rem;
     }
@@ -178,16 +185,16 @@ const Content = styled.div`
       width: 5rem;
     }
     .th2 {
-      width: 15rem;
+      width: 10rem;
     }
     .th3 {
-      width: 25rem;
+      width: 30rem;
     }
     .th4 {
-      width: 25rem;
+      width: 30rem;
     }
     .th5 {
-      width: 20rem;
+      width: 15rem;
     }
     .th6 {
       width: 10rem;
@@ -196,7 +203,7 @@ const Content = styled.div`
       width: 30rem;
     }
     .th8 {
-      width: 10rem;
+      width: 15rem;
     }
   }
 `;

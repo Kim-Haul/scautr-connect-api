@@ -12,6 +12,8 @@ import Dashboard from './pages/dashboard/Dashboard';
 import Management from './pages/management/Management';
 import Detail from './pages/management/Detail';
 import Registration from './pages/registration/Registration';
+import RegistrationMachine from './pages/registration/RegistrationMachine';
+import RegistrationOption from './pages/registration/RegistrationOption';
 
 function App() {
   return (
@@ -27,10 +29,7 @@ function App() {
             <Route path="/scautr/dashboard" element={<Dashboard />} />
             <Route path="/scautr/management" element={<Management />} />
             <Route path="/scautr/management/detail/:idx" element={<Detail />} />
-            <Route
-              path="/scautr/management/registration"
-              element={<Registration />}
-            />
+            <Route path="/scautr/management/registration" element={<Registration />} />
           </Route>
         </Routes>
       </ThemeProvider>

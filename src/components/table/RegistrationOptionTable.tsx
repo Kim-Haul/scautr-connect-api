@@ -1,9 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
 
-const ManagementTable = () => {
-  const navigate = useNavigate();
+const RegistrationOptionTable = () => {
   const registration_query = new Array(7).fill(1);
   return (
     <Tbody>
@@ -15,19 +13,13 @@ const ManagementTable = () => {
                 <input type="checkbox" id={String(i)} readOnly />
               </td>
               <td>{i}</td>
-              <td>2022-11-10</td>
-              <td
-                onClick={() => {
-                  navigate('/scautr/management/detail/172');
-                }}
-              >
-                하나에프비엔비
-              </td>
+              <td>포장기</td>
+              <td>자동열성형진공포장기</td>
               <td>한우물 VSP-5000</td>
-              <td>GP460M</td>
-              <td>ON</td>
-              <td>서울 금천구 가산디지털1로 165</td>
-              <td>사용</td>
+              <td>5년 2개월</td>
+              <td>기계</td>
+              <td>-</td>
+              <td>2022-11-22</td>
             </tr>
           </React.Fragment>
         );
@@ -36,7 +28,7 @@ const ManagementTable = () => {
   );
 };
 
-export default ManagementTable;
+export default RegistrationOptionTable;
 
 const Tbody = styled.tbody`
   td {

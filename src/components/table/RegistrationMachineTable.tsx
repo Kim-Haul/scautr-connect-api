@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const RegistrationTable = () => {
+const RegistrationMachineTable = () => {
   const registration_query = new Array(3).fill(1);
   return (
     <Tbody>
@@ -21,7 +21,6 @@ const RegistrationTable = () => {
               <td>-</td>
               <td>2022-11-22</td>
             </tr>
-            <tr></tr>
           </React.Fragment>
         );
       })}
@@ -29,7 +28,7 @@ const RegistrationTable = () => {
   );
 };
 
-export default RegistrationTable;
+export default RegistrationMachineTable;
 
 const Tbody = styled.tbody`
   td {

@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { IoIosArrowForward } from 'react-icons/io';
 import Mobile from '../../components/exception/Mobile';
+import RegistrationTable from '../../components/table/RegistrationTable';
 
 const Registration = () => {
   const registration_query = new Array(3).fill(1);
@@ -50,28 +51,7 @@ const Registration = () => {
                 <th className="th8">등록일</th>
               </tr>
             </thead>
-            <tbody>
-              {registration_query.map((v, i) => {
-                return (
-                  <React.Fragment key={i}>
-                    <tr>
-                      <td>
-                        <input type="checkbox" id={v.modelId} readOnly />
-                      </td>
-                      <td>{i}</td>
-                      <td>포장기</td>
-                      <td>자동열성형진공포장기</td>
-                      <td>한우물 VSP-5000</td>
-                      <td>5년 2개월</td>
-                      <td>기계</td>
-                      <td>-</td>
-                      <td>2022-11-22</td>
-                    </tr>
-                    <tr></tr>
-                  </React.Fragment>
-                );
-              })}
-            </tbody>
+            <RegistrationTable />
           </table>
           <Mobile />
         </Content>
@@ -225,11 +205,7 @@ const Content = styled.div`
       background-color: #f6f7fb;
       border: 1px solid #e9edf3;
     }
-    td {
-      padding: 10px;
-      border: 1px solid #e9edf3;
-      text-align: center;
-    }
+
     .th0 {
       width: 5rem;
     }

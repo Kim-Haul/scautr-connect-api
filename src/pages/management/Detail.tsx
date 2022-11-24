@@ -1,12 +1,14 @@
 import React from 'react';
 import { IoIosArrowForward } from 'react-icons/io';
 import styled from 'styled-components';
-import DetailCustomerInfo from '../../components/table/DetailCustomerInfo';
-import DetailMachineInfo from '../../components/table/DetailMachineInfo';
-import DetailManagementInfo from '../../components/table/DetailManagementInfo';
+import DetailCustomerInfo from './DetailCustomerInfo';
+import DetailMachineInfo from './DetailMachineInfo';
+import DetailManagementInfo from './DetailManagementInfo';
 import Mobile from '../../components/exception/Mobile';
-import IoTable from '../../components/table/IoTable';
-import ParameterTable from '../../components/table/ParameterTable';
+import DetailIo from './DetailIo';
+import DetailParameter from './DetailParameter';
+import DetailAlarm from './DetailAlarm';
+import DetailError from './DetailError';
 
 const Detail = () => {
   return (
@@ -29,8 +31,10 @@ const Detail = () => {
           <div>실시간 데이터 모니터링</div>
         </div>
         <Content>
-          <IoTable />
-          <ParameterTable />
+          <DetailIo />
+          <DetailParameter />
+          <DetailAlarm />
+          <DetailError />
         </Content>
       </Container>
     </Wrap>

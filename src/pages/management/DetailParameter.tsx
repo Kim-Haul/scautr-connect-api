@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import Pagination from '../pagination/Pagination';
+import Pagination from '../../components/pagination/Pagination';
+import DetailParameterHistoryTable from '../../components/table/DetailParameterHistoryTable';
 
-const ParameterTable = () => {
+const DetailParameter = () => {
   const [parameterCurrentPage, setParameterCurrentPage] = useState<number>(1);
   const parameterHistoryTotal: number = 78;
   return (
@@ -24,10 +25,10 @@ const ParameterTable = () => {
             </thead>
             <tbody>
               <tr>
-                <td className="table_title">현재 비가동 시간</td>
-                <td className="table_content">D18</td>
-                <td className="table_title">09:03:49:28</td>
-                <td className="table_content">Time</td>
+                <td>현재 비가동 시간</td>
+                <td>D18</td>
+                <td>09:03:49:28</td>
+                <td>Time</td>
               </tr>
             </tbody>
           </table>
@@ -48,38 +49,7 @@ const ParameterTable = () => {
                 <th className="th3">단위</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td className="table_title">1번 히터 온도</td>
-                <td className="table_content">D02</td>
-                <td className="table_title">515</td>
-                <td className="table_content">℃</td>
-              </tr>
-              <tr>
-                <td className="table_title">1번 히터 온도</td>
-                <td className="table_content">D02</td>
-                <td className="table_title">515</td>
-                <td className="table_content">℃</td>
-              </tr>
-              <tr>
-                <td className="table_title">1번 히터 온도</td>
-                <td className="table_content">D02</td>
-                <td className="table_title">515</td>
-                <td className="table_content">℃</td>
-              </tr>
-              <tr>
-                <td className="table_title">1번 히터 온도</td>
-                <td className="table_content">D02</td>
-                <td className="table_title">515</td>
-                <td className="table_content">℃</td>
-              </tr>
-              <tr>
-                <td className="table_title">1번 히터 온도</td>
-                <td className="table_content">D02</td>
-                <td className="table_title">515</td>
-                <td className="table_content">℃</td>
-              </tr>
-            </tbody>
+            <DetailParameterHistoryTable />
           </table>
         </div>
         <Pagination
@@ -91,7 +61,7 @@ const ParameterTable = () => {
   );
 };
 
-export default ParameterTable;
+export default DetailParameter;
 const Wrap = styled.div`
   width: 100%;
   font-size: 1.6rem;
@@ -102,7 +72,7 @@ const Wrap = styled.div`
   // 파라미터 컴포넌트의 item이 중간에 위치하니, 위아래 마진 주기
   margin: 2rem 0;
   .item {
-    position: relative;
+    /* position: relative; */
     background-color: #f5f7fa;
     border: 1px solid #e1e1e1;
     padding: 20px;

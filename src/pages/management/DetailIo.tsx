@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const IoTable = () => {
+const DetailIo = () => {
   return (
     <Wrap>
       {/* -------------- 입력값 -------------- */}
@@ -21,10 +21,10 @@ const IoTable = () => {
             </thead>
             <tbody>
               <tr>
-                <td className="table_title">현재 비가동 시간</td>
-                <td className="table_content">D18</td>
-                <td className="table_title">09:03:49:28</td>
-                <td className="table_content">Time</td>
+                <td>현재 비가동 시간</td>
+                <td>D18</td>
+                <td>09:03:49:28</td>
+                <td>Time</td>
               </tr>
             </tbody>
           </table>
@@ -47,10 +47,10 @@ const IoTable = () => {
             </thead>
             <tbody>
               <tr>
-                <td className="table_title">1번 히터 온도</td>
-                <td className="table_content">D02</td>
-                <td className="table_title">515</td>
-                <td className="table_content">℃</td>
+                <td>1번 히터 온도</td>
+                <td>D02</td>
+                <td>515</td>
+                <td>℃</td>
               </tr>
             </tbody>
           </table>
@@ -60,7 +60,7 @@ const IoTable = () => {
   );
 };
 
-export default IoTable;
+export default DetailIo;
 const Wrap = styled.div`
   width: 100%;
   font-size: 1.6rem;
@@ -69,7 +69,7 @@ const Wrap = styled.div`
   column-gap: 2rem;
   row-gap: 2rem;
   .item {
-    position: relative;
+    /* position: relative; */
     background-color: #f5f7fa;
     border: 1px solid #e1e1e1;
     padding: 20px;

@@ -31,6 +31,7 @@ const Mypage = () => {
         <Menu>
           <ul>
             <li
+              className="click_possible"
               onClick={() => {
                 navigate('/mypage/company_info');
               }}
@@ -38,7 +39,11 @@ const Mypage = () => {
               <span>회사 정보</span>
               <AiOutlineRight />
             </li>
-            <li>
+            <li
+              onClick={() => {
+                alert('권한이 없습니다. 관리자에게 문의 바랍니다.');
+              }}
+            >
               <span>계정 권한 관리</span>
               <AiOutlineRight />
             </li>
@@ -124,11 +129,14 @@ const Info = styled.div`
     }
   }
   &:hover {
-    background-color: #e9e9e9;
+    background-color: rgba(0, 123, 255, 0.1);
     border-bottom: 1px solid #e9e9e9;
     border-radius: 5px;
     button {
       background-color: #fff;
+    }
+    .user_info_name {
+      color: #35a3dc;
     }
   }
 `;
@@ -148,6 +156,15 @@ const Menu = styled.div`
     &:hover {
       background-color: #e9e9e9;
       border-radius: 3px;
+    }
+  }
+  .click_possible {
+    &:hover {
+      background-color: rgba(0, 123, 255, 0.1);
+      color: #35a3dc;
+      svg {
+        color: inherit;
+      }
     }
   }
 `;

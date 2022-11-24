@@ -56,6 +56,7 @@ const CompanyInfo = () => {
               onClick={() => {
                 navigate('/mypage/setting/change_pw');
               }}
+              className="click_possible"
             >
               <div>
                 <div className="division">비밀번호</div>
@@ -183,6 +184,15 @@ const Menu = styled.div`
       &:hover {
         background-color: #e9e9e9;
         border-radius: 3px;
+      }
+    }
+    .click_possible {
+      &:hover {
+        background-color: rgba(0, 123, 255, 0.1);
+        .division,
+        svg {
+          color: #35a3dc;
+        }
       }
     }
   }

@@ -90,11 +90,13 @@ const Container = styled.div`
 
 const Menu = styled.div`
   .desc {
-    background-color: #f2f2f2;
-    padding: 1.5rem;
+    padding: 1rem;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
     border-radius: 5px;
     display: flex;
     align-items: center;
+    background-color: #f2f2f2;
     svg {
       margin-right: 0.3rem;
     }

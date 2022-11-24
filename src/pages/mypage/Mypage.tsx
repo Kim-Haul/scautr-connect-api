@@ -91,8 +91,8 @@ const Info = styled.div`
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid #e1e1e1;
-  padding-bottom: 2rem;
   cursor: pointer;
+  padding: 2rem 1rem;
   .info_left {
     display: flex;
     align-items: center;
@@ -124,8 +124,11 @@ const Info = styled.div`
     }
   }
   &:hover {
+    background-color: #e9e9e9;
+    border-bottom: 1px solid #e9e9e9;
+    border-radius: 5px;
     button {
-      filter: brightness(90%);
+      background-color: #fff;
     }
   }
 `;

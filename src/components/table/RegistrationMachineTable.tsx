@@ -36,4 +36,10 @@ const Tbody = styled.tbody`
     border: 1px solid #e9edf3;
     text-align: center;
   }
+  tr {
+    cursor: pointer;
+    &:hover {
+      background-color: #e9e9e9;
+    }
+  }
 `;

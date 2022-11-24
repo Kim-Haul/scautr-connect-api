@@ -17,7 +17,7 @@ const ChangePw = () => {
 
   const onSubmit = () => {};
 
-  const [capslock, setCapsLock] = useState(false);
+  const [capslock, setCapsLock] = useState<boolean>(false);
   const passwordRegEx =
     /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,16}$/;
   const passwordRef = useRef<string>();

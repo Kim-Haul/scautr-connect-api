@@ -141,7 +141,7 @@ const Signup = () => {
             )}
           </Line>
           {/*  ----------- 두번째 INFO ----------- */}
-          <Line style={{ marginTop: '4rem' }}>
+          <Line>
             <label htmlFor="inputName">이름</label>
             <Input
               type="text"
@@ -319,6 +319,51 @@ const Signup = () => {
                 />
                 {errors.representative && (
                   <div className="err">{errors.representative.message}</div>
+                )}
+              </Line>
+              <Line>
+                <label htmlFor="inputPhone">회사 연락처</label>
+                <div className="phone">
+                  <Input
+                    type="text"
+                    autoComplete="off"
+                    placeholder="010"
+                    isInvalid={!!errors.companyPhone1}
+                    maxLength={3}
+                    id="inputPhone"
+                    {...register('companyPhone1', {
+                      required: true,
+                    })}
+                  />
+                  <span>-</span>
+                  <Input
+                    type="text"
+                    autoComplete="off"
+                    placeholder="1234"
+                    isInvalid={!!errors.companyPhone2}
+                    maxLength={4}
+                    {...register('companyPhone2', {
+                      required: true,
+                    })}
+                  />
+                  <span>-</span>
+                  <Input
+                    type="text"
+                    autoComplete="off"
+                    placeholder="5678"
+                    isInvalid={!!errors.companyPhone3}
+                    maxLength={4}
+                    {...register('companyPhone3', {
+                      required: true,
+                    })}
+                  />
+                </div>
+                {(errors.companyPhone1 ||
+                  errors.companyPhone2 ||
+                  errors.companyPhone3) && (
+                  <>
+                    <div className="err">연락처를 입력해주세요.</div>
+                  </>
                 )}
               </Line>
               <Line>

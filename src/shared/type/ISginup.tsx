@@ -16,6 +16,10 @@ export interface FormValues {
   registrationNumber1: string;
   registrationNumber2: string;
   registrationNumber3: string;
+
+  companyPhone1: number;
+  companyPhone2: number;
+  companyPhone3: number;
 }
 
 export interface IStyleProps {

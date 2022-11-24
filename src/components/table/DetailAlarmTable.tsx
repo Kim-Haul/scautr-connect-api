@@ -38,7 +38,7 @@ export default DetailAlarmTable;
 const Tbody = styled.tbody`
   td {
     padding: 10px;
-    border: 1px solid #e9edf3;
+    border: 1px solid #ced4da;
     text-align: center;
   }
 `;

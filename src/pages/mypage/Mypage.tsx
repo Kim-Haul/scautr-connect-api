@@ -57,6 +57,18 @@ const Mypage = () => {
             </li>
           </ul>
         </Menu>
+        <Footer>
+          <div>
+            <ul>
+              <li>주식회사 빛컨</li>
+              <li>스카우터</li>
+              <li>사업자등록번호 119-87-05616</li>
+            </ul>
+          </div>
+          <div className="copyright">
+            <div>Copyright © VITCON Corp. All Rights Reserved.</div>
+          </div>
+        </Footer>
       </Container>
     </Wrap>
   );
@@ -164,6 +176,35 @@ const Menu = styled.div`
       color: #35a3dc;
       svg {
         color: inherit;
+      }
+    }
+  }
+`;
+
+const Footer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 1.34rem;
+  margin-top: 4rem;
+  .copyright {
+    margin-top: 0.3rem;
+    color: #888888;
+  }
+
+  ul {
+    list-style: none;
+    display: flex;
+
+    li {
+      color: gray;
+      &::after {
+        content: '｜';
+        margin: 0.2rem;
+      }
+      &:last-child::after {
+        content: '';
+        margin: 0rem;
       }
     }
   }

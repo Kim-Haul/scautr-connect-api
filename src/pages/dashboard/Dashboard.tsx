@@ -14,15 +14,15 @@ const Dashboard = () => {
       </Title>
       <Container>
         <LeftContainer>
-          {/* <div className="item">1</div>
+          <div className="item">1</div>
           <div className="item middle">2</div>
-          <div className="item">3</div> */}
+          <div className="item">3</div>
         </LeftContainer>
         <RightContainer>
-          {/* <div className="item">
+          <div className="item">
             <MonitoringCard />
           </div>
-          <div className="item">2</div> */}
+          <div className="item lower">2</div>
         </RightContainer>
       </Container>
     </Wrap>
@@ -57,11 +57,12 @@ const Title = styled.div`
 
 const Container = styled.div`
   display: grid;
-  width: 98.5%;
+  width: 100%;
   grid-template-columns: 1fr 2fr;
-  column-gap: 1.5rem;
+  column-gap: 2rem;
   row-gap: 1.5rem;
-  @media (max-width: ${(props) => props.theme.breakpoints.Desktop}) {
+  // 1500px 디스플레이 이하에서 우측 컨테이너 내부 카드 찌그러짐 방지를 위해 wrap
+  @media (max-width: 1500px) {
     grid-template-columns: 100%;
   }
 `;
@@ -71,6 +72,7 @@ const LeftContainer = styled.div`
   flex-direction: column;
   width: 100%;
   .item {
+    min-width: 400px;
     height: 400px;
     background-color: #f5f7fa;
     border: 1px solid #e1e1e1;
@@ -80,4 +82,12 @@ const LeftContainer = styled.div`
   }
 `;
 
-const RightContainer = styled.div``;
+const RightContainer = styled.div`
+  width: 100%;
+  .item.lower {
+    height: 400px;
+    background-color: #f5f7fa;
+    border: 1px solid #e1e1e1;
+    margin: 2rem 0;
+  }
+`;

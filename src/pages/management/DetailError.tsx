@@ -85,7 +85,7 @@ const Wrap = styled.div`
   th {
     padding: 10px;
     background-color: #fff;
-    border: 1px solid #e9edf3;
+    border: 1px solid #ced4da;
   }
   .th0 {
     width: 12rem;

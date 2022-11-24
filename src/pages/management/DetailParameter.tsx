@@ -98,11 +98,11 @@ const Wrap = styled.div`
     th {
       padding: 10px;
       background-color: #fff;
-      border: 1px solid #e9edf3;
+      border: 1px solid #ced4da;
     }
     td {
       padding: 10px;
-      border: 1px solid #e9edf3;
+      border: 1px solid #ced4da;
       text-align: center;
     }
     .th0 {

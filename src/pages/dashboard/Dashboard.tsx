@@ -2,6 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import { IoIosArrowForward } from 'react-icons/io';
 import MonitoringCard from '../../components/etc/MonitoringCard';
+import Dount from '../../components/graph/Dount';
+import DashboardRank from './DashboardRank';
 
 const Dashboard = () => {
   return (
@@ -14,15 +16,20 @@ const Dashboard = () => {
       </Title>
       <Container>
         <LeftContainer>
-          <div className="item">1</div>
+          <div className="item">
+            <div className="title">실시간 가동현황</div>
+            <Dount />
+          </div>
           <div className="item middle">2</div>
-          <div className="item">3</div>
+          <div className="item">
+            <DashboardRank />
+          </div>
         </LeftContainer>
         <RightContainer>
           <div className="item">
             <MonitoringCard />
           </div>
-          <div className="item lower">2</div>
+          <div className="item lower"></div>
         </RightContainer>
       </Container>
     </Wrap>
@@ -33,6 +40,7 @@ export default Dashboard;
 
 const Wrap = styled.div`
   width: 98.5%;
+  font-size: 1.6rem;
 `;
 
 const Title = styled.div`
@@ -71,14 +79,20 @@ const LeftContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+  margin-bottom: 2rem;
   .item {
     min-width: 400px;
     height: 400px;
     background-color: #f5f7fa;
     border: 1px solid #e1e1e1;
+    padding: 1rem;
   }
   .item.middle {
     margin: 2rem 0;
+  }
+  .title {
+    font-weight: 700;
+    font-size: 1.8rem;
   }
 `;
 

@@ -34,7 +34,7 @@ const MonitoringCard = () => {
                     </button>
                     <button className="error">
                       <span className="error_title">에러</span>
-                      <span className="error_content">20</span>
+                      <span className="error_content">0</span>
                     </button>
                   </div>
                 </div>

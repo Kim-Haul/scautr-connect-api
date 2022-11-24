@@ -1,77 +1,42 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { IoIosArrowForward } from 'react-icons/io';
-import Mobile from '../../components/exception/Mobile';
+import RegistrationMachine from './RegistrationMachine';
+import RegistrationOption from './RegistrationOption';
+import { ITabProps } from '../../shared/type/IRegistration';
 
 const Registration = () => {
-  const registration_query = new Array(3).fill(1);
+  const [click_tab, setClickTab] = useState<boolean>(true);
   return (
     <Wrap>
       <Title>
         <div className="main">설비등록</div>
         <div className="sub">
-          <span>SCAUTR</span> <IoIosArrowForward /> <span>설비등록</span>
+          <span>SCAUTR</span> <IoIosArrowForward /> <span>설비관리</span>
+          <IoIosArrowForward /> <span>설비등록</span>
         </div>
       </Title>
-      <Container>
-        <Top>
-          <div className="top_left">
-            <select>
-              <option value="all">All</option>
-              <option value="assignedName">기계명</option>
-              <option value="model">모델명</option>
-            </select>
-            <input type="text" placeholder="검색" />
-            <button className="btn_left">검색</button>
-            <button className="btn_right">초기화</button>
-          </div>
-          <div className="top_right">
-            <button className="btn_left">등록하기</button>
-            <button className="btn_right">선택삭제</button>
-          </div>
-        </Top>
-        <Content>
-          {/* -------- 설비등록 테이블 -------- */}
-          <table>
-            <thead>
-              <tr>
-                <th className="th0"></th>
-                <th className="th1"></th>
-                <th className="th2">그룹</th>
-                <th className="th3">기계명</th>
-                <th className="th4">모델명</th>
-                <th className="th5">권장사용기간</th>
-                <th className="th6">기계</th>
-                <th className="th7">파일첨부</th>
-                <th className="th8">등록일</th>
-              </tr>
-            </thead>
-            <tbody>
-              {registration_query.map((v, i) => {
-                return (
-                  <React.Fragment key={i}>
-                    <tr>
-                      <td>
-                        <input type="checkbox" id={v.modelId} readOnly />
-                      </td>
-                      <td>{i}</td>
-                      <td>포장기</td>
-                      <td>자동열성형진공포장기</td>
-                      <td>한우물 VSP-5000</td>
-                      <td>5년 2개월</td>
-                      <td>기계</td>
-                      <td>-</td>
-                      <td>2022-11-22</td>
-                    </tr>
-                    <tr></tr>
-                  </React.Fragment>
-                );
-              })}
-            </tbody>
-          </table>
-          <Mobile />
-        </Content>
-      </Container>
+      <Toggle click_tab={click_tab}>
+        <ul>
+          <li
+            className="machine_tab"
+            onClick={() => {
+              setClickTab(true);
+            }}
+          >
+            <div>기계</div>
+          </li>
+          <li
+            className="option_tab"
+            onClick={() => {
+              setClickTab(false);
+            }}
+          >
+            <div>옵션</div>
+          </li>
+        </ul>
+      </Toggle>
+      {click_tab ? <RegistrationMachine /> : <RegistrationOption />}
     </Wrap>
   );
 };
@@ -102,121 +67,39 @@ const Title = styled.div`
   }
 `;
 
-const Container = styled.div`
-  border: 1px solid #e9edf3;
-  padding: 10px;
-`;
-
-const Top = styled.div`
-  display: flex;
-  justify-content: space-between;
-
-  .top_left {
-    @media (max-width: 1100px) {
-      width: 100%;
-    }
+const Toggle = styled.div`
+  width: 200px;
+  ul {
+    list-style: none;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    select {
-      margin-right: 20px;
-      padding: 10px;
-      width: 146px;
-      height: 40px;
+    justify-content: space-between;
+    li {
       border: 1px solid #e9edf3;
-      font-size: 1.6rem;
-      @media (max-width: 1100px) {
-        width: 24%;
-        margin-right: 10px;
-      }
-    }
-    input {
-      margin-right: 20px;
+      border-bottom: none;
+      width: 100%;
+      display: flex;
+      justify-content: center;
       padding: 10px;
-      width: 292px;
-      height: 40px;
-      border: 1px solid #e9edf3;
-      font-size: 1.6rem;
-      &:focus::placeholder {
-        color: transparent;
+      cursor: pointer;
+      &:first-child {
+        border-right: none;
       }
-      @media (max-width: 1100px) {
-        width: 36%;
-        margin-right: 10px;
+      &:hover {
+        background-color: rgba(0, 123, 255, 0.1);
+        color: #35a3dc;
       }
     }
   }
-  .top_right {
-    @media (max-width: 1300px) {
-      //1100px보다 작아지면 display none;
-      display: none;
-    }
+  .machine_tab {
+    color: ${(props: ITabProps) => props.click_tab === true && '#35a3dc'};
+    font-weight: ${(props: ITabProps) => props.click_tab === true && '700'};
+    border-top: ${(props: ITabProps) =>
+      props.click_tab === true && '3px solid #35a3dc'};
   }
-  button {
-    width: 106.1px;
-    height: 40px;
-    font-weight: 700;
-    font-size: 1.6rem;
-    @media (max-width: 1100px) {
-      width: 23%;
-    }
-  }
-  .btn_left {
-    margin-right: 7px;
-    background-color: ${(props) => props.theme.color.PastelBlue};
-  }
-  .btn_right {
-    background-color: #f6f7fb;
-    border: 1px solid #e9edf3;
-    color: #9497a8;
-  }
-`;
-
-const Content = styled.div`
-  table {
-    width: 100%;
-    margin-top: 10px;
-    border-collapse: collapse;
-    // 화면 축소시 테이블 column 깨지는거 방지
-    @media (max-width: 1400px) {
-      display: none;
-    }
-    th {
-      padding: 10px;
-      background-color: #f6f7fb;
-      border: 1px solid #e9edf3;
-    }
-    td {
-      padding: 10px;
-      border: 1px solid #e9edf3;
-      text-align: center;
-    }
-    .th0 {
-      width: 5rem;
-    }
-    .th1 {
-      width: 5rem;
-    }
-    .th2 {
-      width: 10rem;
-    }
-    .th3 {
-      width: 30rem;
-    }
-    .th4 {
-      width: 30rem;
-    }
-    .th5 {
-      width: 15rem;
-    }
-    .th6 {
-      width: 10rem;
-    }
-    .th7 {
-      width: 30rem;
-    }
-    .th8 {
-      width: 15rem;
-    }
+  .option_tab {
+    color: ${(props: ITabProps) => props.click_tab === false && '#35a3dc'};
+    font-weight: ${(props: ITabProps) => props.click_tab === false && '700'};
+    border-top: ${(props: ITabProps) =>
+      props.click_tab === false && '3px solid #35a3dc'};
   }
 `;

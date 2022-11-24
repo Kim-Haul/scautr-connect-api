@@ -7,7 +7,7 @@ const Mobile = () => {
       <img src="/images/mobile.gif" alt="모바일" />
       <div className="mention">모바일 화면은 준비중입니다!</div>
       <div className="sub_mention">
-        표형식의 데이터는 1400px 이상의 디스플레이에서 확인 가능합니다.
+        표 형식의 데이터는 1400px 이상의 디스플레이에서 확인 가능합니다.
       </div>
     </Alarm>
   );
@@ -25,11 +25,17 @@ const Alarm = styled.div`
   align-items: center;
   flex-direction: column;
   margin: 50px 0;
+  img {
+    width: 200px;
+  }
   .mention {
     color: red;
   }
   .sub_mention {
     color: gray;
     font-size: 1.4rem;
+    @media (max-width: ${(props) => props.theme.breakpoints.Mobile}) {
+      font-size: 1.22rem;
+    }
   }
 `;

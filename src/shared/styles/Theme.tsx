@@ -21,6 +21,7 @@ const Theme = {
     Blue: '#007bff',
     Green: '#00C875',
     LightGreen: '#9CD326',
+    Skygray: '#e9edf3',
   },
 
   backgroundColor: {

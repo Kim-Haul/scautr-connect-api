@@ -1,5 +1,6 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 import { AiOutlineBars } from 'react-icons/ai';
 import { BiLogOut } from 'react-icons/bi';
 import { FcSpeaker } from 'react-icons/fc';
@@ -7,6 +8,7 @@ import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
 import { IToggleProps, IScrollYProps } from '../../shared/type/IHeader';
 
 const Header = (props: IScrollYProps) => {
+  const navigate = useNavigate();
   const [is_mypage, setIsMypage] = useState<boolean>(false);
 
   // 모달 영역 밖 클릭시 닫기
@@ -18,7 +20,8 @@ const Header = (props: IScrollYProps) => {
         <div
           className="bar"
           onClick={() => {
-            alert('준비중인 기능입니다.');
+            // ! : ts오류 커버 = null, undefined 일 경우는 없으니 계속 진행
+            props.setOpenSideBar!('block');
           }}
         >
           <AiOutlineBars />
@@ -60,7 +63,13 @@ const Header = (props: IScrollYProps) => {
               </Profile>
               <Modal toggleOn={is_mypage}>
                 <ul>
-                  <li>계정설정</li>
+                  <li
+                    onClick={() => {
+                      navigate('/mypage');
+                    }}
+                  >
+                    계정설정
+                  </li>
                   <li>로그아웃</li>
                 </ul>
               </Modal>
@@ -113,19 +122,16 @@ const ResponsiveHeader = styled.div`
     // 1200px 이상 화면에서는 display:none;
     display: none;
   }
-
   display: flex;
   align-items: center;
   justify-content: space-between;
   height: 100%;
   font-size: 2.4rem;
-
   .bar,
   .logo,
   .logout {
     cursor: pointer;
   }
-
   img {
     width: 20rem;
   }
@@ -202,6 +208,7 @@ const Modal = styled.div`
       }
       &:hover {
         background-color: rgba(0, 123, 255, 0.1);
+        color: #35a3dc;
       }
     }
   }

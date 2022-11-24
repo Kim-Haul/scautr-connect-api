@@ -3,17 +3,26 @@ import styled from 'styled-components';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { AiOutlineHome } from 'react-icons/ai';
 import { BsClipboardData } from 'react-icons/bs';
+import { BiLogOut } from 'react-icons/bi';
+import { IViewProps } from '../../shared/type/ISidebar';
 
-const Sidebar = () => {
+const Sidebar = (props: IViewProps) => {
   const navigate = useNavigate();
 
   return (
-    <Wrap>
+    <Wrap open_side_bar={props.open_side_bar}>
       <Title onClick={() => navigate('/scautr/dashboard')}>
         <img src="/images/side_bar_logo_white_big.png" alt="스카우터 로고" />
       </Title>
       <Navbar>
-        <div className="sidebar-title">MENU</div>
+        <div className="sidebar-title">
+          <span>MENU</span>
+          <BiLogOut
+            onClick={() => {
+              props.setOpenSideBar!('none');
+            }}
+          />
+        </div>
         <ul>
           <li>
             <NavLink to="/scautr/dashboard">
@@ -48,7 +57,7 @@ export default Sidebar;
 
 const Wrap = styled.div`
   @media (max-width: ${(props) => props.theme.breakpoints.TabletMin}) {
-    display: none;
+    display: ${(props: IViewProps) => props.open_side_bar};
   }
   position: fixed;
   width: 24rem;
@@ -74,6 +83,17 @@ const Navbar = styled.nav`
   .sidebar-title {
     font-size: 1.4rem;
     margin-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    svg {
+      color: white;
+      font-size: 2rem;
+      cursor: pointer;
+      @media (min-width: ${(props) => props.theme.breakpoints.TabletMin}) {
+        display: none;
+      }
+    }
   }
   ul {
     list-style: none;

@@ -12,8 +12,10 @@ import Dashboard from './pages/dashboard/Dashboard';
 import Management from './pages/management/Management';
 import Detail from './pages/management/Detail';
 import Registration from './pages/registration/Registration';
-import RegistrationMachine from './pages/registration/RegistrationMachine';
-import RegistrationOption from './pages/registration/RegistrationOption';
+import Mypage from './pages/mypage/Mypage';
+import Setting from './pages/mypage/Setting';
+import CompanyInfo from './pages/mypage/CompanyInfo';
+import ChangePw from './pages/mypage/ChangePw';
 
 function App() {
   return (
@@ -29,8 +31,15 @@ function App() {
             <Route path="/scautr/dashboard" element={<Dashboard />} />
             <Route path="/scautr/management" element={<Management />} />
             <Route path="/scautr/management/detail/:idx" element={<Detail />} />
-            <Route path="/scautr/management/registration" element={<Registration />} />
+            <Route
+              path="/scautr/management/registration"
+              element={<Registration />}
+            />
           </Route>
+          <Route path="/mypage" element={<Mypage />} />
+          <Route path="/mypage/company_info" element={<CompanyInfo />} />
+          <Route path="/mypage/setting" element={<Setting />} />
+          <Route path="/mypage/setting/change_pw" element={<ChangePw />} />
         </Routes>
       </ThemeProvider>
     </React.Fragment>

@@ -102,6 +102,10 @@ const Signup = () => {
               id="inputPassword"
               {...register('password', {
                 required: '비밀번호를 입력해주세요.',
+                pattern: {
+                  value: passwordRegEx,
+                  message: '비밀번호 형식에 맞지 않습니다.',
+                },
               })}
             />
             {errors.password && (

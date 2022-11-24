@@ -84,6 +84,10 @@ const Toggle = styled.div`
       &:first-child {
         border-right: none;
       }
+      &:hover {
+        background-color: rgba(0, 123, 255, 0.1);
+        color: #35a3dc;
+      }
     }
   }
   .machine_tab {

@@ -10,19 +10,17 @@ const ManagementTable = () => {
       {registration_query.map((v, i) => {
         return (
           <React.Fragment key={i}>
-            <tr>
+            <tr
+              onClick={() => {
+                navigate('/scautr/management/detail/172');
+              }}
+            >
               <td>
                 <input type="checkbox" id={String(i)} readOnly />
               </td>
               <td>{i}</td>
               <td>2022-11-10</td>
-              <td
-                onClick={() => {
-                  navigate('/scautr/management/detail/172');
-                }}
-              >
-                하나에프비엔비
-              </td>
+              <td>하나에프비엔비</td>
               <td>한우물 VSP-5000</td>
               <td>GP460M</td>
               <td>ON</td>
@@ -43,5 +41,12 @@ const Tbody = styled.tbody`
     padding: 10px;
     border: 1px solid #e9edf3;
     text-align: center;
+  }
+
+  tr {
+    cursor: pointer;
+    &:hover {
+      background-color: #e9e9e9;
+    }
   }
 `;

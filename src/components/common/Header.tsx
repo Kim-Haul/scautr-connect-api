@@ -1,5 +1,6 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 import { AiOutlineBars } from 'react-icons/ai';
 import { BiLogOut } from 'react-icons/bi';
 import { FcSpeaker } from 'react-icons/fc';
@@ -7,6 +8,7 @@ import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
 import { IToggleProps, IScrollYProps } from '../../shared/type/IHeader';
 
 const Header = (props: IScrollYProps) => {
+  const navigate = useNavigate();
   const [is_mypage, setIsMypage] = useState<boolean>(false);
 
   // 모달 영역 밖 클릭시 닫기
@@ -61,7 +63,13 @@ const Header = (props: IScrollYProps) => {
               </Profile>
               <Modal toggleOn={is_mypage}>
                 <ul>
-                  <li>계정설정</li>
+                  <li
+                    onClick={() => {
+                      navigate('/mypage');
+                    }}
+                  >
+                    계정설정
+                  </li>
                   <li>로그아웃</li>
                 </ul>
               </Modal>
@@ -200,6 +208,7 @@ const Modal = styled.div`
       }
       &:hover {
         background-color: rgba(0, 123, 255, 0.1);
+        color: #35a3dc;
       }
     }
   }

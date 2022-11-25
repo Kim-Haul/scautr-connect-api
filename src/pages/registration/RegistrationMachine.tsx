@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import Mobile from '../../components/exception/Mobile';
 import RegistrationMachineTable from '../../components/table/RegistrationMachineTable';
+import RegistrationMachineModal from './../../components/modal/RegistrationMachineModal';
 
 const RegistrationMachine = () => {
+  // 등록 모달창 토글
+  const [is_open, setIsOpen] = useState<boolean>(false);
+
   return (
     <Wrap>
       <Container>
@@ -19,7 +23,12 @@ const RegistrationMachine = () => {
             <button className="btn_right">초기화</button>
           </div>
           <div className="top_right">
-            <button className="btn_left btn_desc">
+            <button
+              className="btn_left btn_desc"
+              onClick={() => {
+                setIsOpen(true);
+              }}
+            >
               <span>등록하기</span>
               <div className="desc">버튼을 클릭하여 설비를 등록해주세요.</div>
             </button>
@@ -47,6 +56,11 @@ const RegistrationMachine = () => {
           <Mobile />
         </Content>
       </Container>
+      <RegistrationMachineModal
+        open={is_open}
+        setIsOpen={setIsOpen}
+        header="신규 기계 등록"
+      />
     </Wrap>
   );
 };

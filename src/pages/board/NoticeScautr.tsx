@@ -11,8 +11,11 @@ const NoticeScautr = () => {
           <div className="top_left">
             <select>
               <option value="all">All</option>
-              <option value="assignedName">기계명</option>
-              <option value="model">모델명</option>
+              <option value="notic">공지사항</option>
+              <option value="event">이벤트</option>
+              <option value="update">업데이트</option>
+              <option value="inspection">점검</option>
+              <option value="etc">기타</option>
             </select>
             <input type="text" placeholder="검색" />
             <button className="btn_left">검색</button>

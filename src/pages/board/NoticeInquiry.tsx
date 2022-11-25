@@ -11,8 +11,8 @@ const NoticeInquiry = () => {
           <div className="top_left">
             <select>
               <option value="all">All</option>
-              <option value="assignedName">기계명</option>
-              <option value="model">모델명</option>
+              <option value="use">사용문의</option>
+              <option value="etc">기타문의</option>
             </select>
             <input type="text" placeholder="검색" />
             <button className="btn_left">검색</button>

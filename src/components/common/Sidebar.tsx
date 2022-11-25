@@ -9,7 +9,6 @@ import { IViewProps, IPathProps } from '../../shared/type/ISidebar';
 const Sidebar = (props: IViewProps) => {
   const navigate = useNavigate();
   const location = useLocation();
-  console.log(location.pathname);
 
   return (
     <Wrap open_side_bar={props.open_side_bar}>

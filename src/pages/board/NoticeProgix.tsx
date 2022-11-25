@@ -145,10 +145,10 @@ const Content = styled.div`
       width: 10rem;
     }
     .th2 {
-      width: 40rem;
+      width: 43rem;
     }
     .th3 {
-      width: 12rem;
+      width: 11rem;
     }
     .th4 {
       width: 10rem;

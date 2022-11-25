@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Mobile from '../../components/exception/Mobile';
+import NoticeInquiryTable from '../../components/table/NoticeInquiryTable';
 
 const NoticeInquiry = () => {
   return (
@@ -19,7 +20,7 @@ const NoticeInquiry = () => {
           </div>
         </Top>
         <Content>
-          {/* -------- 스카우터 공지사항 -------- */}
+          {/* -------- 문의사항 테이블 -------- */}
           <table>
             <thead>
               <tr>
@@ -31,7 +32,7 @@ const NoticeInquiry = () => {
                 <th className="th5">작성일</th>
               </tr>
             </thead>
-            {/* <RegistrationMachineTable /> */}
+            <NoticeInquiryTable />
           </table>
           <Mobile />
         </Content>
@@ -137,10 +138,10 @@ const Content = styled.div`
       width: 10rem;
     }
     .th3 {
-      width: 40rem;
+      width: 33rem;
     }
     .th4 {
-      width: 12rem;
+      width: 11rem;
     }
     .th5 {
       width: 10rem;

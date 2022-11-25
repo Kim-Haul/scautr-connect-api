@@ -8,7 +8,7 @@ const MonitoringCard = () => {
       <Card>
         {registration_query.map((v, i) => {
           return (
-            <React.Fragment>
+            <React.Fragment key={i}>
               <div className="wrap">
                 <div className="top">
                   <div className="top_left">

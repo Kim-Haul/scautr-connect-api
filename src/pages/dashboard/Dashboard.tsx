@@ -81,7 +81,7 @@ const LeftContainer = styled.div`
   width: 100%;
   margin-bottom: 2rem;
   .item {
-    min-width: 400px;
+    // min-wdith 설정시 모바일 크기에서 가로 스크롤이 생겨 일단 삭제
     height: 400px;
     background-color: #f5f7fa;
     border: 1px solid #e1e1e1;

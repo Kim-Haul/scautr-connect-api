@@ -58,7 +58,7 @@ const Wrap = styled.div`
       cursor: pointer;
     }
     .left_ellipse_img {
-      margin-right: 5px;
+      margin-right: 10px;
     }
   }
 `;

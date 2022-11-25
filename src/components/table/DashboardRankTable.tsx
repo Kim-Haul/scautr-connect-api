@@ -33,7 +33,7 @@ const DashboardRankTable = (props: IRankProps) => {
               <th className="th0"></th>
               <th className="th1">거래처명</th>
               <th className="th2">장비명</th>
-              <th className="th3">에러발생량</th>
+              <th className="th3">발생량</th>
             </tr>
           </thead>
           <tbody>
@@ -58,7 +58,7 @@ const DashboardRankTable = (props: IRankProps) => {
               <th className="th0"></th>
               <th className="th1">거래처명</th>
               <th className="th2">장비명</th>
-              <th className="th3">알람발생량</th>
+              <th className="th3">발생량</th>
             </tr>
           </thead>
           <tbody>
@@ -103,19 +103,20 @@ const Wrap = styled.div`
     td {
       text-align: center;
       padding: 10px;
-      border-top: 1px solid #d4d4d4;
+      border-top: 1px solid #ced4da;
+      /* border-top: 1px solid #d4d4d4; */
     }
     .th0 {
-      width: 2rem;
+      width: 1rem;
     }
     .th1 {
-      width: 18rem;
+      width: 19rem;
     }
     .th2 {
-      width: 18rem;
+      width: 20rem;
     }
     .th3 {
-      width: 10rem;
+      width: 8rem;
     }
   }
 `;

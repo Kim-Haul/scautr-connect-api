@@ -9,6 +9,7 @@ import { IViewProps, IPathProps } from '../../shared/type/ISidebar';
 const Sidebar = (props: IViewProps) => {
   const navigate = useNavigate();
   const location = useLocation();
+  console.log(location.pathname);
 
   return (
     <Wrap open_side_bar={props.open_side_bar}>
@@ -144,7 +145,7 @@ const Ul = styled.ul`
     a {
       color: ${(props: IPathProps) =>
         props.location === '/scautr/board/notice/progix' ||
-        '/scautr/board/inquiry'
+        props.location === '/scautr/board/inquiry'
           ? 'white'
           : '#899dbf'};
     }

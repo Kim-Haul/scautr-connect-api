@@ -21,7 +21,7 @@ const Dashboard = () => {
             <Dount />
           </div>
           <div className="item middle">2</div>
-          <div className="item">
+          <div className="item rank">
             <DashboardRank />
           </div>
         </LeftContainer>
@@ -79,7 +79,6 @@ const LeftContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  margin-bottom: 2rem;
   .item {
     // min-wdith 설정시 모바일 크기에서 가로 스크롤이 생겨 일단 삭제
     height: 400px;
@@ -93,6 +92,11 @@ const LeftContainer = styled.div`
   .title {
     font-weight: 700;
     font-size: 1.8rem;
+  }
+  .item.rank {
+    @media (max-width: 1500px) {
+      height: auto;
+    }
   }
 `;
 

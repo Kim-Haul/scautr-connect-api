@@ -72,7 +72,6 @@ const Toggle = styled.div`
   ul {
     list-style: none;
     display: flex;
-    justify-content: space-between;
     li {
       border: 1px solid #e9edf3;
       border-bottom: none;

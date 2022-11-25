@@ -1,13 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { AiOutlineHome } from 'react-icons/ai';
-import { BsClipboardData } from 'react-icons/bs';
+import { BsClipboardData, BsShareFill } from 'react-icons/bs';
 import { BiLogOut } from 'react-icons/bi';
-import { IViewProps } from '../../shared/type/ISidebar';
+import { IViewProps, IPathProps } from '../../shared/type/ISidebar';
 
 const Sidebar = (props: IViewProps) => {
   const navigate = useNavigate();
+  const location = useLocation();
+  console.log(location.pathname);
 
   return (
     <Wrap open_side_bar={props.open_side_bar}>
@@ -23,7 +25,7 @@ const Sidebar = (props: IViewProps) => {
             }}
           />
         </div>
-        <ul>
+        <Ul location={location.pathname}>
           <li>
             <NavLink to="/scautr/dashboard">
               <div>
@@ -32,10 +34,32 @@ const Sidebar = (props: IViewProps) => {
               </div>
             </NavLink>
           </li>
+          <li className="board">
+            <NavLink to="/scautr/board/notice/scautr">
+              <div>
+                <BsClipboardData />
+                <span>게시판</span>
+              </div>
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/scautr/board/notice/progix">
+              <div style={{ marginLeft: '26px' }}>
+                <span>기계사 공지사항</span>
+              </div>
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/scautr/board/inquiry">
+              <div style={{ marginLeft: '26px' }}>
+                <span>문의하기</span>
+              </div>
+            </NavLink>
+          </li>
           <li>
             <NavLink to="/scautr/management">
               <div>
-                <BsClipboardData />
+                <BsShareFill />
                 <span>설비관리</span>
               </div>
             </NavLink>
@@ -47,7 +71,7 @@ const Sidebar = (props: IViewProps) => {
               </div>
             </NavLink>
           </li>
-        </ul>
+        </Ul>
       </Navbar>
     </Wrap>
   );
@@ -95,19 +119,35 @@ const Navbar = styled.nav`
       }
     }
   }
-  ul {
-    list-style: none;
-    li {
-      font-size: 1.5rem;
-      padding: 1.4rem;
+`;
+
+const Ul = styled.ul`
+  list-style: none;
+  li {
+    font-size: 1.5rem;
+    padding: 1.4rem;
+    div {
+      display: flex;
+      align-items: center;
       svg {
         margin-right: 1rem;
       }
-      a {
-        &.active {
-          color: white;
-        }
+    }
+
+    a {
+      &.active {
+        color: white;
       }
+    }
+  }
+  // ul태그 안에, 해당 클래스명을 가진 li태그 안에, a 효과주기
+  .board {
+    a {
+      color: ${(props: IPathProps) =>
+        props.location === '/scautr/board/notice/progix' ||
+        '/scautr/board/inquiry'
+          ? 'white'
+          : '#899dbf'};
     }
   }
 `;

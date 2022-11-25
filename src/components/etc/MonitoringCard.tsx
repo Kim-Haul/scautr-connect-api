@@ -8,7 +8,7 @@ const MonitoringCard = () => {
       <Card>
         {registration_query.map((v, i) => {
           return (
-            <React.Fragment>
+            <React.Fragment key={i}>
               <div className="wrap">
                 <div className="top">
                   <div className="top_left">
@@ -34,7 +34,7 @@ const MonitoringCard = () => {
                     </button>
                     <button className="error">
                       <span className="error_title">에러</span>
-                      <span className="error_content">20</span>
+                      <span className="error_content">0</span>
                     </button>
                   </div>
                 </div>
@@ -98,6 +98,8 @@ const Card = styled.div`
   // 950px 디스플레이 이하에서 카드를 2개씩
   @media (max-width: 950px) {
     grid-template-columns: repeat(auto-fit, minmax(40%, auto));
+    column-gap: 1.5rem;
+    row-gap: 1.5rem;
   }
   .wrap {
     background-color: #f5f7fa;

@@ -43,7 +43,7 @@ const Main = styled.main`
   @media (max-width: ${(props) => props.theme.breakpoints.TabletMin}) {
     width: 100%;
     height: 100%;
-    padding-left: 10px;
+    padding-left: 7px;
     padding-top: 95px;
   }
 `;

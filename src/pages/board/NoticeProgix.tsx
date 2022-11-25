@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import Mobile from '../../components/exception/Mobile';
-import RegistrationMachineTable from '../../components/table/RegistrationMachineTable';
+import NoticeProgixTable from '../../components/table/NoticeProgixTable';
 
-const RegistrationMachine = () => {
+const NoticeProgix = () => {
   return (
     <Wrap>
       <Container>
@@ -19,30 +19,24 @@ const RegistrationMachine = () => {
             <button className="btn_right">초기화</button>
           </div>
           <div className="top_right">
-            <button className="btn_left btn_desc">
-              <span>등록하기</span>
-              <div className="desc">버튼을 클릭하여 설비를 등록해주세요.</div>
+            <button className="btn_left">
+              <span>글쓰기</span>
             </button>
-            <button className="btn_right">선택삭제</button>
           </div>
         </Top>
         <Content>
-          {/* -------- 설비등록 테이블 -------- */}
+          {/* -------- 프로직스 공지사항 -------- */}
           <table>
             <thead>
               <tr>
-                <th className="th0"></th>
-                <th className="th1"></th>
-                <th className="th2">그룹</th>
-                <th className="th3">기계명</th>
-                <th className="th4">모델명</th>
-                <th className="th5">권장사용기간</th>
-                <th className="th6">분류</th>
-                <th className="th7">파일첨부</th>
-                <th className="th8">등록일</th>
+                <th className="th0">NO</th>
+                <th className="th1">분류</th>
+                <th className="th2">제목</th>
+                <th className="th3">작성자</th>
+                <th className="th4">작성일</th>
               </tr>
             </thead>
-            <RegistrationMachineTable />
+            <NoticeProgixTable />
           </table>
           <Mobile />
         </Content>
@@ -51,7 +45,7 @@ const RegistrationMachine = () => {
   );
 };
 
-export default RegistrationMachine;
+export default NoticeProgix;
 
 const Wrap = styled.div`
   width: 100%;
@@ -121,41 +115,7 @@ const Top = styled.div`
     margin-right: 7px;
     background-color: ${(props) => props.theme.color.PastelBlue};
   }
-  .btn_left.btn_desc {
-    position: relative;
-    .desc {
-      display: none;
-      font-size: 1.4rem;
-      position: absolute;
-      width: 260px;
-      padding: 8px;
-      top: 55px;
-      left: -120px;
-      border-radius: 8px;
-      -webkit-border-radius: 8px;
-      -moz-border-radius: 8px;
-      background: #333;
-      color: #fff;
-    }
-    .desc:after {
-      position: absolute;
-      bottom: 100%;
-      right: 30%;
-      width: 0;
-      height: 0;
-      border: solid transparent;
-      border-color: rgba(51, 51, 51, 0);
-      border-bottom-color: #333;
-      border-width: 10px;
-      pointer-events: none;
-      content: ' ';
-    }
-    &:hover {
-      .desc {
-        display: block;
-      }
-    }
-  }
+
   .btn_right {
     background-color: #f6f7fb;
     border: 1px solid #e9edf3;
@@ -182,28 +142,16 @@ const Content = styled.div`
       width: 5rem;
     }
     .th1 {
-      width: 5rem;
+      width: 10rem;
     }
     .th2 {
-      width: 10rem;
+      width: 43rem;
     }
     .th3 {
-      width: 30rem;
+      width: 11rem;
     }
     .th4 {
-      width: 30rem;
-    }
-    .th5 {
-      width: 15rem;
-    }
-    .th6 {
       width: 10rem;
-    }
-    .th7 {
-      width: 30rem;
-    }
-    .th8 {
-      width: 15rem;
     }
   }
 `;

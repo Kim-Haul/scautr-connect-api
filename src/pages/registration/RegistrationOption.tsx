@@ -34,10 +34,10 @@ const RegistrationOption = () => {
                 <th className="th0"></th>
                 <th className="th1"></th>
                 <th className="th2">그룹</th>
-                <th className="th3">기계명</th>
+                <th className="th3">옵션명</th>
                 <th className="th4">모델명</th>
                 <th className="th5">권장사용기간</th>
-                <th className="th6">기계</th>
+                <th className="th6">분류</th>
                 <th className="th7">파일첨부</th>
                 <th className="th8">등록일</th>
               </tr>

@@ -16,6 +16,10 @@ import Mypage from './pages/mypage/Mypage';
 import Setting from './pages/mypage/Setting';
 import CompanyInfo from './pages/mypage/CompanyInfo';
 import ChangePw from './pages/mypage/ChangePw';
+import NoticeLayout from './pages/board/NoticeLayout';
+import NoticeScautr from './pages/board/NoticeScautr';
+import NoticeProgix from './pages/board/NoticeProgix';
+import NoticeInquiry from './pages/board/NoticeInquiry';
 
 function App() {
   return (
@@ -31,10 +35,13 @@ function App() {
             <Route path="/scautr/dashboard" element={<Dashboard />} />
             <Route path="/scautr/management" element={<Management />} />
             <Route path="/scautr/management/detail/:idx" element={<Detail />} />
-            <Route
-              path="/scautr/management/registration"
-              element={<Registration />}
+            <Route path="/scautr/management/registration" element={<Registration />}
             />
+            <Route path="/scautr/board" element={<NoticeLayout />}>
+              <Route path="/scautr/board/notice/scautr" element={<NoticeScautr />} />
+              <Route path="/scautr/board/notice/progix" element={<NoticeProgix />} />
+              <Route path="/scautr/board/inquiry"element={<NoticeInquiry />} />
+            </Route>
           </Route>
           <Route path="/mypage" element={<Mypage />} />
           <Route path="/mypage/company_info" element={<CompanyInfo />} />

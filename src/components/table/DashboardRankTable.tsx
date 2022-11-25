@@ -10,7 +10,7 @@ const DashboardRankTable = (props: IRankProps) => {
     {
       index: '04',
       name: '신선식품',
-      machine: '자동열성형진공포장기',
+      machine: '건강식품',
       run: '6',
     },
     { index: '05', name: '건강식품', machine: '진공포장기', run: '2' },
@@ -86,6 +86,10 @@ export default DashboardRankTable;
 const Wrap = styled.div`
   width: 100%;
   margin-top: 5rem;
+  @media (max-width: 1500px) {
+    // 우측 컨테이너 grid 밑으로 넘어갈때 rank 박스 임시 레이아웃 조정
+    margin-top: 2rem;
+  }
   table {
     width: 100%;
     border-collapse: collapse;

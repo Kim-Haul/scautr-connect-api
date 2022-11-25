@@ -2,7 +2,7 @@ import React from 'react';
 import ReactApexChart from 'react-apexcharts';
 import styled from 'styled-components';
 
-const Dount = () => {
+const DountRunChart = () => {
   const on: number = 32;
   const off: number = 11;
   const unconnection: number = 2;
@@ -38,7 +38,7 @@ const Dount = () => {
     </Wrap>
   );
 };
-export default Dount;
+export default DountRunChart;
 
 const Wrap = styled.div`
   display: flex;

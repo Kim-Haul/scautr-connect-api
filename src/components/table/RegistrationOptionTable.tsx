@@ -13,11 +13,11 @@ const RegistrationOptionTable = () => {
                 <input type="checkbox" id={String(i)} readOnly />
               </td>
               <td>{i}</td>
-              <td>포장기</td>
-              <td>자동열성형진공포장기</td>
-              <td>한우물 VSP-5000</td>
+              <td>-</td>
+              <td>라벨러</td>
+              <td>TF107</td>
               <td>5년 2개월</td>
-              <td>기계</td>
+              <td>옵션</td>
               <td>-</td>
               <td>2022-11-22</td>
             </tr>

@@ -2,8 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 import { IoIosArrowForward } from 'react-icons/io';
 import MonitoringCard from '../../components/etc/MonitoringCard';
-import Dount from '../../components/graph/Dount';
+import DountRunChart from '../../components/graph/DountRunChart';
+import DountLinkChart from '../../components/graph/DountLinkChart';
 import DashboardRank from './DashboardRank';
+import GoogleMap from '../../components/graph/GoogleMap';
 
 const Dashboard = () => {
   return (
@@ -18,9 +20,12 @@ const Dashboard = () => {
         <LeftContainer>
           <div className="item">
             <div className="title">실시간 가동현황</div>
-            <Dount />
+            <DountRunChart />
           </div>
-          <div className="item middle">2</div>
+          <div className="item middle">
+            <div className="title">스마트 모드링크 연동현황</div>
+            <DountLinkChart />
+          </div>
           <div className="item rank">
             <DashboardRank />
           </div>
@@ -29,7 +34,9 @@ const Dashboard = () => {
           <div className="item">
             <MonitoringCard />
           </div>
-          <div className="item lower"></div>
+          <div className="item lower">
+            <GoogleMap />
+          </div>
         </RightContainer>
       </Container>
     </Wrap>
@@ -79,6 +86,11 @@ const LeftContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+  // 우측 컨테이터가 좌측 컨테이너보다 높이가 작을 때 임시 여백 설정 및 제거
+  margin-bottom: 2rem;
+  @media (max-width: 1500px) {
+    margin-bottom: 0;
+  }
   .item {
     // min-wdith 설정시 모바일 크기에서 가로 스크롤이 생겨 일단 삭제
     height: 400px;
@@ -101,11 +113,11 @@ const LeftContainer = styled.div`
 `;
 
 const RightContainer = styled.div`
-  width: 100%;
   .item.lower {
     height: 400px;
     background-color: #f5f7fa;
     border: 1px solid #e1e1e1;
     margin: 2rem 0;
+    position: relative;
   }
 `;

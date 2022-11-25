@@ -98,6 +98,8 @@ const Card = styled.div`
   // 950px 디스플레이 이하에서 카드를 2개씩
   @media (max-width: 950px) {
     grid-template-columns: repeat(auto-fit, minmax(40%, auto));
+    column-gap: 1.5rem;
+    row-gap: 1.5rem;
   }
   .wrap {
     background-color: #f5f7fa;

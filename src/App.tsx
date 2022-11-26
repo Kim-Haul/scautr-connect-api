@@ -10,6 +10,7 @@ import Signup from './pages/login/Signup';
 import Layout from './components/common/Layout';
 import Dashboard from './pages/dashboard/Dashboard';
 import Management from './pages/management/Management';
+import ManagementSubmit from './pages/management/ManagementSubmit';
 import Detail from './pages/management/Detail';
 import Registration from './pages/registration/Registration';
 import Mypage from './pages/mypage/Mypage';
@@ -34,6 +35,7 @@ function App() {
           <Route path="/scautr" element={<Layout />}>
             <Route path="/scautr/dashboard" element={<Dashboard />} />
             <Route path="/scautr/management" element={<Management />} />
+            <Route path="/scautr/management/submit" element={<ManagementSubmit />} />
             <Route path="/scautr/management/detail/:idx" element={<Detail />} />
             <Route path="/scautr/management/registration" element={<Registration />}
             />

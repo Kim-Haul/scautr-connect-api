@@ -65,10 +65,16 @@ const Title = styled.div`
 
 const Toggle = styled.div`
   width: 430px;
+  @media (max-width: ${(props) => props.theme.breakpoints.Mobile}) {
+    width: 100%;
+  }
   ul {
     list-style: none;
     display: flex;
     li {
+      @media (max-width: ${(props) => props.theme.breakpoints.Mobile}) {
+        font-size: 1.3rem;
+      }
       border: 1px solid #e9edf3;
       border-bottom: none;
       width: 100%;

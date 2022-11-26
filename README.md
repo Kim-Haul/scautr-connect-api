@@ -14,6 +14,7 @@ $ yarn add react-icons
 $ yarn add styled-components
 $ yarn add apexcharts react-apexcharts
 $ yarn add google-maps-react
+$ yarn add react select
 
 
 // package.json
@@ -29,4 +30,5 @@ $ styled-components : ^5.3.6
 $ apexcharts : ^3.36.3
 $ react-apexcharts : ^1.4.0
 $ google-maps-react : ^2.0.6
+$ react-select : ^5.6.1
 ```

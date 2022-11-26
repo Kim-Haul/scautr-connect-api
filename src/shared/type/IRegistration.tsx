@@ -7,7 +7,8 @@ export interface ITabProps {
 export interface IModalProps {
   open: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
-  header: string;
+  header?: string;
+  setColor?: Dispatch<SetStateAction<string>>;
 }
 
 export interface FormValues {

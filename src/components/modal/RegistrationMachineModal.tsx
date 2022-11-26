@@ -7,8 +7,15 @@ import {
 } from '../../shared/type/IRegistration';
 import { useForm } from 'react-hook-form';
 import { AiOutlinePaperClip } from 'react-icons/ai';
+import { RiPaintFill } from 'react-icons/ri';
+import ColorModal from './ColorModal';
 
 const RegistrationMachineModal = (props: IModalProps) => {
+  // 컬러 모달창 토글
+  const [color_open, setColorOpen] = useState<boolean>(false);
+  // 컬러 모달창 색 담아오기
+  const [color, setColor] = useState<string>('');
+
   const {
     register,
     handleSubmit,
@@ -35,6 +42,8 @@ const RegistrationMachineModal = (props: IModalProps) => {
                 className="close"
                 onClick={() => {
                   reset();
+                  setColor('');
+                  setColorOpen(false);
                   props.setIsOpen(false);
                 }}
               >
@@ -60,17 +69,33 @@ const RegistrationMachineModal = (props: IModalProps) => {
                   </select>
                 </Line>
                 {/* -------------------- 2 --------------------  */}
-                <Line>
+                <Line className="color_modal_parents">
                   <label htmlFor="inputAssignedName">기계명</label>
-                  <Input
-                    type="text"
-                    autoComplete="off"
-                    placeholder="자동열성형진공포장기"
-                    isInvalid={!!errors.assignedName}
-                    id="inputAssignedName"
-                    {...register('assignedName', {
-                      required: '기계명을 입력해주세요.',
-                    })}
+                  <div className="assignedNamebox">
+                    <Input
+                      type="text"
+                      autoComplete="off"
+                      placeholder="자동열성형진공포장기"
+                      className="assigned-name"
+                      isInvalid={!!errors.assignedName}
+                      id="inputAssignedName"
+                      {...register('assignedName', {
+                        required: '기계명을 입력해주세요.',
+                      })}
+                    />
+                    <div
+                      onClick={() => {
+                        setColorOpen(!color_open);
+                      }}
+                    >
+                      {/* 컬러 모델 선택창에서 가져오는 색을 바로 배경색으로 뿌려주기 */}
+                      <RiPaintFill style={{ backgroundColor: color }} />
+                    </div>
+                  </div>
+                  <ColorModal
+                    open={color_open}
+                    setIsOpen={setColorOpen}
+                    setColor={setColor}
                   />
                   {errors.assignedName && (
                     <div className="err">{errors.assignedName.message}</div>
@@ -138,6 +163,11 @@ const RegistrationMachineModal = (props: IModalProps) => {
                   </div>
                   <div className="attach">하나의 파일만 선택이 가능합니다.</div>
                 </Line>
+                {/* -------------------- 6 --------------------  */}
+                <Line>
+                  <label htmlFor="inputTextarea">비고</label>
+                  <textarea autoComplete="off" id="inputTextarea" />
+                </Line>
                 <div className="check">
                   <button className="close">확인</button>
                 </div>
@@ -174,10 +204,11 @@ const Wrap = styled.div`
     }
     max-height: 90%;
     background-color: #fff;
-    animation: modal-show 0.3s;
+    // 모달이 스르륵 열리는 효과인데, input이 깨지는 효과가 있어서 잠시 보류
+    // animation: modal-show 0.3s;
     overflow-y: auto;
     header {
-      background-color: #f1f1f1;
+      background-color: #f6f7fb;
       font-weight: 700;
       padding: 1.5rem;
       display: flex;
@@ -242,6 +273,10 @@ const PostForm = styled.form`
     height: 40px;
     font-size: 1.5rem;
   }
+  // 컬러 모달창 상대 위치 부모 요소 지정
+  .color_modal_parents {
+    position: relative;
+  }
 `;
 
 const Line = styled.div`
@@ -290,7 +325,6 @@ const Line = styled.div`
       }
       label {
         width: 10%;
-        height: 100%;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -309,6 +343,47 @@ const Line = styled.div`
       padding: 0;
       overflow: hidden;
       border: 0;
+    }
+  }
+  textarea {
+    border: 1px solid #ced4da;
+    height: 8rem;
+    padding: 1rem;
+    font-size: 1.5rem;
+    font-family: 'Noto Sans KR', sans-serif;
+    resize: none;
+    &:focus {
+      border: 2px solid rgb(0, 123, 255);
+      box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+      outline: none;
+    }
+  }
+  // 색상 선택을 위해 나누는 기계명 input 라인 div
+  .assignedNamebox {
+    display: flex;
+    border: 1px solid #ced4da;
+    align-items: center;
+    // Input이 밑에 정의되어 있는데도, css 우선순위에 따라 class 스타일 적용
+    input {
+      width: 90%;
+      border: none;
+    }
+    div {
+      width: 10%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      svg {
+        font-size: 3rem;
+        padding: 5px;
+        color: #fff;
+        border-radius: 5px;
+        background-color: #c1c1c1;
+        cursor: pointer;
+        @media (max-width: ${(props) => props.theme.breakpoints.Mobile}) {
+          font-size: 2.5rem;
+        }
+      }
     }
   }
 `;

@@ -10,6 +10,8 @@ export interface FormValues {
   manager_department: string;
   manager_phone: string;
   manager_email: string;
+
+  machine_serial_number: string;
 }
 
 export interface IStyleProps {

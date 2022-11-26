@@ -3,8 +3,31 @@ import styled from 'styled-components';
 import { IoIosArrowForward } from 'react-icons/io';
 import { useForm } from 'react-hook-form';
 import { FormValues, IStyleProps } from '../../shared/type/IManagement';
+import Select from 'react-select';
 
 const ManagementSubmit = () => {
+  // react-select 라이브러리 기본 옵션 및 스타일 적용
+  const MachineNameOptions = [
+    { value: '자동열성형포장기', label: '자동열성형포장기' },
+    { value: '금속검출기', label: '금속검출기' },
+    { value: '엑스레이식품검사기', label: '엑스레이식품검사기' },
+  ];
+
+  const MachineOptions = [
+    { value: '자동정량충전기', label: '자동정량충전기' },
+    { value: '라벨러', label: '라벨러' },
+    { value: '파워케이블연장', label: '파워케이블연장' },
+  ];
+
+  const colourStyles = {
+    control: (style: any) => ({
+      ...style,
+      fontSize: '1.5rem',
+      width: '100%',
+      minHeight: '5rem',
+    }),
+  };
+
   const {
     register,
     handleSubmit,
@@ -40,6 +63,50 @@ const ManagementSubmit = () => {
               />
             </div>
           </Line>
+          {/* -------------------- 2 --------------------  */}
+          <Line>
+            <div className="title">기계 정보</div>
+            <hr />
+            {/* -------------------- 2-1 --------------------  */}
+            <div className="content">
+              <div className="content_left">
+                <label>설비 선택</label>
+                <Select
+                  options={MachineNameOptions}
+                  defaultValue={MachineNameOptions[0]}
+                  styles={colourStyles}
+                />
+              </div>
+              <div className="content_right">
+                <label htmlFor="inputMachineSerialNumber">S/N</label>
+                <Input
+                  type="text"
+                  autoComplete="off"
+                  isInvalid={!!errors.machine_serial_number}
+                  id="inputMachineSerialNumber"
+                  {...register('machine_serial_number', {
+                    required: '시리얼 번호를 입력해주세요.',
+                  })}
+                />
+                {errors.machine_serial_number && (
+                  <div className="err">
+                    {errors.machine_serial_number.message}
+                  </div>
+                )}
+              </div>
+            </div>
+            {/* -------------------- 2-2 --------------------  */}
+            <div className="content full_width">
+              <label>옵션 선택</label>
+              <Select
+                options={MachineOptions}
+                defaultValue={MachineOptions[0]}
+                styles={colourStyles}
+                isMulti
+              />
+            </div>
+          </Line>
+
           {/* -------------------- 3 --------------------  */}
           <Line>
             <div className="title">거래처 정보</div>
@@ -80,7 +147,7 @@ const ManagementSubmit = () => {
             {/* -------------------- 3-2 --------------------  */}
             <div className="content">
               <div className="content_left">
-                <label htmlFor="inputCompanyName">회사 연락처</label>
+                <label htmlFor="inputCompanyContact">회사 연락처</label>
                 <Input
                   type="text"
                   autoComplete="off"

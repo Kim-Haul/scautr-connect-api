@@ -17,7 +17,7 @@ const NoticeInquiryTable = () => {
                 <div className="writer">
                   <img src="/images/board_profile.png" alt="프로필 이미지" />
                   <div className="writer_detail">
-                    <span className="writer_detail_company">쿠버네티스</span>
+                    <span className="writer_detail_company">LG화학</span>
                     <span>최예랑(cyr****)</span>
                   </div>
                 </div>

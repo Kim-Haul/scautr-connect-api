@@ -1,10 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 import { IoIosArrowForward } from 'react-icons/io';
 import Mobile from '../../components/exception/Mobile';
 import ManagementTable from '../../components/table/ManagementTable';
 
 const Management = () => {
+  const navigate = useNavigate();
+
   return (
     <Wrap>
       <Title>
@@ -26,7 +29,14 @@ const Management = () => {
             <button className="btn_right">초기화</button>
           </div>
           <div className="top_right">
-            <button className="btn_left">등록하기</button>
+            <button
+              className="btn_left"
+              onClick={() => {
+                navigate('/scautr/management/submit');
+              }}
+            >
+              등록하기
+            </button>
             <button className="btn_right">선택삭제</button>
           </div>
         </Top>

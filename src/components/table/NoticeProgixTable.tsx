@@ -1,14 +1,20 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
 const NoticeProgixTable = () => {
   const registration_query = new Array(3).fill(1);
+  const navigate = useNavigate();
   return (
     <Tbody>
       {registration_query.map((v, i) => {
         return (
           <React.Fragment key={i}>
-            <tr>
+            <tr
+              onClick={() => {
+                navigate('/scautr/board/notice/progix/detail/172');
+              }}
+            >
               <td>{i}</td>
               <td>공지사항</td>
               <td>신규 진공포장기 출시</td>

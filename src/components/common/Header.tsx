@@ -189,7 +189,7 @@ const Modal = styled.div`
   width: 16rem;
   background-color: #fff;
   border-radius: 5px;
-  border: 1px solid #d4d4d4;
+  border: 1px solid ${(props) => props.theme.color.PastelBlue};
   box-shadow: 1px 1px 5px 1px #d4d4d4;
   color: #000;
   @media (max-width: ${(props) => props.theme.breakpoints.TabletMin}) {

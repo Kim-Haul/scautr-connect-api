@@ -19,8 +19,13 @@ import CompanyInfo from './pages/mypage/CompanyInfo';
 import ChangePw from './pages/mypage/ChangePw';
 import NoticeLayout from './pages/board/NoticeLayout';
 import NoticeScautr from './pages/board/NoticeScautr';
+import NoticeScautrDetail from './pages/board/NoticeScautrDetail';
 import NoticeProgix from './pages/board/NoticeProgix';
+import NoticeProgixDetail from './pages/board/NoticeProgixDetail';
+import NoticeProgixPost from './pages/board/NoticeProgixPost';
 import NoticeInquiry from './pages/board/NoticeInquiry';
+import NoticeInquiryDetail from './pages/board/NoticeInquiryDetail';
+
 
 function App() {
   return (
@@ -41,8 +46,12 @@ function App() {
             />
             <Route path="/scautr/board" element={<NoticeLayout />}>
               <Route path="/scautr/board/notice/scautr" element={<NoticeScautr />} />
+              <Route path="/scautr/board/notice/scautr/detail/:idx" element={<NoticeScautrDetail />} />
               <Route path="/scautr/board/notice/progix" element={<NoticeProgix />} />
+              <Route path="/scautr/board/notice/progix/detail/:idx" element={<NoticeProgixDetail />} />
+              <Route path="/scautr/board/notice/progix/post" element={<NoticeProgixPost />} />
               <Route path="/scautr/board/inquiry"element={<NoticeInquiry />} />
+              <Route path="/scautr/board/inquiry/detail/:idx"element={<NoticeInquiryDetail />} />
             </Route>
           </Route>
           <Route path="/mypage" element={<Mypage />} />

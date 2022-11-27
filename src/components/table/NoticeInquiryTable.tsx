@@ -1,14 +1,21 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
 const NoticeInquiryTable = () => {
   const registration_query = new Array(3).fill(1);
+  const navigate = useNavigate();
+
   return (
     <Tbody>
       {registration_query.map((v, i) => {
         return (
           <React.Fragment key={i}>
-            <tr>
+            <tr
+              onClick={() => {
+                navigate('/scautr/board/inquiry/detail/172');
+              }}
+            >
               <td>{i}</td>
               <td>공지사항</td>
               <td>답변대기</td>
@@ -35,7 +42,9 @@ export default NoticeInquiryTable;
 
 const Tbody = styled.tbody`
   td {
-    padding: 5px;
+    // 표형식 기본 padding을 10px로 주고 있었는데 여기는
+    // 작성자칸 크기 때문에 살짝 다름
+    padding: 3.6px;
     border: 1px solid #e9edf3;
     text-align: center;
   }

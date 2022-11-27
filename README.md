@@ -15,6 +15,7 @@ $ yarn add styled-components
 $ yarn add apexcharts react-apexcharts
 $ yarn add google-maps-react
 $ yarn add react select
+$ yarn add @toast-ui/react-editor
 
 
 // package.json
@@ -31,4 +32,5 @@ $ apexcharts : ^3.36.3
 $ react-apexcharts : ^1.4.0
 $ google-maps-react : ^2.0.6
 $ react-select : ^5.6.1
+$ @toast-ui/react-editor : ^3.2.2
 ```

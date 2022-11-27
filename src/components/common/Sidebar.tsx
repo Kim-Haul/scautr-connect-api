@@ -145,7 +145,8 @@ const Ul = styled.ul`
       color: ${(props: IPathProps) =>
         props.location === '/scautr/board/notice/progix' ||
         props.location === '/scautr/board/notice/progix/post' ||
-        props.location === '/scautr/board/inquiry'
+        props.location === '/scautr/board/inquiry' ||
+        props.location.indexOf('/progix/detail') === 20
           ? 'white'
           : '#899dbf'};
     }

@@ -11,7 +11,8 @@ const NoticeLayout = () => {
     <Wrap>
       <Title>
         {/* url 주소에 따른 Title 조건부 렌더링 */}
-        {location.pathname === '/scautr/board/notice/scautr' ? (
+        {location.pathname === '/scautr/board/notice/scautr' ||
+        location.pathname.indexOf('/scautr/detail') === 20 ? (
           <React.Fragment>
             <div className="main">게시판</div>
             <div className="sub">

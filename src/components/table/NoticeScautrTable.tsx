@@ -1,14 +1,20 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
 const NoticeScautrTable = () => {
   const registration_query = new Array(3).fill(1);
+  const navigate = useNavigate();
   return (
     <Tbody>
       {registration_query.map((v, i) => {
         return (
           <React.Fragment key={i}>
-            <tr>
+            <tr
+              onClick={() => {
+                navigate('/scautr/board/notice/scautr/detail/172');
+              }}
+            >
               <td>{i}</td>
               <td>공지사항</td>
               <td>스카우터 서버 정기 점검 안내</td>

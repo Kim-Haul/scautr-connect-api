@@ -31,8 +31,7 @@ const ProgixDetail = () => {
         <div className="row content">
           자동열성형 진공포장기가 신규 출시 되었습니다.
           <br />
-          기존 BP-500 모델에서 고성능 쿨러 추가와 소비 전력을 보다 효율적으로
-          컨트롤 가능합니다.
+          기존 BP-500 모델에 고성능 쿨러가 추가되었습니다.
           <br />
           <br />
           자세한 사항은 문의 바랍니다.
@@ -42,7 +41,7 @@ const ProgixDetail = () => {
       </Content>
       <Bottom>
         <div className="column">▾ 이전글</div>
-        <div className="column">(이벤트)제상기능 업데이트 안내</div>
+        <div className="column">고객센터 휴무안내</div>
         <div className="column">정지영</div>
         <div className="column">2022-11-01</div>
       </Bottom>
@@ -74,8 +73,6 @@ const Content = styled.div`
     gap: 0.5rem;
     font-weight: 500;
     svg {
-      background-color: #f6f7fb;
-      border: 1px solid #ced4da;
       font-size: 2.5rem;
       cursor: pointer;
       color: gray;

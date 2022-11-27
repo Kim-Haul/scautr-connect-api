@@ -1,9 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 import Mobile from '../../components/exception/Mobile';
 import NoticeProgixTable from '../../components/table/NoticeProgixTable';
 
 const NoticeProgix = () => {
+  const navigate = useNavigate();
+
   return (
     <Wrap>
       <Container>
@@ -22,7 +25,12 @@ const NoticeProgix = () => {
             <button className="btn_right">초기화</button>
           </div>
           <div className="top_right">
-            <button className="btn_left">
+            <button
+              className="btn_left"
+              onClick={() => {
+                navigate('/scautr/board/notice/progix/post');
+              }}
+            >
               <span>글쓰기</span>
             </button>
           </div>

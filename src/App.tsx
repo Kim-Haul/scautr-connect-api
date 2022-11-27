@@ -20,6 +20,7 @@ import ChangePw from './pages/mypage/ChangePw';
 import NoticeLayout from './pages/board/NoticeLayout';
 import NoticeScautr from './pages/board/NoticeScautr';
 import NoticeProgix from './pages/board/NoticeProgix';
+import NoticeProgixPost from './pages/board/NoticeProgixPost';
 import NoticeInquiry from './pages/board/NoticeInquiry';
 
 function App() {
@@ -42,6 +43,7 @@ function App() {
             <Route path="/scautr/board" element={<NoticeLayout />}>
               <Route path="/scautr/board/notice/scautr" element={<NoticeScautr />} />
               <Route path="/scautr/board/notice/progix" element={<NoticeProgix />} />
+              <Route path="/scautr/board/notice/progix/post" element={<NoticeProgixPost />} />
               <Route path="/scautr/board/inquiry"element={<NoticeInquiry />} />
             </Route>
           </Route>

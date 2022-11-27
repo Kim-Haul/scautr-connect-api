@@ -70,7 +70,13 @@ const RegistrationMachineModal = (props: IModalProps) => {
                 </Line>
                 {/* -------------------- 2 --------------------  */}
                 <Line className="color_modal_parents">
-                  <label htmlFor="inputAssignedName">기계명</label>
+                  <label htmlFor="inputAssignedName">
+                    <div>기계명</div>
+                    <div
+                      className="circle"
+                      style={{ backgroundColor: color }}
+                    ></div>
+                  </label>
                   <div className="assignedNamebox">
                     <Input
                       type="text"
@@ -276,6 +282,18 @@ const PostForm = styled.form`
   // 컬러 모달창 상대 위치 부모 요소 지정
   .color_modal_parents {
     position: relative;
+    label {
+      display: flex;
+      align-items: center;
+      .circle {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background-color: gray;
+        margin-top: 2px;
+        margin-left: 8px;
+      }
+    }
   }
 `;
 

@@ -2,16 +2,42 @@ import React from 'react';
 import { IoIosArrowForward } from 'react-icons/io';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 
 const NoticeLayout = () => {
+  const location = useLocation();
+
   return (
     <Wrap>
       <Title>
-        <div className="main">게시판</div>
-        <div className="sub">
-          <span>SCAUTR</span> <IoIosArrowForward /> <span>게시판</span>
-        </div>
+        {/* url 주소에 따른 Title 조건부 렌더링 */}
+        {location.pathname === '/scautr/board/notice/scautr' ? (
+          <React.Fragment>
+            <div className="main">게시판</div>
+            <div className="sub">
+              <span>SCAUTR</span> <IoIosArrowForward /> <span>게시판</span>
+            </div>
+          </React.Fragment>
+        ) : //  조건2
+        location.pathname === '/scautr/board/notice/progix' ||
+          location.pathname === '/scautr/board/notice/progix/post' ? (
+          <React.Fragment>
+            <div className="main">기계사 공지사항</div>
+            <div className="sub">
+              <span>SCAUTR</span> <IoIosArrowForward /> <span>게시판</span>
+              <IoIosArrowForward /> <span>기계사 공지사항</span>
+            </div>
+          </React.Fragment>
+        ) : //  조건3
+        location.pathname === '/scautr/board/inquiry' ? (
+          <React.Fragment>
+            <div className="main">문의하기</div>
+            <div className="sub">
+              <span>SCAUTR</span> <IoIosArrowForward /> <span>게시판</span>
+              <IoIosArrowForward /> <span>문의하기</span>
+            </div>
+          </React.Fragment>
+        ) : null}
       </Title>
       <Toggle>
         <ul>

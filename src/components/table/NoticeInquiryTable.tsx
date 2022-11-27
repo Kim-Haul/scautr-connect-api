@@ -35,7 +35,9 @@ export default NoticeInquiryTable;
 
 const Tbody = styled.tbody`
   td {
-    padding: 5px;
+    // 표형식 기본 padding을 10px로 주고 있었는데 여기는
+    // 작성자칸 크기 때문에 살짝 다름
+    padding: 3.6px;
     border: 1px solid #e9edf3;
     text-align: center;
   }

@@ -20,7 +20,8 @@ const NoticeLayout = () => {
           </React.Fragment>
         ) : //  조건2
         location.pathname === '/scautr/board/notice/progix' ||
-          location.pathname === '/scautr/board/notice/progix/post' ? (
+          location.pathname === '/scautr/board/notice/progix/post' ||
+          location.pathname.indexOf('/progix/detail') === 20 ? (
           <React.Fragment>
             <div className="main">기계사 공지사항</div>
             <div className="sub">

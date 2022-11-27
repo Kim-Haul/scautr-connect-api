@@ -73,6 +73,7 @@ export default NoticeProgixPost;
 
 const Wrap = styled.div`
   width: 100%;
+  margin-bottom: 2rem;
 `;
 
 const Container = styled.div`

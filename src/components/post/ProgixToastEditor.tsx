@@ -29,6 +29,10 @@ export default ProgixToastEditor;
 
 const Wrap = styled.div`
   width: 100%;
+  button {
+    // toast-ui 내부 button에 영향을 줘서 글로벌 스타일 상쇄
+    padding: 0rem;
+    font-weight: 500;
+    display: inline;
+  }
 `;
-
-const Image = styled.div``;

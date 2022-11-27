@@ -146,7 +146,8 @@ const Ul = styled.ul`
         props.location === '/scautr/board/notice/progix' ||
         props.location === '/scautr/board/notice/progix/post' ||
         props.location === '/scautr/board/inquiry' ||
-        props.location.indexOf('/progix/detail') === 20
+        props.location.indexOf('/progix/detail') === 20 ||
+        props.location.indexOf('/inquiry/detail') === 13
           ? 'white'
           : '#899dbf'};
     }

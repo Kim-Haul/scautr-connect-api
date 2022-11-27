@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import Switch from '../../components/etc/Switch';
+import ProgixToastEditor from '../../components/post/ProgixToastEditor';
 
 const NoticeProgixPost = () => {
   const navigate = useNavigate();
@@ -55,8 +57,11 @@ const NoticeProgixPost = () => {
           <div className="row grid">
             <div className="grid_left">대표글 설정</div>
             <div className="grid_right">
-              <input type="checkbox" id="input_checkbox" />
+              <Switch />
             </div>
+          </div>
+          <div className="row editor">
+            <ProgixToastEditor />
           </div>
         </Content>
       </Container>
@@ -121,7 +126,8 @@ const Content = styled.div`
     border: 1px solid #ced4da;
     &:first-child,
     &:nth-child(2),
-    &:nth-child(3) {
+    &:nth-child(3),
+    &:nth-child(4) {
       border-bottom: none;
     }
   }
@@ -165,9 +171,9 @@ const Content = styled.div`
       input {
         width: 100%;
       }
-      #input_checkbox {
-        width: 15px;
-      }
     }
+  }
+  .row.editor {
+    height: auto;
   }
 `;

@@ -3,7 +3,48 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 
 const NoticeInquiryTable = () => {
-  const registration_query = new Array(3).fill(1);
+  const registration_query = [
+    {
+      id: '4',
+      classification: '공지사항',
+      state: '답변대기',
+      title: 'Wifi-Link의 TCP, AP 관련 문의',
+      company: '이랜드몰',
+      author_name: '정지영',
+      author_id: 'jyy****',
+      date: '2022-11-24',
+    },
+    {
+      id: '3',
+      classification: '공지사항',
+      state: '답변대기',
+      title: '배송문의',
+      company: '신선식품',
+      author_name: '고민지',
+      author_id: 'koh****',
+      date: '2022-11-11',
+    },
+    {
+      id: '2',
+      classification: '공지사항',
+      state: '답변완료',
+      title: '이더넷 케이블 연장선 추가 주문',
+      company: '이랜드몰',
+      author_name: '정지영',
+      author_id: 'jyy****',
+      date: '2022-11-03',
+    },
+    {
+      id: '1',
+      classification: '공지사항',
+      state: '답변대기',
+      title: '무선 인터넷 연결 문의',
+      company: '한바다',
+      author_name: '김도영',
+      author_id: 'kim****',
+      date: '2022-11-02',
+    },
+  ];
   const navigate = useNavigate();
 
   return (
@@ -16,20 +57,22 @@ const NoticeInquiryTable = () => {
                 navigate('/scautr/board/inquiry/detail/172');
               }}
             >
-              <td>{i}</td>
-              <td>공지사항</td>
-              <td>답변대기</td>
-              <td>Wifi-Link의 TCP, AP 관련 문의</td>
+              <td>{v.id}</td>
+              <td>{v.classification}</td>
+              <td>{v.state}</td>
+              <td>{v.title}</td>
               <td>
                 <div className="writer">
                   <img src="/images/board_profile.png" alt="프로필 이미지" />
                   <div className="writer_detail">
-                    <span className="writer_detail_company">LG화학</span>
-                    <span>최예랑(cyr****)</span>
+                    <span className="writer_detail_company">{v.company}</span>
+                    <span>
+                      {v.author_name}({v.author_id})
+                    </span>
                   </div>
                 </div>
               </td>
-              <td>2022-11-25</td>
+              <td>{v.date}</td>
             </tr>
           </React.Fragment>
         );

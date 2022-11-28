@@ -2,7 +2,159 @@ import React from 'react';
 import styled from 'styled-components';
 
 const MonitoringCard = () => {
-  const registration_query = new Array(8).fill(1);
+  const registration_query = [
+    {
+      machine: '자동열성형진공포장기',
+      model: 'GP260',
+      total: 36,
+      alarm: 122,
+      error: 3,
+      run: 34,
+      off: 0,
+      unconnected: 2,
+    },
+    {
+      machine: '자동열성형진공포장기',
+      model: 'GP460',
+      total: 59,
+      alarm: 211,
+      error: 3,
+      run: 54,
+      off: 5,
+      unconnected: 0,
+    },
+    {
+      machine: '스크류콤프레샤',
+      model: 'ESS30',
+      total: 72,
+      alarm: 44,
+      error: 2,
+      run: 70,
+      off: 1,
+      unconnected: 1,
+    },
+    {
+      machine: '의료용냉장고',
+      model: 'CBR-150-1430',
+      total: 321,
+      alarm: 552,
+      error: 11,
+      run: 318,
+      off: 3,
+      unconnected: 0,
+    },
+    {
+      machine: '스크류콤프레샤',
+      model: 'ESS50',
+      total: 88,
+      alarm: 89,
+      error: 4,
+      run: 88,
+      off: 0,
+      unconnected: 0,
+    },
+    {
+      machine: '의료용냉장고',
+      model: 'CBR-110-15-0',
+      total: 321,
+      alarm: 552,
+      error: 11,
+      run: 318,
+      off: 3,
+      unconnected: 0,
+    },
+    {
+      machine: '자동열성형진공포장기',
+      model: 'GP260',
+      total: 36,
+      alarm: 122,
+      error: 3,
+      run: 34,
+      off: 0,
+      unconnected: 2,
+    },
+    {
+      machine: '자동열성형진공포장기',
+      model: 'GP460',
+      total: 59,
+      alarm: 211,
+      error: 3,
+      run: 54,
+      off: 5,
+      unconnected: 0,
+    },
+    {
+      machine: '스크류콤프레샤',
+      model: 'ESS30',
+      total: 72,
+      alarm: 44,
+      error: 2,
+      run: 70,
+      off: 1,
+      unconnected: 1,
+    },
+    {
+      machine: '의료용냉장고',
+      model: 'CBR-150-1430',
+      total: 321,
+      alarm: 552,
+      error: 11,
+      run: 318,
+      off: 3,
+      unconnected: 0,
+    },
+    {
+      machine: '스크류콤프레샤',
+      model: 'ESS50',
+      total: 88,
+      alarm: 89,
+      error: 4,
+      run: 88,
+      off: 0,
+      unconnected: 0,
+    },
+    {
+      machine: '의료용냉장고',
+      model: 'CBR-110-15-0',
+      total: 321,
+      alarm: 552,
+      error: 11,
+      run: 318,
+      off: 3,
+      unconnected: 0,
+    },
+    {
+      machine: '자동열성형진공포장기',
+      model: 'GP460',
+      total: 59,
+      alarm: 211,
+      error: 3,
+      run: 54,
+      off: 5,
+      unconnected: 0,
+    },
+    {
+      machine: '스크류콤프레샤',
+      model: 'ESS30',
+      total: 72,
+      alarm: 44,
+      error: 2,
+      run: 70,
+      off: 1,
+      unconnected: 1,
+    },
+    {
+      machine: '의료용냉장고',
+      model: 'CBR-150-1430',
+      total: 321,
+      alarm: 552,
+      error: 11,
+      run: 318,
+      off: 3,
+      unconnected: 0,
+    },
+  ];
+
   return (
     <Wrap>
       <Card>
@@ -12,29 +164,26 @@ const MonitoringCard = () => {
               <div className="wrap">
                 <div className="top">
                   <div className="top_left">
-                    <div className="top_left_title">한우물 VSP-5000</div>
-                    <div className="top_left_sub">진공포장기</div>
+                    <div className="top_left_title">{v.model}</div>
+                    <div className="top_left_sub">{v.machine}</div>
                   </div>
                   <div className="top_right">
-                    <img
-                      src="/images/exclamation-thick-fill.png"
-                      alt="즐겨찾기"
-                    />
+                    <img src="/images/exclamation-thick.png" alt="즐겨찾기" />
                   </div>
                 </div>
                 <div className="middle">
                   <div className="middle_left">
                     <div className="middle_left_title">장비수량</div>
-                    <div className="middle_left_sub">2개</div>
+                    <div className="middle_left_sub">{v.total}개</div>
                   </div>
                   <div className="middle_right">
                     <button className="alarm">
                       <span className="alarm_title">알람</span>
-                      <span className="alarm_content">263</span>
+                      <span className="alarm_content">{v.alarm}</span>
                     </button>
                     <button className="error">
                       <span className="error_title">에러</span>
-                      <span className="error_content">0</span>
+                      <span className="error_content">{v.error}</span>
                     </button>
                   </div>
                 </div>
@@ -46,7 +195,7 @@ const MonitoringCard = () => {
                       </div>
                       <span>가동</span>
                     </div>
-                    <div className="bottom_sub">21</div>
+                    <div className="bottom_sub">{v.run}</div>
                   </div>
                   <div className="stop">
                     <div className="bottom_title">
@@ -55,7 +204,7 @@ const MonitoringCard = () => {
                       </div>
                       <span>비가동</span>
                     </div>
-                    <div className="bottom_sub">3</div>
+                    <div className="bottom_sub">{v.off}</div>
                   </div>
                   <div className="unconnect">
                     <div className="bottom_title">
@@ -64,7 +213,7 @@ const MonitoringCard = () => {
                       </div>
                       <span>미등록</span>
                     </div>
-                    <div className="bottom_sub">1</div>
+                    <div className="bottom_sub">{v.unconnected}</div>
                   </div>
                 </div>
               </div>

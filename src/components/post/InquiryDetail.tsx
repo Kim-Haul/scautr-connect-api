@@ -8,12 +8,14 @@ const InquiryDetail = () => {
       <Content>
         <div className="row title">Wifi-Link의 TCP,AP 관련 문의</div>
         <div className="row info">
-          <div className="div">LG화학</div>
+          <div className="div">신선식품</div>
           <div className="div">최예랑(cyr****)</div>
           <div className="div">2022-11-25</div>
         </div>
         <div className="row content">
           TF303 모델에 wifi 연결이 가능한가요?
+          <br />
+          가능하다면 해당 모델 추가 견적 문의 드립니다.
           <br />
           <br />
         </div>

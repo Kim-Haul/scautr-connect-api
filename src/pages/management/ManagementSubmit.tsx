@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { IoIosArrowForward } from 'react-icons/io';
 import { useForm } from 'react-hook-form';
-import { FormValues, IStyleProps } from '../../shared/type/IManagement';
+import { FormValues, IStyleProps } from '../../shared/type/Interface';
 import Select from 'react-select';
 
 const ManagementSubmit = () => {

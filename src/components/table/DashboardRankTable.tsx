@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { IRankProps } from '../../shared/type/IDasboardRank';
+import { IRankProps } from '../../shared/type/Interface';
 
 const DashboardRankTable = (props: IRankProps) => {
   const error = [

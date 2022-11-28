@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { BiDotsVerticalRounded } from 'react-icons/bi';
-import { IToggleProps } from '../../shared/type/IBoard';
+import { IToggleProps } from '../../shared/type/Interface';
 
 const ProgixDetail = () => {
   const [open_modal, setOpenModal] = useState<boolean>(false);

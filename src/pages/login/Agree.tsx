@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import { ICheckStateProps } from '../../shared/type/IAgree';
+import { ICheckStateProps } from '../../shared/type/Interface';
 
 const Agree = () => {
   const navigate = useNavigate();

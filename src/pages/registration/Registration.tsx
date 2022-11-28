@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { IoIosArrowForward } from 'react-icons/io';
 import RegistrationMachine from './RegistrationMachine';
 import RegistrationOption from './RegistrationOption';
-import { ITabProps } from '../../shared/type/IRegistration';
+import { ITabProps } from '../../shared/type/Interface';
 
 const Registration = () => {
   const [click_tab, setClickTab] = useState<boolean>(true);

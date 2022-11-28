@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
-import { FormValues, IStyleProps } from '../../shared/type/ILogin';
+import { FormValues, IStyleProps } from '../../shared/type/Interface';
 import apis from '../../shared/apis';
-import { setCookieToken, setCookieRefreshToken } from '../../shared/cookie';
+import {
+  getCookie,
+  setCookieToken,
+  setCookieRefreshToken,
+} from '../../shared/cookie';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -23,6 +27,13 @@ const Login = () => {
       account: data.id,
       password: data.password,
     };
+    // 아이디 저장 여부 확인
+    if (save_id) {
+      document.cookie = `ID=${data.id}; max-age=604800; path=/`;
+    } else {
+      document.cookie = `ID=${data.id}; max-age=1; path=/`;
+    }
+    // 로그인 로직
     try {
       const res = await apis.login(info);
       console.log(res.data.result[0].accessToken);
@@ -35,7 +46,10 @@ const Login = () => {
         alert('승인 대기중인 계정입니다.');
       } else if (e.response?.data.message === 'ACCOUNT_NOTFOUND_ERR') {
         alert('등록되지 않은 아이디입니다.');
-      } else if (e.response?.data.message === 'PASSWORD_DISCREPANCY_ERR') {
+      } else if (
+        e.response?.data.message === 'PASSWORD_DISCREPANCY_ERR' ||
+        e.response?.data.message === 'PASSWORD_FORMAT_ERR'
+      ) {
         alert('올바른 비밀번호를 입력해주세요.');
       } else if (e.response?.data.message === 'ACCOUNT_LOCKED_ERR') {
         alert('비밀번호를 5회 이상 잘못 입력하여 잠긴 계정입니다.');
@@ -44,6 +58,13 @@ const Login = () => {
       }
     }
   };
+
+  // 아이디 저장 체크박스 여부 검증
+  useEffect(() => {
+    if (getCookie('ID')) {
+      SetSaveId(true);
+    }
+  }, []);
 
   return (
     <Wrap>
@@ -65,6 +86,7 @@ const Login = () => {
               autoComplete="off"
               placeholder="아이디를 입력해주세요"
               isInvalid={!!errors.id}
+              defaultValue={getCookie('ID')}
               id="inputId"
               {...register('id', {
                 required: '아이디를 입력해주세요.',

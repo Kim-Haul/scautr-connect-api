@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { BsBoxArrowInLeft } from 'react-icons/bs';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { FormValues, IStyleProps } from '../../shared/type/IChangePw';
+import { FormValues, IStyleProps } from '../../shared/type/Interface';
 
 const ChangePw = () => {
   const navigate = useNavigate();

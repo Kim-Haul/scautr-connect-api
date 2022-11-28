@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { IToggleProps } from '../../shared/type/IBoard';
+import { IToggleProps } from '../../shared/type/Interface';
 
 const ScautrDetail = () => {
   return (

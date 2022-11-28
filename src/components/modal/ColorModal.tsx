@@ -1,7 +1,7 @@
 import React from 'react';
 import { IoIosColorFill } from 'react-icons/io';
 import styled from 'styled-components';
-import { IModalProps } from '../../shared/type/IRegistration';
+import { IModalProps } from '../../shared/type/Interface';
 
 const ColorModal = (props: IModalProps) => {
   const colorList: string[] = [

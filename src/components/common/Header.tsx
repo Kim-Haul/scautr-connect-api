@@ -5,7 +5,8 @@ import { AiOutlineBars } from 'react-icons/ai';
 import { BiLogOut } from 'react-icons/bi';
 import { FcSpeaker } from 'react-icons/fc';
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
-import { IToggleProps, IScrollYProps } from '../../shared/type/IHeader';
+import { IToggleProps, IScrollYProps } from '../../shared/type/Interface';
+import { deleteCookie } from '../../shared/cookie';
 
 const Header = (props: IScrollYProps) => {
   const navigate = useNavigate();
@@ -70,7 +71,14 @@ const Header = (props: IScrollYProps) => {
                   >
                     계정설정
                   </li>
-                  <li>로그아웃</li>
+                  <li
+                    onClick={() => {
+                      deleteCookie('Authorization');
+                      deleteCookie('RefreshToken');
+                    }}
+                  >
+                    로그아웃
+                  </li>
                 </ul>
               </Modal>
             </>

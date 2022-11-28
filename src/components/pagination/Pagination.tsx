@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from 'react-icons/ai';
 import styled from 'styled-components';
-import { IPageProps } from '../../shared/type/IPagination';
+import { IPageProps } from '../../shared/type/Interface';
 
 const Pagination = (props: IPageProps) => {
   let lastPage = Math.ceil(props.total / 5);

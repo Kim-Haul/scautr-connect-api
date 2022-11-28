@@ -2,7 +2,7 @@ import React from 'react';
 import { GlobalStyles } from './shared/styles/GlobalStyle';
 import { ThemeProvider } from 'styled-components';
 import Theme from './shared/styles/Theme';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useNavigate, Navigate } from 'react-router-dom';
 import Login from './pages/login/Login';
 import FindPw from './pages/login/FindPw';
 import Agree from './pages/login/Agree';
@@ -25,19 +25,35 @@ import NoticeProgixDetail from './pages/board/NoticeProgixDetail';
 import NoticeProgixPost from './pages/board/NoticeProgixPost';
 import NoticeInquiry from './pages/board/NoticeInquiry';
 import NoticeInquiryDetail from './pages/board/NoticeInquiryDetail';
+import { ITokenProps } from './shared/type/Interface';
 
+// 토큰 payload에 담겨오는 정보를 바탕으로 로그인 권한 검증
+import jwtDecode from 'jwt-decode';
+import { getCookie } from './shared/cookie';
 
 function App() {
+  const accessToken = getCookie('Authorization');
+  let authority: ITokenProps;
+  let isAuth: boolean | undefined;
+  if (accessToken) {
+    authority = jwtDecode(accessToken);
+    isAuth =
+      authority.authority === 'ROLE_SYSTEM_ADMIN' ||
+      authority.authority === 'ROLE_SYSTEM_USER' ||
+      authority.authority === 'ROLE_SUPPLIER_ADMIN' ||
+      authority.authority === 'ROLE_SUPPLIER_USER';
+  }
+
   return (
     <React.Fragment>
       <ThemeProvider theme={Theme}>
         <GlobalStyles />
         <Routes>
-          <Route path="/" element={<Login />} />
-          <Route path="/find_pw" element={<FindPw />} />
-          <Route path="/agree" element={<Agree />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/scautr" element={<Layout />}>
+          <Route path="/" element={isAuth ? <Navigate to="/scautr/dashboard" /> : <Login />} />
+          <Route path="/find_pw" element={isAuth ? <Navigate to="/scautr/dashboard" /> : <FindPw />} />
+          <Route path="/agree" element={isAuth ? <Navigate to="/scautr/dashboard" /> : <Agree />} />
+          <Route path="/signup" element={isAuth ? <Navigate to="/scautr/dashboard" /> : <Signup />} />
+          <Route path="/scautr" element={isAuth ? <Layout /> : <Navigate to="/" />}>
             <Route path="/scautr/dashboard" element={<Dashboard />} />
             <Route path="/scautr/management" element={<Management />} />
             <Route path="/scautr/management/submit" element={<ManagementSubmit />} />
@@ -54,10 +70,10 @@ function App() {
               <Route path="/scautr/board/inquiry/detail/:idx"element={<NoticeInquiryDetail />} />
             </Route>
           </Route>
-          <Route path="/mypage" element={<Mypage />} />
-          <Route path="/mypage/company_info" element={<CompanyInfo />} />
-          <Route path="/mypage/setting" element={<Setting />} />
-          <Route path="/mypage/setting/change_pw" element={<ChangePw />} />
+          <Route path="/mypage" element={isAuth ? <Mypage /> : <Navigate to="/" />} />
+          <Route path="/mypage/company_info" element={isAuth ? <CompanyInfo /> : <Navigate to="/" />} />
+          <Route path="/mypage/setting" element={isAuth ? <Setting /> : <Navigate to="/" />} />
+          <Route path="/mypage/setting/change_pw" element={isAuth ? <ChangePw /> : <Navigate to="/" />} />
         </Routes>
       </ThemeProvider>
     </React.Fragment>

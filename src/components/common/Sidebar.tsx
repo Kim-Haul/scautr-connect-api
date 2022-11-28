@@ -4,7 +4,7 @@ import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { AiOutlineHome } from 'react-icons/ai';
 import { BsClipboardData, BsShareFill } from 'react-icons/bs';
 import { BiLogOut } from 'react-icons/bi';
-import { IViewProps, IPathProps } from '../../shared/type/ISidebar';
+import { IViewProps, IPathProps } from '../../shared/type/Interface';
 
 const Sidebar = (props: IViewProps) => {
   const navigate = useNavigate();

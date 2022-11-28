@@ -4,7 +4,7 @@ import {
   IModalProps,
   FormValues,
   IStyleProps,
-} from '../../shared/type/IRegistration';
+} from '../../shared/type/Interface';
 import { useForm } from 'react-hook-form';
 import { AiOutlinePaperClip } from 'react-icons/ai';
 import { RiPaintFill } from 'react-icons/ri';

@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import { getCookie, setCookieToken, deleteCookie } from './cookie';
-import { ILoginProps } from './type/IApis';
+import { ILoginProps } from './type/Interface';
 
 const api = axios.create({
   // axios 버전이 바뀌면서 기존 문법이 안먹히던 이슈 발생

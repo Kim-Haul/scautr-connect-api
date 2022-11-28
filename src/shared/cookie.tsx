@@ -10,18 +10,18 @@ const getCookie = (token: string) => {
   }
 };
 
-const setCookie = (token: string) => {
+const setCookieToken = (token: string) => {
   document.cookie = `Authorization=${token}; max-age=18000; path=/`;
 };
 
-const setRefreshToken = (token: string) => {
+const setCookieRefreshToken = (token: string) => {
   document.cookie = `RefreshToken=${token}; max-age=604800; path=/`;
 };
 
-const deleteCookie = (name: string) => {
+const deleteCookie = (token: string) => {
   let date = new Date('2020-01-01').toUTCString();
-  document.cookie = name + '=; expires=' + date + '; path=/';
+  document.cookie = token + '=; expires=' + date + '; path=/';
   window.location.reload();
 };
 
-export { getCookie, setCookie, setRefreshToken, deleteCookie };
+export { getCookie, setCookieToken, setCookieRefreshToken, deleteCookie };

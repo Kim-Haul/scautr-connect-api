@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 import { FormValues, IStyleProps } from '../../shared/type/ILogin';
+import apis from '../../shared/apis';
+import { setCookieToken, setCookieRefreshToken } from '../../shared/cookie';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -15,7 +17,33 @@ const Login = () => {
     formState: { errors },
   } = useForm<FormValues>({ mode: 'onTouched' });
 
-  const onSubmit = async () => {};
+  // 로그인 동작
+  const onSubmit = async (data: FormValues) => {
+    const info = {
+      account: data.id,
+      password: data.password,
+    };
+    try {
+      const res = await apis.login(info);
+      console.log(res.data.result[0].accessToken);
+      console.log(res.data.result[0].refreshToken);
+      setCookieToken(res.data.result[0].accessToken);
+      setCookieRefreshToken(res.data.result[0].refreshToken);
+      window.location.reload();
+    } catch (e: any) {
+      if (e.response?.data.message === 'ACCOUNT_UNAPPROVED_ERR') {
+        alert('승인 대기중인 계정입니다.');
+      } else if (e.response?.data.message === 'ACCOUNT_NOTFOUND_ERR') {
+        alert('등록되지 않은 아이디입니다.');
+      } else if (e.response?.data.message === 'PASSWORD_DISCREPANCY_ERR') {
+        alert('올바른 비밀번호를 입력해주세요.');
+      } else if (e.response?.data.message === 'ACCOUNT_LOCKED_ERR') {
+        alert('비밀번호를 5회 이상 잘못 입력하여 잠긴 계정입니다.');
+      } else {
+        alert('아이디 혹은 비밀번호를 다시 확인해주세요.');
+      }
+    }
+  };
 
   return (
     <Wrap>
@@ -97,21 +125,15 @@ const Login = () => {
               비밀번호 찾기
             </div>
           </div>
-          <button
-            className="btn-login"
-            onClick={() => {
-              navigate('scautr/dashboard');
-            }}
-          >
-            로그인
-          </button>
-          <div
-            className="link-agree"
-            onClick={() => {
-              navigate('/agree');
-            }}
-          >
-            <span>회원가입</span>
+          <button className="btn-login">로그인</button>
+          <div className="link-agree">
+            <span
+              onClick={() => {
+                navigate('/agree');
+              }}
+            >
+              회원가입
+            </span>
           </div>
         </div>
       </PostForm>

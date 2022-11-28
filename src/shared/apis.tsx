@@ -1,20 +1,70 @@
-import axios from 'axios';
-import { getCookie } from './cookie';
+import axios, { AxiosRequestConfig } from 'axios';
+import { getCookie, setCookieToken, deleteCookie } from './cookie';
+import { ILoginProps } from './type/IApis';
 
 const api = axios.create({
-  baseURL: process.env.REACT_APP_BACKEND_ADDRESS,
-
+  // axios 버전이 바뀌면서 기존 문법이 안먹히던 이슈 발생
+  // headers의 Content-Type와 Accpet 설정 & config.headers 설정
+  baseURL: process.env.REACT_APP_BACKEND_TEMP_ADDRESS,
   headers: {
-    'content-type': 'application/json;charset=UTF-8',
-    accept: 'application/json,',
+    'Content-Type': 'application/json;charset=UTF-8',
+    Accept: 'application/json,',
   },
 });
 
-api.interceptors.request.use((config: any) => {
+api.interceptors.request.use((config: AxiosRequestConfig | any) => {
   const accessToken = getCookie('Authorization');
-  config.headers.common['Authorization'] = `Bearer ${accessToken}`;
+  config.headers.Authorization = `Bearer ${accessToken}`;
   return config;
 });
 
-const apis = {};
+api.interceptors.response.use(
+  (res) => {
+    return res;
+  },
+  async (error) => {
+    //response 에서 error 가 발생했을 경우 catch로 넘어가기 전에 처리
+    try {
+      const errorStatus = error.response?.status;
+      const errorData = error.response?.data;
+      const prevRequst = error?.config;
+      if (errorStatus === 401) {
+        if (errorData.message === 'USER_DISCREPANCY_ERR') {
+          alert('타 기기에서 로그인을 하였습니다.');
+          deleteCookie('Authorization');
+          deleteCookie('RefreshToken');
+        }
+        // 새로운 토큰 발행 요청
+        const res = await axios.get(
+          `${process.env.REACT_APP_BACKEND_TEMP_ADDRESS}/auth/reissue`,
+          {
+            headers: {
+              Authorization: `Bearer ${getCookie('Authorization')}`,
+              RAuthorization: `Bearer ${getCookie('RefreshToken')}`,
+            },
+          }
+        );
+        // 새로받은 토큰 저장
+        setCookieToken(res.data.result[0].accessToken);
+        setCookieToken(res.data.result[0].refreshToken);
+        // 헤더에 새로운 token으로 설정
+        prevRequst.headers.Authorization = `Bearer ${getCookie(
+          'Authorization'
+        )}`;
+        // 실패했던 기존 request 재시도
+        return await axios(prevRequst);
+      } else {
+        return Promise.reject(error);
+      }
+    } catch (e) {
+      //오류내용 출력 후 요청 거절
+      return Promise.reject(e);
+    }
+  }
+);
+
+const apis = {
+  // AUTH
+  login: (data: ILoginProps) => api.post('/auth/login', data),
+};
 export default apis;

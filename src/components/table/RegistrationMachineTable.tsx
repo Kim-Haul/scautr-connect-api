@@ -2,7 +2,36 @@ import React from 'react';
 import styled from 'styled-components';
 
 const RegistrationMachineTable = () => {
-  const registration_query = new Array(3).fill(1);
+  const registration_query = [
+    {
+      id: '3',
+      date: '2022-11-26',
+      group: '포장기',
+      machine: '자동열성형진공포장기',
+      model: '한우물 VSP-5000',
+      duration: '5년',
+      sort: '기계',
+    },
+    {
+      id: '2',
+      date: '2022-11-19',
+      group: '기타',
+      machine: '컴프레셔',
+      model: 'ESS30',
+      duration: '10년',
+      sort: '기계',
+    },
+    {
+      id: '1',
+      date: '2022-11-07',
+      group: '기타',
+      machine: '의료용냉장고',
+      model: 'CBR-150-182',
+      duration: '7년',
+      sort: '기계',
+    },
+  ];
+
   return (
     <Tbody>
       {registration_query.map((v, i) => {
@@ -12,14 +41,14 @@ const RegistrationMachineTable = () => {
               <td>
                 <input type="checkbox" id={String(i)} readOnly />
               </td>
-              <td>{i}</td>
-              <td>포장기</td>
-              <td>자동열성형진공포장기</td>
-              <td>한우물 VSP-5000</td>
-              <td>5년 2개월</td>
-              <td>기계</td>
+              <td>{v.id}</td>
+              <td>{v.group}</td>
+              <td>{v.machine}</td>
+              <td>{v.model}</td>
+              <td>{v.duration}</td>
+              <td>{v.sort}</td>
               <td>-</td>
-              <td>2022-11-22</td>
+              <td>{v.date}</td>
             </tr>
           </React.Fragment>
         );

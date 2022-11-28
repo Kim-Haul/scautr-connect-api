@@ -2,7 +2,56 @@ import React from 'react';
 import styled from 'styled-components';
 
 const RegistrationOptionTable = () => {
-  const registration_query = new Array(7).fill(1);
+  const registration_query = [
+    {
+      id: '6',
+      date: '2022-11-28',
+      option: '라벨러',
+      model: 'TF107',
+      duration: '2년',
+      sort: '옵션',
+    },
+    {
+      id: '5',
+      date: '2022-11-21',
+      option: '라벨러',
+      model: 'TF112',
+      duration: '3년',
+      sort: '옵션',
+    },
+    {
+      id: '4',
+      date: '2022-11-18',
+      option: '라벨러',
+      model: 'TF130',
+      duration: '3년',
+      sort: '옵션',
+    },
+    {
+      id: '3',
+      date: '2022-10-28',
+      option: '라벨러',
+      model: 'TF133',
+      duration: '3년',
+      sort: '옵션',
+    },
+    {
+      id: '2',
+      date: '2022-10-23',
+      option: '라벨러',
+      model: 'TF201',
+      duration: '5년',
+      sort: '옵션',
+    },
+    {
+      id: '1',
+      date: '2022-10-11',
+      option: '라벨러',
+      model: 'TF304',
+      duration: '5년',
+      sort: '옵션',
+    },
+  ];
   return (
     <Tbody>
       {registration_query.map((v, i) => {
@@ -12,14 +61,14 @@ const RegistrationOptionTable = () => {
               <td>
                 <input type="checkbox" id={String(i)} readOnly />
               </td>
-              <td>{i}</td>
+              <td>{v.id}</td>
               <td>-</td>
-              <td>라벨러</td>
-              <td>TF107</td>
-              <td>5년 2개월</td>
-              <td>옵션</td>
+              <td>{v.option}</td>
+              <td>{v.model}</td>
+              <td>{v.duration}</td>
+              <td>{v.sort}</td>
               <td>-</td>
-              <td>2022-11-22</td>
+              <td>{v.date}</td>
             </tr>
           </React.Fragment>
         );

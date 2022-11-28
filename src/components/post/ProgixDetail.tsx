@@ -9,11 +9,10 @@ const ProgixDetail = () => {
   return (
     <React.Fragment>
       <Content>
-        <div className="row title">신규 진공포장기 출시</div>
+        <div className="row title">냉각기 쿨러 모델 교체</div>
         <div className="row info">
-          <div>정지영(jyy****)</div>
-          <div>｜</div>
-          <div>2022-11-25</div>
+          <div className="div">정지영(jyy****)</div>
+          <div className="div">2022-11-21</div>
           <BiDotsVerticalRounded
             onClick={() => {
               setOpenModal(!open_modal);
@@ -29,12 +28,12 @@ const ProgixDetail = () => {
           ) : null}
         </div>
         <div className="row content">
-          자동열성형 진공포장기가 신규 출시 되었습니다.
+          기존 EF-603 쿨러 재고 소진으로 인하여
           <br />
-          기존 BP-500 모델에 고성능 쿨러가 추가되었습니다.
+          11월 28일자 이후 주문건에 대해서는 DD-03 모델로 변경되어 출고됩니다.
           <br />
           <br />
-          자세한 사항은 문의 바랍니다.
+          참고 바랍니다.
           <br />
           <br />
         </div>
@@ -79,9 +78,22 @@ const Content = styled.div`
       border-radius: 6px;
       margin-left: 0.3rem;
     }
+    .div {
+      &::after {
+        content: '｜';
+        margin-left: 0.7rem;
+      }
+      &:nth-child(2)::after {
+        content: '';
+        margin: 0rem;
+      }
+    }
   }
   .row.content {
     padding: 10px;
+    @media (max-width: ${(props) => props.theme.breakpoints.TabletMin}) {
+      font-size: 1.3rem;
+    }
   }
 `;
 

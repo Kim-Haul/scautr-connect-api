@@ -1,11 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 import { IoIosArrowForward } from 'react-icons/io';
 import { useForm } from 'react-hook-form';
 import { FormValues, IStyleProps } from '../../shared/type/IManagement';
 import Select from 'react-select';
 
 const ManagementSubmit = () => {
+  const navigate = useNavigate();
+
   // react-select 라이브러리 기본 옵션 및 스타일 적용
   const MachineNameOptions = [
     { value: '자동열성형포장기', label: '자동열성형포장기' },
@@ -262,6 +265,15 @@ const ManagementSubmit = () => {
           {/* -------------------- 버튼 --------------------  */}
           <Line>
             <div className="btn_box">
+              <button
+                className="btn_left"
+                onClick={(e) => {
+                  e.preventDefault();
+                  navigate(-1);
+                }}
+              >
+                취소
+              </button>
               <button className="btn_right">등록</button>
             </div>
           </Line>
@@ -359,7 +371,7 @@ const Line = styled.div`
     // 수정할때 삭제버튼을 위해 잠시 남겨둠
     .btn_left {
       margin-right: 7px;
-      background-color: #f6f7fb;
+      background-color: #fff;
       border: 1px solid #e9edf3;
       color: #9497a8;
     }

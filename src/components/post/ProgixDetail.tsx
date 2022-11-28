@@ -11,9 +11,8 @@ const ProgixDetail = () => {
       <Content>
         <div className="row title">신규 진공포장기 출시</div>
         <div className="row info">
-          <div>정지영(jyy****)</div>
-          <div>｜</div>
-          <div>2022-11-25</div>
+          <div className="div">정지영(jyy****)</div>
+          <div className="div">2022-11-25</div>
           <BiDotsVerticalRounded
             onClick={() => {
               setOpenModal(!open_modal);
@@ -79,9 +78,22 @@ const Content = styled.div`
       border-radius: 6px;
       margin-left: 0.3rem;
     }
+    .div {
+      &::after {
+        content: '｜';
+        margin-left: 0.7rem;
+      }
+      &:nth-child(2)::after {
+        content: '';
+        margin: 0rem;
+      }
+    }
   }
   .row.content {
     padding: 10px;
+    @media (max-width: ${(props) => props.theme.breakpoints.TabletMin}) {
+      font-size: 1.3rem;
+    }
   }
 `;
 

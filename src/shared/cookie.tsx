@@ -2,17 +2,9 @@ import { Cookies } from 'react-cookie';
 
 const cookies = new Cookies();
 
-const getCookie = () => {
-  if (cookies.get('Authorization')) {
-    return cookies.get('Authorization');
-  } else {
-    return null;
-  }
-};
-
-const getRefreshToken = () => {
-  if (cookies.get('RefreshToken')) {
-    return cookies.get('RefreshToken');
+const getCookie = (token: string) => {
+  if (cookies.get(token)) {
+    return cookies.get(token);
   } else {
     return null;
   }
@@ -32,4 +24,4 @@ const deleteCookie = (name: string) => {
   window.location.reload();
 };
 
-export { getCookie, getRefreshToken, setCookie, setRefreshToken, deleteCookie };
+export { getCookie, setCookie, setRefreshToken, deleteCookie };

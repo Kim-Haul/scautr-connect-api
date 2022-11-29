@@ -28,9 +28,9 @@ const DountLinkChart = () => {
     }
   );
 
-  const connected: number = ModlinkConnectionQueryData?.data.result[0].connected
-  const unconnected: number = ModlinkConnectionQueryData?.data.result[0].unconnected
-  const total: number =  connected / (connected + unconnected);
+  const connected: number = ModlinkConnectionQueryData?.data.result[0].connected;
+  const unconnected: number = ModlinkConnectionQueryData?.data.result[0].unconnected;
+  const total: number = connected / (connected + unconnected);
 
   const state: any = {
     series: [connected, unconnected],

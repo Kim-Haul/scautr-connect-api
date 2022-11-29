@@ -63,7 +63,7 @@ const DountRunChart = () => {
     </Wrap>
   );
 };
-export default React.memo(DountRunChart);
+export default DountRunChart;
 
 const Wrap = styled.div`
   display: flex;

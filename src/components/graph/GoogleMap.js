@@ -1,16 +1,40 @@
 import React, { useState } from 'react';
 import { Map, Marker, GoogleApiWrapper, InfoWindow } from 'google-maps-react';
 import styled from 'styled-components';
+import apis from '../../shared/apis';
+import { useQuery } from '@tanstack/react-query';
 
 const GoogleMap = (props) => {
   const [selectedElement, setSelectedElement] = useState(true);
   const [activeMarker, setActiveMarker] = useState();
-
   const mapStyles = {
     width: '100%',
     height: '100%',
     borderRadius: '5px',
   };
+
+  // 모드링크 연동 설비 위치 호출 api
+  const getLocation = async () => {
+    try {
+      const res = await apis.getLocation();
+      return res;
+    } catch (err) {
+      console.log('호출에러', err);
+    }
+  };
+
+  // 모드링크 연동 설비 위치 호출 쿼리
+  const { data: getLocationQuery } = useQuery(
+    ['loadLocationQuery'],
+    getLocation,
+    {
+      refetchOnWindowFocus: false,
+      onSuccess: () => {},
+      onError: () => {
+        console.error('에러 발생!');
+      },
+    }
+  );
 
   return (
     <Wrap>
@@ -20,24 +44,30 @@ const GoogleMap = (props) => {
         style={mapStyles}
         initialCenter={{ lat: 37.4023124, lng: 127.8122233 }}
       >
-        <Marker
-          position={{ lat: 37.124, lng: 37.111 }}
-          onClick={(marker) => {
-            setActiveMarker(marker);
-          }}
-        />
+        {getLocationQuery.data.result.map((place, i) => (
+          <Marker
+            key={i}
+            position={{ lat: place.latitude, lng: place.longitude }}
+            onClick={(props, marker) => {
+              setActiveMarker(marker);
+              setSelectedElement(place);
+            }}
+          />
+        ))}
 
         <InfoWindow
           visible={true}
           marker={activeMarker}
           onCloseClick={() => {
-            setSelectedElement(false);
+            setSelectedElement(null);
           }}
         >
           <Content>
-            <div className="company">하나애프비엔</div>
-            <div className="content">경기 파주</div>
-            <div className="model">진공포장기(TF-303)</div>
+            <div className="company">{selectedElement.customerCorp}</div>
+            <div className="content">{selectedElement.deliveryAddress}</div>
+            <div className="model">
+              {selectedElement.assignedName} ({selectedElement.model})
+            </div>
           </Content>
         </InfoWindow>
       </Map>
@@ -51,7 +81,7 @@ export default GoogleApiWrapper({
 
 const Wrap = styled.div`
   .gm-style .gm-style-iw {
-    padding: 1rem !important;
+    padding: 1.6rem !important;
     border: 1px solid #007bff !important;
     border-radius: 0px !important;
   }

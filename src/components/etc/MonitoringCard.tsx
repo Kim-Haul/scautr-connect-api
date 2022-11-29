@@ -16,7 +16,7 @@ const MonitoringCard = () => {
     }
   };
 
-  // 모델별 가동현황 조회 api -> 호출 쿼리
+  // 모델별 가동현황 조회 쿼리
   const { data: ModelCardListQueryData } = useQuery(
     ['loadModelCardListQuery'],
     getModelCardList,
@@ -166,6 +166,8 @@ const Card = styled.div`
     background-color: #f5f7fa;
     border: 1px solid #e1e1e1;
     min-height: 260px;
+    display: grid;
+    grid-template-rows: min-height(70px) min-height(130px) 1fr;
     .top {
       min-height: 70px;
       padding: 10px;
@@ -184,7 +186,7 @@ const Card = styled.div`
       }
     }
     .middle {
-      height: 130px;
+      min-height: 130px;
       padding: 10px;
       border-bottom: 1px solid #e1e1e1;
       display: flex;
@@ -202,6 +204,11 @@ const Card = styled.div`
         button {
           border-radius: 16px;
           padding: 5px;
+          // 백앤드 설계 문제로 인하여 버튼 hover 효과 및 cursor 임시 보류
+          cursor: default;
+          &:hover {
+            filter: none;
+          }
           // 유동적인 크기를 위해 width 안줌
         }
         .alarm {

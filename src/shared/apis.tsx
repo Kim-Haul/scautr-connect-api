@@ -78,5 +78,6 @@ const apis = {
   getModlinkConnection: () => api.get('/dashboard/equipment/modlink'),
   getModelCardList: () => api.get('/dashboard/model/status'),
   toogleBookmark: (id: number) => api.patch(`/dashboard/bookmark/${id}`),
+  getLocation: () => api.get('/dashboard/equipment/location'),
 };
 export default apis;

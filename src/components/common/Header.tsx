@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { AiOutlineBars } from 'react-icons/ai';
@@ -14,7 +14,20 @@ const Header = (props: IScrollYProps) => {
   const [is_mypage, setIsMypage] = useState<boolean>(false);
 
   // 모달 영역 밖 클릭시 닫기
-  const modalEl = useRef<HTMLDivElement>(null);
+  const modalEl = useRef<HTMLDivElement | any>(null);
+  useEffect(() => {
+    const clickOutside = (e: React.MouseEvent<HTMLElement> | any) => {
+      if (is_mypage && !modalEl.current.contains(e.target)) {
+        setIsMypage(false);
+      }
+    };
+    // mousedown 이벤트를 실행할때마다, 위에서 선언한 clickOutside 함수 호출
+    document.addEventListener('mousedown', clickOutside);
+    return () => {
+      // Cleanup the event listener
+      document.removeEventListener('mousedown', clickOutside);
+    };
+  }, [is_mypage]);
 
   // 로그아웃 api
   const logout = async () => {

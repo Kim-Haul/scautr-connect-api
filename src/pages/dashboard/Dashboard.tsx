@@ -26,9 +26,10 @@ const Dashboard = () => {
             <div className="title">스마트 모드링크 연동현황</div>
             <DountLinkChart />
           </div>
-          <div className="item rank">
+          {/* 백앤드 설계 문제로 인해 해당 컴포넌트 잠시 보류 */}
+          {/* <div className="item rank">
             <DashboardRank />
-          </div>
+          </div> */}
         </LeftContainer>
         <RightContainer>
           <div className="item">

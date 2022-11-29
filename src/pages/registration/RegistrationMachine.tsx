@@ -1,26 +1,82 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect, Suspense } from 'react';
 import styled from 'styled-components';
 import Mobile from '../../components/exception/Mobile';
 import RegistrationMachineTable from '../../components/table/RegistrationMachineTable';
 import RegistrationMachineModal from './../../components/modal/RegistrationMachineModal';
+import SkeletonTable from '../../components/suspense/SkeletonTable';
+import { useSearchParams } from 'react-router-dom';
+import { IRegistrationProps } from '../../shared/type/Interface';
 
-const RegistrationMachine = () => {
+const RegistrationMachine = (props: IRegistrationProps) => {
   // 등록 모달창 토글
   const [is_open, setIsOpen] = useState<boolean>(false);
+
+  // 검색 input, 조건 select 상태관리
+  const [searchInput, setSearchInput] = useState<string>('');
+  const [searchType, setSearchType] = useState<string>('all');
+  // 검색 초기화시 input, select 초기화
+  const inputRef = useRef<HTMLInputElement | any>(null);
+  const selectRef = useRef<HTMLSelectElement | any>(null);
+  // 클라이언트단 url parameter 설정
+  const [searchParams, setSearchParams] = useSearchParams('');
+  const searchTypeUrl = searchParams.get('searchType') || 'all';
+  const searchInputUrl = searchParams.get('search') || '';
+
+  useEffect(() => {
+    setSearchParams('');
+  }, [props.click_tab]);
 
   return (
     <Wrap>
       <Container>
         <Top>
           <div className="top_left">
-            <select>
+            <select
+              onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                setSearchType(e.target.value);
+              }}
+              ref={selectRef}
+            >
               <option value="all">All</option>
               <option value="assignedName">기계명</option>
               <option value="model">모델명</option>
             </select>
-            <input type="text" placeholder="검색" />
-            <button className="btn_left">검색</button>
-            <button className="btn_right">초기화</button>
+            <input
+              type="text"
+              placeholder="검색"
+              onKeyPress={(e: React.KeyboardEvent<HTMLInputElement> | any) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault();
+                  setSearchParams(
+                    `search=${e.target.value}&searchType=${searchType}`
+                  );
+                }
+              }}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                setSearchInput(e.target.value);
+              }}
+              ref={inputRef}
+            />
+            <button
+              className="btn_left"
+              onClick={() => {
+                setSearchParams(
+                  `search=${searchInput}&searchType=${searchType}`
+                );
+              }}
+            >
+              검색
+            </button>
+            <button
+              className="btn_right"
+              onClick={() => {
+                setSearchParams('');
+                inputRef.current.value = '';
+                selectRef.current.value = 'all';
+              }}
+            >
+              초기화
+            </button>
           </div>
           <div className="top_right">
             <button
@@ -37,25 +93,16 @@ const RegistrationMachine = () => {
         </Top>
         <Content>
           {/* -------- 설비등록 테이블 -------- */}
-          <table>
-            <thead>
-              <tr>
-                <th className="th0"></th>
-                <th className="th1"></th>
-                <th className="th2">그룹</th>
-                <th className="th3">기계명</th>
-                <th className="th4">모델명</th>
-                <th className="th5">권장사용기간</th>
-                <th className="th6">분류</th>
-                <th className="th7">파일첨부</th>
-                <th className="th8">등록일</th>
-              </tr>
-            </thead>
-            <RegistrationMachineTable />
-          </table>
+          <Suspense fallback={<SkeletonTable />}>
+            <RegistrationMachineTable
+              searchTypeUrl={searchTypeUrl}
+              searchInputUrl={searchInputUrl}
+            />
+          </Suspense>
           <Mobile />
         </Content>
       </Container>
+
       <RegistrationMachineModal
         open={is_open}
         setIsOpen={setIsOpen}
@@ -177,47 +224,4 @@ const Top = styled.div`
   }
 `;
 
-const Content = styled.div`
-  table {
-    width: 100%;
-    margin-top: 10px;
-    border-collapse: collapse;
-    // 화면 축소시 테이블 column 깨지는거 방지
-    @media (max-width: 1400px) {
-      display: none;
-    }
-    th {
-      padding: 10px;
-      background-color: #f6f7fb;
-      border: 1px solid #e9edf3;
-    }
-
-    .th0 {
-      width: 5rem;
-    }
-    .th1 {
-      width: 5rem;
-    }
-    .th2 {
-      width: 10rem;
-    }
-    .th3 {
-      width: 30rem;
-    }
-    .th4 {
-      width: 30rem;
-    }
-    .th5 {
-      width: 15rem;
-    }
-    .th6 {
-      width: 10rem;
-    }
-    .th7 {
-      width: 30rem;
-    }
-    .th8 {
-      width: 15rem;
-    }
-  }
-`;
+const Content = styled.div``;

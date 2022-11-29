@@ -36,7 +36,11 @@ const Registration = () => {
           </li>
         </ul>
       </Toggle>
-      {click_tab ? <RegistrationMachine /> : <RegistrationOption />}
+      {click_tab ? (
+        <RegistrationMachine click_tab={click_tab} />
+      ) : (
+        <RegistrationOption />
+      )}
     </Wrap>
   );
 };

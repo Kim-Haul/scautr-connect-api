@@ -75,11 +75,34 @@ export interface FormValues {
 export interface IStyleProps {
   isInvalid?: boolean;
 }
+export interface IRegistrationProps {
+  click_tab: boolean;
+}
+export interface IRegistrationMachineProps {
+  searchTypeUrl: string;
+  searchInputUrl: string;
+}
+export interface IRegistrationMachineTableProps {
+  templateId?: number;
+  template?: string;
+  companyCode?: number;
+  modelId?: number;
+  lifeSpan?: string;
+  assignedName?: string;
+  model?: string;
+  regdate?: string;
+  files?: any;
+  no?: number;
+}
 
 // ------------------------ Pagination.tsx
 export interface IPageProps {
   total: number;
   setCurrentPage?: Dispatch<SetStateAction<number>>;
+  startPage?: number;
+  setStartPage?: Dispatch<SetStateAction<number>>;
+  active?: string;
+  setActive?: Dispatch<SetStateAction<string>>;
 }
 
 // ------------------------ Management.tsx

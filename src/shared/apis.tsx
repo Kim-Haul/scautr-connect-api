@@ -79,5 +79,8 @@ const apis = {
   getModelCardList: () => api.get('/dashboard/model/status'),
   toogleBookmark: (id: number) => api.patch(`/dashboard/bookmark/${id}`),
   getLocation: () => api.get('/dashboard/equipment/location'),
+
+  // REGISTRATION
+  getRegistrationModel: (currentPage: number, searchType: string, search: string) => api.get(`/model?page=${currentPage}&size=10&searchType=${searchType}&search=${search}`),
 };
 export default apis;

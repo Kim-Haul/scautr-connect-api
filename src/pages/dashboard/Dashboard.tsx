@@ -4,7 +4,6 @@ import { IoIosArrowForward } from 'react-icons/io';
 import MonitoringCard from '../../components/etc/MonitoringCard';
 import DountRunChart from '../../components/graph/DountRunChart';
 import DountLinkChart from '../../components/graph/DountLinkChart';
-import DashboardRank from './DashboardRank';
 import GoogleMap from '../../components/graph/GoogleMap';
 
 const Dashboard = () => {

@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import { getCookie, setCookieToken, deleteCookie } from './cookie';
-import { ILoginProps } from './type/Interface';
+import { FormValues } from './type/Interface';
 
 const api = axios.create({
   // axios 버전이 바뀌면서 기존 문법이 안먹히던 이슈 발생
@@ -65,6 +65,14 @@ api.interceptors.response.use(
 
 const apis = {
   // AUTH
-  login: (data: ILoginProps) => api.post('/auth/login', data),
+  login: (data: FormValues) => api.post('/auth/login', data),
+  logout: () => api.delete('/auth/logout'),
+  findPw: (data: FormValues) => api.post('/user/search/password', data),
+  checkId: (id: string | undefined) => api.get(`/user/account/${id}`),
+  checkEmail: (data: string | undefined) => api.post('/user/email', data),
+  signUpCompany: (data: FormValues) => api.post('/company', data),
+  signUpUser: (data: FormValues) => api.post('/user', data),
+
+  //
 };
 export default apis;

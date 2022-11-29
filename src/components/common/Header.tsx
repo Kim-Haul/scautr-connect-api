@@ -7,6 +7,7 @@ import { FcSpeaker } from 'react-icons/fc';
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
 import { IToggleProps, IScrollYProps } from '../../shared/type/Interface';
 import { deleteCookie } from '../../shared/cookie';
+import apis from '../../shared/apis';
 
 const Header = (props: IScrollYProps) => {
   const navigate = useNavigate();
@@ -14,6 +15,17 @@ const Header = (props: IScrollYProps) => {
 
   // 모달 영역 밖 클릭시 닫기
   const modalEl = useRef<HTMLDivElement>(null);
+
+  // 로그아웃 api
+  const logout = async () => {
+    try {
+      await apis.logout();
+      deleteCookie('Authorization');
+      deleteCookie('RefreshToken');
+    } catch (e) {
+      alert('알 수 없는 이유로 로그아웃에 실패했습니다.');
+    }
+  };
 
   return (
     <Wrap ScrollY={props.ScrollY}>
@@ -73,8 +85,7 @@ const Header = (props: IScrollYProps) => {
                   </li>
                   <li
                     onClick={() => {
-                      deleteCookie('Authorization');
-                      deleteCookie('RefreshToken');
+                      logout();
                     }}
                   >
                     로그아웃

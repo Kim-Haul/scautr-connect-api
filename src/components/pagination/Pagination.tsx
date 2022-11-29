@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { IPageProps } from '../../shared/type/Interface';
 
 const Pagination = (props: IPageProps) => {
-  let lastPage = Math.ceil(props.total / 5);
+  const lastPage = Math.ceil(props.total / 5);
   const [startPage, setStartPage] = useState<number>(1);
   const [active, setActive] = useState<string>('1');
 

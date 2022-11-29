@@ -36,8 +36,6 @@ const Login = () => {
     // 로그인 로직
     try {
       const res = await apis.login(info);
-      console.log(res.data.result[0].accessToken);
-      console.log(res.data.result[0].refreshToken);
       setCookieToken(res.data.result[0].accessToken);
       setCookieRefreshToken(res.data.result[0].refreshToken);
       window.location.reload();

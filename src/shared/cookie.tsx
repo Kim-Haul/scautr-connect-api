@@ -19,7 +19,7 @@ const setCookieRefreshToken = (token: string) => {
 };
 
 const deleteCookie = (token: string) => {
-  let date = new Date('2020-01-01').toUTCString();
+  const date = new Date('2020-01-01').toUTCString();
   document.cookie = token + '=; expires=' + date + '; path=/';
   window.location.reload();
 };

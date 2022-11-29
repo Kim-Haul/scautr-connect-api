@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 import { FormValues, IStyleProps } from '../../shared/type/Interface';
+import apis from '../../shared/apis';
 
 const FindPw = () => {
   const navigate = useNavigate();
@@ -13,7 +14,21 @@ const FindPw = () => {
     formState: { errors },
   } = useForm<FormValues>({ mode: 'onTouched' });
 
-  const onSubmit = async () => {};
+  // 비밀번호 찾기 동작
+  const onSubmit = async (data: FormValues) => {
+    const info = {
+      name: data.name,
+      email: data.email,
+      account: data.id,
+    };
+    try {
+      await apis.findPw(info);
+      alert('등록하신 이메일로 임시 비밀번호를 발송합니다!');
+      navigate('/');
+    } catch (e) {
+      alert('올바른 회원정보를 입력해주세요.');
+    }
+  };
 
   return (
     <Wrap>

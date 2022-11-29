@@ -1,33 +1,134 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 import { FormValues, IStyleProps } from '../../shared/type/Interface';
 import { AiOutlineEyeInvisible, AiOutlineEye } from 'react-icons/ai';
+import apis from '../../shared/apis';
 
 const Signup = () => {
   const navigate = useNavigate();
   const [is_pw_show, setIsPwShow] = useState<string>('password');
   const [click_slave, setClickSlave] = useState<boolean>(true);
+  // ~Ok : 아이디 중복체크 및 이메일 인증코드 발송 확인
   const [idOk, setIdOk] = useState<boolean>(false);
   const [emailOk, setEmailOk] = useState<boolean>(false);
 
   const {
     register,
     handleSubmit,
+    watch,
+    setError,
+    clearErrors,
     formState: { errors },
   } = useForm<FormValues>({ mode: 'onChange' });
 
-  const onSubmit = async () => {};
+  // 회원가입 동작
+  const onSubmit = async (data: FormValues) => {
+    let info = {};
+    if (click_slave) {
+      info = {
+        account: data.id,
+        password: data.password,
+        name: data.name,
+        phone: data.phone1 + '-' + data.phone2 + '-' + data.phone3,
+        email: data.email,
+        supplierCode: Number(data.companyCode),
+      };
+      try {
+        await apis.signUpUser(info);
+        alert('회원가입이 완료되었습니다! 담당자 승인 후 사용 가능합니다.');
+        navigate('/');
+      } catch (e) {
+        alert('회원가입에 실패했습니다. 잠시 후 다시 시도해주세요.');
+      }
+    } else {
+      info = {
+        name: data.company,
+        registrationNumber: data.registrationNumber1 + '-' + data.registrationNumber2 + '-' + data.registrationNumber3,
+        representative: data.representative,
+        phone: data.companyPhone1 + '-' + data.companyPhone2 + data.companyPhone3,
+        user: {
+          account: data.id,
+          password: data.password,
+          name: data.name,
+          phone: data.phone1 + '-' + data.phone2 + '-' + data.phone3,
+          email: data.email,
+        },
+      };
+      try {
+        await apis.signUpCompany(info);
+        alert('회원가입이 완료되었습니다! 담당자 승인 후 사용 가능합니다.');
+        navigate('/');
+      } catch (e) {
+        alert('회원가입에 실패했습니다. 잠시 후 다시 시도해주세요.');
+      }
+    }
+  };
 
   // id, pw 정규식
   const idRegEx = /^[a-z]+[a-z0-9]{5,14}$/g;
   const passwordRegEx =
     /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,16}$/;
 
-  // 아이디 변경시(onChange 핸들러)
+  // 아이디 변경시 재중복확인 필요(onChange 핸들러)
   const onIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIdOk(false);
+  };
+
+  // 아이디 중복체크
+  const idRef = useRef<string | undefined>('');
+  idRef.current = watch('id');
+  const checkId = async () => {
+    try {
+      // 빈 값으로 중복확인 눌렀을 때 undefined 핸들링
+      if (idRef.current === undefined) {
+        idRef.current = '';
+      }
+      await apis.checkId(idRef.current);
+      alert('사용하실 수 있는 아이디입니다.');
+      setIdOk(true);
+      clearErrors('id');
+    } catch (e) {
+      setIdOk(false);
+      setError('id', { message: '사용하실 수 없는 아이디입니다.' });
+    }
+  };
+
+  // 이메일 인증
+  const emailRef = useRef<string | undefined>('');
+  emailRef.current = watch('email');
+  // 서버에서 response로 주는 인증코드를 담을 변수k
+  const [emailCode, setEmailCode] = useState();
+  const checkEmail = async () => {
+    try {
+      const res = await apis.checkEmail(emailRef.current);
+      alert('인증코드가 발송되었습니다.');
+      setEmailOk(true);
+      clearErrors('email');
+      setEmailCode(res.data.result[0]);
+      return res;
+    } catch (e) {
+      setEmailOk(false);
+      setError('email', { message: '올바른 메일을 입력해주세요.' });
+    }
+  };
+
+  // 이메일 인증코드 확인
+  const emailCodeRef = useRef<string | undefined>('');
+  emailCodeRef.current = watch('mailCode');
+  const [emailCodeCheck, setEmailCodeCheck] = useState(false);
+  const checkEmailCode = () => {
+    if (emailCodeRef.current === emailCode) {
+      alert('인증되었습니다.');
+      setEmailCodeCheck(true);
+      clearErrors('mailCode');
+    } else {
+      alert('올바르지 않은 인증코드입니다. 다시 확인해주세요.');
+      setError('mailCode', {
+        message: '올바르지 않은 인증코드입니다. 다시 확인해주세요.',
+      });
+    }
   };
 
   return (
@@ -47,7 +148,14 @@ const Signup = () => {
           <Line>
             <div className="overlap">
               <label htmlFor="inputId">아이디</label>
-              <div className="overlap check">중복확인</div>
+              <div
+                className="overlap check"
+                onClick={() => {
+                  checkId();
+                }}
+              >
+                중복확인
+              </div>
             </div>
             <Input
               type="text"
@@ -67,6 +175,11 @@ const Signup = () => {
               })}
             />
             {errors.id && <div className="err">{errors.id.message}</div>}
+            {idOk ? (
+              <div className="id_err_resolve">
+                사용하실 수 있는 아이디입니다.
+              </div>
+            ) : null}
           </Line>
           <Line>
             <div className="overlap">
@@ -93,6 +206,7 @@ const Signup = () => {
             </div>
             <Input
               type={is_pw_show}
+              // 비밀번호 입력시 공백 방지
               onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) =>
                 [' '].includes(e.key) && e.preventDefault()
               }
@@ -111,12 +225,7 @@ const Signup = () => {
             {errors.password && (
               <div className="err">{errors.password.message}</div>
             )}
-            <div
-              style={{
-                color: 'gray',
-                fontSize: '1.29rem',
-              }}
-            >
+            <div className="pw_desc">
               비밀번호는 영문자,숫자,특수문자(!@#$%^&*)를 1개 이상 조합하여
               8~16자로 입력해주세요.
             </div>
@@ -125,6 +234,7 @@ const Signup = () => {
             <label htmlFor="inputPasswordCheck">비밀번호 재확인</label>
             <Input
               type="password"
+              // 비밀번호 입력시 공백 방지
               onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) =>
                 [' '].includes(e.key) && e.preventDefault()
               }
@@ -204,40 +314,61 @@ const Signup = () => {
               <div
                 className="overlap check"
                 onClick={() => {
-                  setEmailOk(!emailOk);
+                  checkEmail();
                 }}
               >
                 인증코드
               </div>
             </div>
             <Input
-              type="text"
+              type="email"
               autoComplete="off"
               placeholder="이메일을 입력해주세요"
               isInvalid={!!errors.email}
+              disabled={emailOk}
               id="inputEmail"
               {...register('email', {
                 required: '이메일을 입력해주세요.',
+                validate: () => emailOk || '이메일 인증이 필요합니다.',
               })}
             />
             {errors.email && <div className="err">{errors.email.message}</div>}
           </Line>
+          {/* 유효한 이메일 입력 후 인증코드 발송시, 인증코드 입력란 활성 */}
           {emailOk ? (
             <Line>
-              <label htmlFor="inputMailCode">인증코드</label>
+              <div className="overlap">
+                <label htmlFor="inputMailCode">인증코드</label>
+                <div
+                  className="overlap check"
+                  onClick={() => {
+                    checkEmailCode();
+                  }}
+                >
+                  인증확인
+                </div>
+              </div>
+
               <Input
                 type="text"
                 autoComplete="off"
                 placeholder="인증코드를 입력해주세요"
                 isInvalid={!!errors.mailCode}
+                disabled={emailCodeCheck}
                 id="inputMailCode"
                 {...register('mailCode', {
-                  required: '인증코드를 입력해주세요.',
+                  required: '메일로 전송된 인증코드를 입력해주세요.',
+                  validate: () =>
+                    emailCodeCheck ||
+                    '올바른 인증코드를 입력 후 인증확인 버튼을 눌러주세요.',
                 })}
               />
               {errors.mailCode && (
                 <div className="err">{errors.mailCode.message}</div>
               )}
+              {emailCodeCheck ? (
+                <div className="email_code_comfirm">인증이 완료되었습니다.</div>
+              ) : null}
             </Line>
           ) : null}
 
@@ -559,6 +690,16 @@ const Line = styled.div`
     color: red;
     font-size: 1.2rem;
     margin-top: 0.2rem;
+  }
+  .id_err_resolve,
+  .email_code_comfirm {
+    color: #08a600;
+    font-size: 1.2rem;
+    margin-top: 0.2rem;
+  }
+  .pw_desc {
+    color: gray;
+    font-size: 1.29rem;
   }
 `;
 

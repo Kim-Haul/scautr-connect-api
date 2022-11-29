@@ -10,9 +10,14 @@ export interface ITokenProps {
 }
 
 // ------------------------ apis.tsx
-export interface ILoginProps {
+export interface ILoginApiProps {
   account: string | undefined;
   password: string | undefined;
+}
+export interface IFindPwApiProps {
+  name: string | undefined;
+  email: string | undefined;
+  account: string | undefined;
 }
 
 // ------------------------ Sidebar.tsx
@@ -37,7 +42,7 @@ export interface FormValues {
   email?: string;
   mailCode?: string;
 
-  companyCode?: string;
+  companyCode?: number;
   company?: string;
   representative?: string;
   registrationNumber1?: string;
@@ -79,19 +84,19 @@ export interface IPageProps {
 
 // ------------------------ Management.tsx
 export interface FormValues {
-  date: string;
+  date?: string;
 
-  company_name: string;
-  comapny_address: string;
-  company_contact: string;
-  comapny_email: string;
+  company_name?: string;
+  comapny_address?: string;
+  company_contact?: string;
+  comapny_email?: string;
 
-  company_manager: string;
-  manager_department: string;
-  manager_phone: string;
-  manager_email: string;
+  company_manager?: string;
+  manager_department?: string;
+  manager_phone?: string;
+  manager_email?: string;
 
-  machine_serial_number: string;
+  machine_serial_number?: string;
 }
 export interface IStyleProps {
   isInvalid?: boolean;

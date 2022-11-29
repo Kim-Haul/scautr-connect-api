@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import styled from 'styled-components';
 import { IoIosArrowForward } from 'react-icons/io';
 import MonitoringCard from '../../components/etc/MonitoringCard';
 import DountRunChart from '../../components/graph/DountRunChart';
 import DountLinkChart from '../../components/graph/DountLinkChart';
 import GoogleMap from '../../components/graph/GoogleMap';
+import SkeletonDount from '../../components/suspense/SkeletonDount';
+import SkeletonCard from '../../components/suspense/SkeletonCard';
 
 const Dashboard = () => {
   return (
@@ -19,11 +21,15 @@ const Dashboard = () => {
         <LeftContainer>
           <div className="item">
             <div className="title">실시간 가동현황</div>
-            <DountRunChart />
+            <Suspense fallback={<SkeletonDount />}>
+              <DountRunChart />
+            </Suspense>
           </div>
           <div className="item middle">
             <div className="title">스마트 모드링크 연동현황</div>
-            <DountLinkChart />
+            <Suspense fallback={<SkeletonDount />}>
+              <DountLinkChart />
+            </Suspense>
           </div>
           {/* 백앤드 설계 문제로 인해 해당 컴포넌트 잠시 보류 */}
           {/* <div className="item rank">
@@ -32,7 +38,9 @@ const Dashboard = () => {
         </LeftContainer>
         <RightContainer>
           <div className="item">
-            <MonitoringCard />
+            <Suspense fallback={<SkeletonCard />}>
+              <MonitoringCard />
+            </Suspense>
           </div>
           <div className="item lower">
             <GoogleMap />

@@ -73,6 +73,9 @@ const apis = {
   signUpCompany: (data: FormValues) => api.post('/company', data),
   signUpUser: (data: FormValues) => api.post('/user', data),
 
-  //
+  // DASHBOARD
+  getTotalStatus: () => api.get('/dashboard/status'),
+  getModlinkConnection: () => api.get('/dashboard/equipment/modlink'),
+  getModelCardList: () => api.get('/dashboard/model/status'),
 };
 export default apis;

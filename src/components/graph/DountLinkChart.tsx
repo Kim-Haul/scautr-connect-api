@@ -1,14 +1,39 @@
 import React from 'react';
 import ReactApexChart from 'react-apexcharts';
 import styled from 'styled-components';
+import { useQuery } from '@tanstack/react-query';
+import apis from '../../shared/apis';
 
 const DountLinkChart = () => {
-  const on: number = 48;
-  const off: number = 5;
-  const run: number = on / (on + off);
+  // 스마트 모드링크 연동현황 조회
+  const getModlinkConnection = async () => {
+    try {
+      const res = await apis.getModlinkConnection();
+      return res;
+    } catch (err) {
+      console.log('스마트 모드링크 연동현황 조회 실패');
+    }
+  };
+
+  // 스마트 모드링크 연동현황 조회 쿼리
+  const { data: ModlinkConnectionQueryData } = useQuery(
+    ['loadModlinkConnectionQuery'],
+    getModlinkConnection,
+    {
+      refetchOnWindowFocus: false,
+      onSuccess: () => {},
+      onError: () => {
+        console.error('스마트 모드링크 연동현황 조회 실패');
+      },
+    }
+  );
+
+  const connected: number = ModlinkConnectionQueryData?.data.result[0].connected
+  const unconnected: number = ModlinkConnectionQueryData?.data.result[0].unconnected
+  const total: number =  connected / (connected + unconnected);
 
   const state: any = {
-    series: [on, off],
+    series: [connected, unconnected],
     options: {
       chart: {
         type: 'donut',
@@ -32,7 +57,7 @@ const DountLinkChart = () => {
       />
       <div className="content">
         <div className="content_title">연동현황</div>
-        <div className="content_content">{Math.ceil(run * 100)}%</div>
+        <div className="content_content">{Math.ceil(total * 100)}%</div>
       </div>
     </Wrap>
   );
@@ -44,7 +69,6 @@ const Wrap = styled.div`
   position: relative;
   justify-content: center;
   margin-top: 2.5rem;
-
   .content {
     position: absolute;
     top: 35%;

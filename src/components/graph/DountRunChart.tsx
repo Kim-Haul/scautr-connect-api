@@ -1,15 +1,40 @@
 import React from 'react';
 import ReactApexChart from 'react-apexcharts';
 import styled from 'styled-components';
+import { useQuery } from '@tanstack/react-query';
+import apis from '../../shared/apis';
 
 const DountRunChart = () => {
-  const on: number = 32;
-  const off: number = 11;
-  const unconnection: number = 2;
-  const run: number = on / (on + off + unconnection);
+  // 실시간 가동현황 조회 api
+  const getTotalStatus = async () => {
+    try {
+      const res = await apis.getTotalStatus();
+      return res;
+    } catch (err) {
+      console.log('실시간 가동현황 조회 실패');
+    }
+  };
+
+  // 실시간 가동현황 조회 쿼리
+  const { data: totalStatusQueryData } = useQuery(
+    ['loadTotalStatusQuery'],
+    getTotalStatus,
+    {
+      refetchOnWindowFocus: false,
+      onSuccess: () => {},
+      onError: () => {
+        console.error('실시간 가동현황 조회 실패');
+      },
+    }
+  );
+
+  const on: number = totalStatusQueryData?.data.result[0].on;
+  const off: number = totalStatusQueryData?.data.result[0].off;
+  const unregistered: number = totalStatusQueryData?.data.result[0].unregistered;
+  const total: number = on / (on + off + unregistered);
 
   const state: any = {
-    series: [on, off, unconnection],
+    series: [on, off, unregistered],
     options: {
       chart: {
         type: 'donut',
@@ -18,7 +43,7 @@ const DountRunChart = () => {
       legend: {
         position: 'bottom',
       },
-      labels: ['가동', '비가동', '에러'],
+      labels: ['가동', '비가동', '미등록'],
     },
   };
 
@@ -33,12 +58,12 @@ const DountRunChart = () => {
       />
       <div className="content">
         <div className="content_title">가동현황</div>
-        <div className="content_content">{Math.ceil(run * 100)}%</div>
+        <div className="content_content">{Math.ceil(total * 100)}%</div>
       </div>
     </Wrap>
   );
 };
-export default DountRunChart;
+export default React.memo(DountRunChart);
 
 const Wrap = styled.div`
   display: flex;

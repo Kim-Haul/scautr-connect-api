@@ -136,6 +136,18 @@ export interface IStyleProps {
 export interface IRankProps {
   view_point: string;
 }
+export interface IMonitoringCardProps {
+  alarm: number;
+  assignedName: string;
+  boardMark: number;
+  equipmentCnt: number;
+  error: number;
+  model: string;
+  modelId: number;
+  off: number;
+  on: number;
+  unregistered: number;
+}
 
 // ------------------------ ChangePw.tsx
 export interface FormValues {

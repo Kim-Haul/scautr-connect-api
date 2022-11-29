@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import apis from '../../shared/apis';
+
 import { IMonitoringCardProps } from '../../shared/type/Interface';
 
 const MonitoringCard = () => {
@@ -28,6 +29,26 @@ const MonitoringCard = () => {
     }
   );
 
+  // 모델별 가동사항 즐겨찾기
+  const queryClient = useQueryClient();
+  const toogleBookmark = async (id: number) => {
+    try {
+      const res = await apis.toogleBookmark(id);
+      return res;
+    } catch (err) {
+      console.log('호출에러');
+      alert(
+        '즐겨찾기 등록에 실패했습니다. 관련 문제가 지속되면 관리자에게 문의 바랍니다.'
+      );
+    }
+  };
+
+  const { mutate: toogleBookmarkMutation } = useMutation(toogleBookmark, {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['loadModelCardListQuery'] });
+    },
+  });
+
   return (
     <Wrap>
       <Card>
@@ -42,7 +63,23 @@ const MonitoringCard = () => {
                       <div className="top_left_sub">{v.assignedName}</div>
                     </div>
                     <div className="top_right">
-                      <img src="/images/exclamation-thick.png" alt="즐겨찾기" />
+                      {v.boardMark === 1 ? (
+                        <img
+                          src="/images/exclamation-thick-fill.png"
+                          alt="즐겨찾기"
+                          onClick={() => {
+                            toogleBookmarkMutation(v.modelId);
+                          }}
+                        />
+                      ) : (
+                        <img
+                          src="/images/exclamation-thick.png"
+                          alt="즐겨찾기"
+                          onClick={() => {
+                            toogleBookmarkMutation(v.modelId);
+                          }}
+                        />
+                      )}
                     </div>
                   </div>
                   <div className="middle">

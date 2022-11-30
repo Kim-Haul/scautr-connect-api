@@ -19,7 +19,7 @@ export interface IFindPwApiProps {
   email: string | undefined;
   account: string | undefined;
 }
-export interface IDeleteRegistrationModel {
+export interface IDeleteRegistrationModelApiProps {
   modelId: number[];
 }
 

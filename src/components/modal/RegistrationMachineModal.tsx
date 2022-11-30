@@ -9,13 +9,19 @@ import { useForm } from 'react-hook-form';
 import { AiOutlinePaperClip } from 'react-icons/ai';
 import { RiPaintFill } from 'react-icons/ri';
 import ColorModal from './ColorModal';
+import { useQueryClient } from '@tanstack/react-query';
+import axios from 'axios';
+import { getCookie } from '../../shared/cookie';
 
 const RegistrationMachineModal = (props: IModalProps) => {
   // 컬러 모달창 토글
   const [color_open, setColorOpen] = useState<boolean>(false);
   // 컬러 모달창 색 담아오기
-  const [color, setColor] = useState<string>('');
-
+  const [color, setColor] = useState<string>('#e1e1e1');
+  // 비고 input 내용 담기
+  const noteRef = useRef<HTMLInputElement | any>(null);
+  // select 선택 값 담기
+  const selectRef = useRef<HTMLSelectElement | any>(null);
   const {
     register,
     handleSubmit,
@@ -23,8 +29,45 @@ const RegistrationMachineModal = (props: IModalProps) => {
     formState: { errors },
   } = useForm<FormValues>({ mode: 'onChange' });
 
-  const onSubmit = async () => {};
+  // 쿼리 클라이언트 정의
+  const queryClient = useQueryClient();
 
+  const onSubmit = async (data: any) => {
+    const formData = new FormData();
+    formData.append('assignedName', data.assignedName);
+    formData.append('model', data.model);
+    formData.append('color', color);
+    formData.append('multipartFile', fileObjectRef.current.files[0]);
+    formData.append('lifeSpan', data.duration);
+    formData.append('note', noteRef.current.value);
+    formData.append('tempId ', selectRef.current.value);
+
+    try {
+      // 파일 업로드를 위한 개별 content-Type 설정
+      const accessToken = getCookie('Authorization');
+      await axios.post(
+        `${process.env.REACT_APP_BACKEND_TEMP_ADDRESS}/model`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+      reset();
+      setColor('#e1e1e1');
+      setColorOpen(false);
+      props.setIsOpen(false);
+      // 등록 후, 기본 조회 쿼리 재호출
+      queryClient.invalidateQueries({ queryKey: ['loadRegistrationModel'] });
+    } catch (e) {
+      console.log('설비 등록에 실패했습니다.');
+    }
+  };
+
+  // file 객체를 담기위한 type='file'
+  const fileObjectRef = useRef<HTMLInputElement | any>(null);
   // 첨부파일 제목 미리보기 표시
   const fileRef = useRef<HTMLInputElement | any>(null);
   const changeFile = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -42,7 +85,7 @@ const RegistrationMachineModal = (props: IModalProps) => {
                 className="close"
                 onClick={() => {
                   reset();
-                  setColor('');
+                  setColor('#e1e1e1');
                   setColorOpen(false);
                   props.setIsOpen(false);
                 }}
@@ -55,8 +98,8 @@ const RegistrationMachineModal = (props: IModalProps) => {
                 {/* -------------------- 1 --------------------  */}
                 <Line>
                   <label>그룹 선택</label>
-                  <select>
-                    <option selected disabled hidden>
+                  <select ref={selectRef} defaultValue="default">
+                    <option value="default" disabled hidden>
                       선택
                     </option>
                     <option value="7">검사기</option>
@@ -147,12 +190,7 @@ const RegistrationMachineModal = (props: IModalProps) => {
                   <div className="filebox">
                     <label htmlFor="inputAttach">첨부파일</label>
                     <div className="upload-name-div">
-                      <input
-                        className="upload-name"
-                        value=""
-                        ref={fileRef}
-                        readOnly
-                      />
+                      <input className="upload-name" ref={fileRef} readOnly />
                       <label htmlFor="inputAttach">
                         <AiOutlinePaperClip />
                       </label>
@@ -165,6 +203,7 @@ const RegistrationMachineModal = (props: IModalProps) => {
                       onChange={(e) => {
                         changeFile(e);
                       }}
+                      ref={fileObjectRef}
                     />
                   </div>
                   <div className="attach">하나의 파일만 선택이 가능합니다.</div>
@@ -172,7 +211,11 @@ const RegistrationMachineModal = (props: IModalProps) => {
                 {/* -------------------- 6 --------------------  */}
                 <Line>
                   <label htmlFor="inputTextarea">비고</label>
-                  <textarea autoComplete="off" id="inputTextarea" />
+                  <textarea
+                    autoComplete="off"
+                    id="inputTextarea"
+                    ref={noteRef}
+                  />
                 </Line>
                 <div className="check">
                   <button className="close">확인</button>

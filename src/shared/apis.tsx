@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import { getCookie, setCookieToken, deleteCookie } from './cookie';
-import { FormValues, IDeleteRegistrationModel } from './type/Interface';
+import { FormValues, IDeleteRegistrationModelApiProps } from './type/Interface';
 
 const api = axios.create({
   // axios 버전이 바뀌면서 기존 문법이 안먹히던 이슈 발생
@@ -82,6 +82,7 @@ const apis = {
 
   // REGISTRATION
   getRegistrationModel: (currentPage: number, searchType: string, search: string) => api.get(`/model?page=${currentPage}&size=10&searchType=${searchType}&search=${search}`),
-  deleteRegistrationModel: (data: IDeleteRegistrationModel) => api.delete('/model', { data: data }), // delete 요청에서 body값을 넘기려면 객체로 한번 감싸주어야 핢.
+  deleteRegistrationModel: (data: IDeleteRegistrationModelApiProps) => api.delete('/model', { data: data }), // delete 요청에서 body값을 넘기려면 객체로 한번 감싸주어야 핢.
+  // addRegistrationModel: 별도의 content-type 설정을 위해 RegistrationMachineModal 컴포넌트에서 따로 선언
 };
 export default apis;

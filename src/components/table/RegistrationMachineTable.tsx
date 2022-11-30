@@ -95,7 +95,22 @@ const RegistrationMachineTable = (props: IRegistrationMachineProps) => {
                     <td>{v.model}</td>
                     <td>{v.lifeSpan}</td>
                     <td>기계</td>
-                    <td>-</td>
+                    <td
+                      className="file_download"
+                      onClick={() => {
+                        if (v.files[0]?.name === undefined) {
+                          return;
+                        } else {
+                          window.open(
+                            `${process.env.REACT_APP_S3_FILE_UPLOAD}/${v.files[0]?.saveName}`
+                          );
+                        }
+                      }}
+                    >
+                      {v.files[0]?.name.length >= 27
+                        ? v.files[0]?.name.substr(0, 28) + '...'
+                        : v.files[0]?.name}
+                    </td>
                     <td>{v.regdate}</td>
                   </tr>
                 </React.Fragment>
@@ -169,6 +184,15 @@ const Wrap = styled.div`
     cursor: pointer;
     &:hover {
       background-color: #e9e9e9;
+    }
+    .file_download {
+      color: #bbbbbb;
+      &:hover {
+        background-color: rgba(0, 123, 255, 0.1);
+        color: #35a3dc;
+        text-decoration: underline;
+        text-underline-position: under;
+      }
     }
   }
 `;

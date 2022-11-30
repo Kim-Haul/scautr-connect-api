@@ -79,7 +79,15 @@ const RegistrationMachineTable = (props: IRegistrationMachineProps) => {
                 <React.Fragment key={i}>
                   <tr>
                     <td>
-                      <input type="checkbox" id={String(v.modelId)} readOnly />
+                      <input
+                        type="checkbox"
+                        id={String(v.modelId)}
+                        checked={props.checkBoxArr.includes(Number(v.modelId))}
+                        onClick={(e) => {
+                          props.clickCheckBox(e);
+                        }}
+                        readOnly
+                      />
                     </td>
                     <td>{v.no}</td>
                     <td>{v.template}</td>

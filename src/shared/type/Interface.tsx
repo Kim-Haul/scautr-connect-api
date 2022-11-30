@@ -19,6 +19,9 @@ export interface IFindPwApiProps {
   email: string | undefined;
   account: string | undefined;
 }
+export interface IDeleteRegistrationModel {
+  modelId: number[];
+}
 
 // ------------------------ Sidebar.tsx
 export interface IViewProps {
@@ -81,6 +84,8 @@ export interface IRegistrationProps {
 export interface IRegistrationMachineProps {
   searchTypeUrl: string;
   searchInputUrl: string;
+  checkBoxArr: number[];
+  clickCheckBox: any;
 }
 export interface IRegistrationMachineTableProps {
   templateId?: number;

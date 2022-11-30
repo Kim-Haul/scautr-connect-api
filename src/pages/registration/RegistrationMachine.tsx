@@ -6,6 +6,8 @@ import RegistrationMachineModal from './../../components/modal/RegistrationMachi
 import SkeletonTable from '../../components/suspense/SkeletonTable';
 import { useSearchParams } from 'react-router-dom';
 import { IRegistrationProps } from '../../shared/type/Interface';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import apis from '../../shared/apis';
 
 const RegistrationMachine = (props: IRegistrationProps) => {
   // 등록 모달창 토글
@@ -21,6 +23,63 @@ const RegistrationMachine = (props: IRegistrationProps) => {
   const [searchParams, setSearchParams] = useSearchParams('');
   const searchTypeUrl = searchParams.get('searchType') || 'all';
   const searchInputUrl = searchParams.get('search') || '';
+
+  // 체크박스 컨트롤
+  const [checkBoxArr, setCheckBoxArr] = useState<number[]>([]);
+  const clickCheckBox = (e: React.MouseEvent<HTMLInputElement> | any) => {
+    checkBoxArr.includes(Number(e.target.id))
+      ? setCheckBoxArr(checkBoxArr.filter((v) => v !== Number(e.target.id)))
+      : setCheckBoxArr([...checkBoxArr, Number(e.target.id)]);
+  };
+
+  // 기계 모델 선택 삭제 api
+  const deleteRegistrationModel = async () => {
+    const list = {
+      modelId: checkBoxArr,
+    };
+
+    try {
+      const res = await apis.deleteRegistrationModel(list);
+      setCheckBoxArr([]);
+      return res;
+    } catch (e: any) {
+      if (e.response.data.message === 'EQUIPMENT_FOUND_ERR') {
+        alert(
+          '기존에 등록되어 있는 기기입니다.\n설비관리 탭에서 관련 기기들을 먼저 삭제 후 다시 진행해 주세요.'
+        );
+      } else {
+        alert(
+          '삭제에 실패했습니다. 관련 문제가 지속되면 관리자에게 문의 바랍니다.'
+        );
+      }
+    }
+  };
+
+  // 쿼리 클라이언트 정의
+  const queryClient = useQueryClient();
+
+  // 기계 모델 선택 삭제 쿼리
+  const { mutate: deleteRegistrationModelMutate } = useMutation(
+    deleteRegistrationModel,
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ['loadRegistrationModel'] });
+      },
+    }
+  );
+
+  // 삭제 재확인 comfirm창
+  const checkDeleteRegistrationModel = () => {
+    if (checkBoxArr.length === 0) {
+      alert('삭제할 설비를 먼저 선택해주세요.');
+    } else {
+      if (window.confirm('정말 삭제하시겠습니까?') == true) {
+        deleteRegistrationModelMutate();
+      } else {
+        return false;
+      }
+    }
+  };
 
   useEffect(() => {
     setSearchParams('');
@@ -47,6 +106,7 @@ const RegistrationMachine = (props: IRegistrationProps) => {
               onKeyPress={(e: React.KeyboardEvent<HTMLInputElement> | any) => {
                 if (e.key === 'Enter') {
                   e.preventDefault();
+                  setCheckBoxArr([]);
                   setSearchParams(
                     `search=${e.target.value}&searchType=${searchType}`
                   );
@@ -60,6 +120,7 @@ const RegistrationMachine = (props: IRegistrationProps) => {
             <button
               className="btn_left"
               onClick={() => {
+                setCheckBoxArr([]);
                 setSearchParams(
                   `search=${searchInput}&searchType=${searchType}`
                 );
@@ -71,6 +132,7 @@ const RegistrationMachine = (props: IRegistrationProps) => {
               className="btn_right"
               onClick={() => {
                 setSearchParams('');
+                setCheckBoxArr([]);
                 inputRef.current.value = '';
                 selectRef.current.value = 'all';
               }}
@@ -88,7 +150,14 @@ const RegistrationMachine = (props: IRegistrationProps) => {
               <span>등록하기</span>
               <div className="desc">버튼을 클릭하여 설비를 등록해주세요.</div>
             </button>
-            <button className="btn_right">선택삭제</button>
+            <button
+              className="btn_right"
+              onClick={() => {
+                checkDeleteRegistrationModel();
+              }}
+            >
+              선택삭제
+            </button>
           </div>
         </Top>
         <Content>
@@ -97,6 +166,8 @@ const RegistrationMachine = (props: IRegistrationProps) => {
             <RegistrationMachineTable
               searchTypeUrl={searchTypeUrl}
               searchInputUrl={searchInputUrl}
+              checkBoxArr={checkBoxArr}
+              clickCheckBox={clickCheckBox}
             />
           </Suspense>
           <Mobile />

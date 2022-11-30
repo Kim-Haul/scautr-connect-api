@@ -120,7 +120,7 @@ const RegistrationMachineModal = (props: IModalProps) => {
                       style={{ backgroundColor: color }}
                     ></div>
                   </label>
-                  <div className="assignedNamebox">
+                  <div className="assignedNameBox">
                     <Input
                       type="text"
                       autoComplete="off"
@@ -420,7 +420,7 @@ const Line = styled.div`
     }
   }
   // 색상 선택을 위해 나누는 기계명 input 라인 div
-  .assignedNamebox {
+  .assignedNameBox {
     display: flex;
     border: 1px solid #ced4da;
     align-items: center;

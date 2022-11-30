@@ -1,13 +1,18 @@
 import React from 'react';
 import styled from 'styled-components';
+import { ISwitchProps } from '../../shared/type/Interface';
 
-const Switch = () => {
+// ManagementSubmit에서 사용하는 MAC input창 조건부 렌더링을 위해 props 전달
+const Switch = (props: ISwitchProps) => {
   return (
     <Wrap>
       <input
         className="react-switch-checkbox"
         id="react-switch-new"
         type="checkbox"
+        onClick={() => {
+          props.setModlinkClick!(!props.modlink_click);
+        }}
       />
       <label className="react-switch-label" htmlFor="react-switch-new">
         <span className="react-switch-button" />

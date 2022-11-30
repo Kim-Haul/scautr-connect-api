@@ -1,13 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { IoIosArrowForward } from 'react-icons/io';
 import { useForm } from 'react-hook-form';
 import { FormValues, IStyleProps } from '../../shared/type/Interface';
 import Select from 'react-select';
+import Switch from '../../components/etc/Switch';
 
 const ManagementSubmit = () => {
   const navigate = useNavigate();
+
+  const [modlink_click, setModlinkClick] = useState<boolean>(false);
 
   // react-select 라이브러리 기본 옵션 및 스타일 적용
   const MachineNameOptions = [
@@ -73,6 +76,41 @@ const ManagementSubmit = () => {
             {/* -------------------- 2-1 --------------------  */}
             <div className="content">
               <div className="content_left">
+                <label> 스마트머신(MODLINK) 연동</label>
+                <Switch
+                  modlink_click={modlink_click}
+                  setModlinkClick={setModlinkClick}
+                />
+              </div>
+              <div className="content_right">
+                {modlink_click ? (
+                  <React.Fragment>
+                    <label htmlFor="inputMacAddress">MAC</label>
+                    <div className="macAddressbox">
+                      <Input
+                        type="text"
+                        autoComplete="off"
+                        isInvalid={!!errors.mac_address}
+                        id="inputMacAddress"
+                        {...register('mac_address', {
+                          required: '모드링크 MAC을 입력해주세요.',
+                        })}
+                      />
+                      <div>
+                        <span>인증확인</span>
+                      </div>
+                    </div>
+
+                    {errors.mac_address && (
+                      <div className="err">{errors.mac_address.message}</div>
+                    )}
+                  </React.Fragment>
+                ) : null}
+              </div>
+            </div>
+            {/* -------------------- 2-2 --------------------  */}
+            <div className="content">
+              <div className="content_left">
                 <label>설비 선택</label>
                 <Select
                   options={MachineNameOptions}
@@ -98,7 +136,7 @@ const ManagementSubmit = () => {
                 )}
               </div>
             </div>
-            {/* -------------------- 2-2 --------------------  */}
+            {/* -------------------- 2-3 --------------------  */}
             <div className="content full_width">
               <label>옵션 선택</label>
               <Select
@@ -115,6 +153,24 @@ const ManagementSubmit = () => {
             <div className="title">거래처 정보</div>
             <hr />
             {/* -------------------- 3-1 --------------------  */}
+            <div className="content">
+              <div className="content_left">
+                <label htmlFor="inputRegistrationNumber">사업자등록번호</label>
+                <Input
+                  type="text"
+                  autoComplete="off"
+                  isInvalid={!!errors.date}
+                  id="inputRegistrationNumber"
+                  {...register('registrationNumber', {
+                    required: '사업자등록번호를 입력해주세요.',
+                  })}
+                />
+                {errors.registrationNumber && (
+                  <div className="err">{errors.registrationNumber.message}</div>
+                )}
+              </div>
+            </div>
+            {/* -------------------- 3-2 --------------------  */}
             <div className="content">
               <div className="content_left">
                 <label htmlFor="inputCompanyName">거래처명</label>
@@ -147,7 +203,7 @@ const ManagementSubmit = () => {
                 )}
               </div>
             </div>
-            {/* -------------------- 3-2 --------------------  */}
+            {/* -------------------- 3-3 --------------------  */}
             <div className="content">
               <div className="content_left">
                 <label htmlFor="inputCompanyContact">회사 연락처</label>
@@ -181,6 +237,75 @@ const ManagementSubmit = () => {
                 )}
               </div>
             </div>
+            {/* -------------------- 3-4 --------------------  */}
+            <div className="content">
+              <div className="content_left">
+                <label htmlFor="inputCustomerManager">담당자</label>
+                <Input
+                  type="text"
+                  autoComplete="off"
+                  isInvalid={!!errors.customer_manager}
+                  id="inputCustomerManager"
+                  {...register('customer_manager', {
+                    required: '해당 거래처 담당자를 입력해주세요.',
+                  })}
+                />
+                {errors.customer_manager && (
+                  <div className="err">{errors.customer_manager.message}</div>
+                )}
+              </div>
+              <div className="content_right">
+                <label htmlFor="inputCustomerDepartment">소속</label>
+                <Input
+                  type="email"
+                  autoComplete="off"
+                  isInvalid={!!errors.customer_department}
+                  id="inputCustomerDepartment"
+                  {...register('customer_department', {
+                    required: '소속을 입력해주세요.',
+                  })}
+                />
+                {errors.customer_department && (
+                  <div className="err">
+                    {errors.customer_department.message}
+                  </div>
+                )}
+              </div>
+            </div>
+            {/* -------------------- 3-5 --------------------  */}
+            <div className="content">
+              <div className="content_left">
+                <label htmlFor="inputCustomerContact">담당자 연락처</label>
+                <Input
+                  type="text"
+                  autoComplete="off"
+                  placeholder="-를 포함하여 입력해주세요"
+                  isInvalid={!!errors.company_contact}
+                  id="inputCustomerContact"
+                  {...register('customer_contact', {
+                    required: '해당 거래처 담당자 연락처를 입력해주세요.',
+                  })}
+                />
+                {errors.customer_contact && (
+                  <div className="err">{errors.customer_contact.message}</div>
+                )}
+              </div>
+              <div className="content_right">
+                <label htmlFor="inputCustomerEmail">담당자 이메일</label>
+                <Input
+                  type="email"
+                  autoComplete="off"
+                  isInvalid={!!errors.customer_email}
+                  id="inputCustomerEmail"
+                  {...register('customer_email', {
+                    required: '이메일을 입력해주세요.',
+                  })}
+                />
+                {errors.customer_email && (
+                  <div className="err">{errors.customer_email.message}</div>
+                )}
+              </div>
+            </div>
           </Line>
           {/* -------------------- 4 --------------------  */}
           <Line>
@@ -196,7 +321,7 @@ const ManagementSubmit = () => {
                   isInvalid={!!errors.company_manager}
                   id="inputCompanyManager"
                   {...register('company_manager', {
-                    required: '거래처 관리자를 입력해주세요.',
+                    required: '자사 거래처 관리자를 입력해주세요.',
                   })}
                 />
                 {errors.company_manager && (
@@ -230,7 +355,7 @@ const ManagementSubmit = () => {
                   isInvalid={!!errors.manager_phone}
                   id="inputManagerPhone"
                   {...register('manager_phone', {
-                    required: '관리자 연락처를 입력해주세요.',
+                    required: '자사 관리자 연락처를 입력해주세요.',
                   })}
                 />
                 {errors.manager_phone && (
@@ -245,7 +370,7 @@ const ManagementSubmit = () => {
                   isInvalid={!!errors.manager_email}
                   id="inputManagerEmail"
                   {...register('manager_email', {
-                    required: '관리자 이메일을 입력해주세요.',
+                    required: '자사 관리자 이메일을 입력해주세요.',
                   })}
                 />
                 {errors.manager_email && (
@@ -380,6 +505,33 @@ const Line = styled.div`
     }
     display: flex;
     justify-content: center;
+  }
+  .macAddressbox {
+    display: flex;
+    border: 1px solid #ced4da;
+    align-items: center;
+    background-color: #fff;
+    height: 5rem;
+    input {
+      width: 90%;
+      height: 100%;
+      border: none;
+    }
+    div {
+      height: 100%;
+      width: 10%;
+      min-width: 80px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      span {
+        cursor: pointer;
+        padding: 5px;
+        background-color: #35a3dc;
+        border-radius: 8px;
+        color: #fff;
+      }
+    }
   }
 `;
 

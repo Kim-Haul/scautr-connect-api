@@ -25,6 +25,9 @@ export interface IDeleteRegistrationModelApiProps {
 export interface IDeleteRegistrationOptionApiProps {
   optionId: number[];
 }
+export interface IDeleteManagementApiProps {
+  equipmentId: number[];
+}
 
 // ------------------------ Sidebar.tsx
 export interface IViewProps {
@@ -145,9 +148,38 @@ export interface FormValues {
   manager_email?: string;
 
   machine_serial_number?: string;
+  mac_address?: string;
+  registrationNumber?: string;
+  customer_manager?: string;
+  customer_contact?: string;
+  customer_department?: string;
+  customer_email?: string;
 }
 export interface IStyleProps {
   isInvalid?: boolean;
+}
+export interface IManagementProps {
+  searchTypeUrl: string;
+  searchInputUrl: string;
+  checkBoxArr: number[];
+  clickCheckBox: any;
+}
+export interface IManagementTableProps {
+  equipmentId: number;
+  no: number;
+  installedDate: string;
+  companyName: string;
+  color: string;
+  assignedName: string;
+  model: string;
+  operation: string;
+  deliveryAddress: string;
+  customerCode: string | null;
+}
+// ------------------------ Management.tsx & Switch.tsx
+export interface ISwitchProps {
+  modlink_click?: boolean | undefined;
+  setModlinkClick?: Dispatch<SetStateAction<boolean>> | undefined;
 }
 
 // ------------------------ Login.tsx

@@ -1,12 +1,78 @@
-import React from 'react';
+import React, { useState, useRef, useEffect, Suspense } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { IoIosArrowForward } from 'react-icons/io';
 import Mobile from '../../components/exception/Mobile';
+import { useSearchParams } from 'react-router-dom';
 import ManagementTable from '../../components/table/ManagementTable';
+import SkeletonTable from '../../components/suspense/SkeletonTable';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import apis from './../../shared/apis';
 
 const Management = () => {
   const navigate = useNavigate();
+  // 검색 input, 조건 select 상태관리
+  const [searchInput, setSearchInput] = useState<string>('');
+  const [searchType, setSearchType] = useState<string>('all');
+  // 검색 초기화시 input, select 초기화
+  const inputRef = useRef<HTMLInputElement | any>(null);
+  const selectRef = useRef<HTMLSelectElement | any>(null);
+  // 클라이언트단 url parameter 설정
+  const [searchParams, setSearchParams] = useSearchParams('');
+  const searchTypeUrl = searchParams.get('searchType') || 'all';
+  const searchInputUrl = searchParams.get('search') || '';
+
+  // 체크박스 컨트롤
+  const [checkBoxArr, setCheckBoxArr] = useState<number[]>([]);
+  const clickCheckBox = (e: React.MouseEvent<HTMLInputElement> | any) => {
+    checkBoxArr.includes(Number(e.target.id))
+      ? setCheckBoxArr(checkBoxArr.filter((v) => v !== Number(e.target.id)))
+      : setCheckBoxArr([...checkBoxArr, Number(e.target.id)]);
+  };
+
+  // 기계 모델 선택 삭제 api
+  const deleteManagement = async () => {
+    const list = {
+      equipmentId: checkBoxArr,
+    };
+    try {
+      const res = await apis.deleteManagement(list);
+      setCheckBoxArr([]);
+      return res;
+    } catch (e) {
+      alert(
+        '삭제에 실패했습니다. 관련 문제가 지속되면 담당부서로 문의 바랍니다.'
+      );
+    }
+  };
+
+  // 쿼리 클라이언트 정의
+  const queryClient = useQueryClient();
+
+  // 기계 모델 선택 삭제 쿼리
+  const { mutate: deleteManagementMutate } = useMutation(deleteManagement, {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['loadManagementListQuery'] });
+    },
+  });
+
+  // 삭제 재확인 comfirm창
+  const checkDeleteManagement = () => {
+    if (checkBoxArr.length === 0) {
+      alert('삭제할 설비를 먼저 선택해주세요.');
+    } else {
+      if (window.confirm('정말 삭제하시겠습니까?') === true) {
+        deleteManagementMutate();
+      } else {
+        return false;
+      }
+    }
+  };
+
+  // 처음 렌더링 될 때 파라미터 초기화 시켜주기 위함.
+  useEffect(() => {
+    setSearchParams('');
+  }, []);
 
   return (
     <Wrap>
@@ -19,14 +85,56 @@ const Management = () => {
       <Container>
         <Top>
           <div className="top_left">
-            <select>
+            <select
+              onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                setSearchType(e.target.value);
+              }}
+              ref={selectRef}
+            >
               <option value="all">All</option>
+              <option value="companyName">거래처명</option>
               <option value="assignedName">기계명</option>
               <option value="model">모델명</option>
             </select>
-            <input type="text" placeholder="검색" />
-            <button className="btn_left">검색</button>
-            <button className="btn_right">초기화</button>
+            <input
+              type="text"
+              placeholder="검색"
+              onKeyPress={(e: React.KeyboardEvent<HTMLInputElement> | any) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault();
+                  setCheckBoxArr([]);
+                  setSearchParams(
+                    `search=${e.target.value}&searchType=${searchType}`
+                  );
+                }
+              }}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                setSearchInput(e.target.value);
+              }}
+              ref={inputRef}
+            />
+            <button
+              className="btn_left"
+              onClick={() => {
+                setCheckBoxArr([]);
+                setSearchParams(
+                  `search=${searchInput}&searchType=${searchType}`
+                );
+              }}
+            >
+              검색
+            </button>
+            <button
+              className="btn_right"
+              onClick={() => {
+                setSearchParams('');
+                setCheckBoxArr([]);
+                inputRef.current.value = '';
+                selectRef.current.value = 'all';
+              }}
+            >
+              초기화
+            </button>
           </div>
           <div className="top_right">
             <button
@@ -37,27 +145,26 @@ const Management = () => {
             >
               등록하기
             </button>
-            <button className="btn_right">선택삭제</button>
+            <button
+              className="btn_right"
+              onClick={() => {
+                checkDeleteManagement();
+              }}
+            >
+              선택삭제
+            </button>
           </div>
         </Top>
         <Content>
           {/* -------- 설비등록 테이블 -------- */}
-          <table>
-            <thead>
-              <tr>
-                <th className="th0"></th>
-                <th className="th1"></th>
-                <th className="th2">출고일</th>
-                <th className="th3">거래처명</th>
-                <th className="th4">기계명</th>
-                <th className="th5">모델명</th>
-                <th className="th6">기계상태</th>
-                <th className="th7">위치</th>
-                <th className="th8">PROGIX</th>
-              </tr>
-            </thead>
-            <ManagementTable />
-          </table>
+          <Suspense fallback={<SkeletonTable />}>
+            <ManagementTable
+              searchTypeUrl={searchTypeUrl}
+              searchInputUrl={searchInputUrl}
+              checkBoxArr={checkBoxArr}
+              clickCheckBox={clickCheckBox}
+            />
+          </Suspense>
           <Mobile />
         </Content>
       </Container>
@@ -162,51 +269,4 @@ const Top = styled.div`
   }
 `;
 
-const Content = styled.div`
-  table {
-    width: 100%;
-    margin-top: 10px;
-    border-collapse: collapse;
-    // 화면 축소시 테이블 column 깨지는거 방지
-    @media (max-width: 1400px) {
-      display: none;
-    }
-    th {
-      padding: 10px;
-      background-color: #f6f7fb;
-      border: 1px solid #e9edf3;
-    }
-    td {
-      padding: 10px;
-      border: 1px solid #e9edf3;
-      text-align: center;
-    }
-    .th0 {
-      width: 5rem;
-    }
-    .th1 {
-      width: 5rem;
-    }
-    .th2 {
-      width: 15rem;
-    }
-    .th3 {
-      width: 25rem;
-    }
-    .th4 {
-      width: 25rem;
-    }
-    .th5 {
-      width: 20rem;
-    }
-    .th6 {
-      width: 10rem;
-    }
-    .th7 {
-      width: 30rem;
-    }
-    .th8 {
-      width: 10rem;
-    }
-  }
-`;
+const Content = styled.div``;

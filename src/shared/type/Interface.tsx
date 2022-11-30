@@ -22,6 +22,9 @@ export interface IFindPwApiProps {
 export interface IDeleteRegistrationModelApiProps {
   modelId: number[];
 }
+export interface IDeleteRegistrationOptionApiProps {
+  optionId: number[];
+}
 
 // ------------------------ Sidebar.tsx
 export interface IViewProps {
@@ -74,6 +77,7 @@ export interface FormValues {
   assignedName?: string;
   model?: string;
   duration?: string;
+  option?: string;
 }
 export interface IStyleProps {
   isInvalid?: boolean;
@@ -82,6 +86,12 @@ export interface IRegistrationProps {
   click_tab: boolean;
 }
 export interface IRegistrationMachineProps {
+  searchTypeUrl: string;
+  searchInputUrl: string;
+  checkBoxArr: number[];
+  clickCheckBox: any;
+}
+export interface IRegistrationOptionProps {
   searchTypeUrl: string;
   searchInputUrl: string;
   checkBoxArr: number[];
@@ -98,6 +108,16 @@ export interface IRegistrationMachineTableProps {
   regdate?: string;
   files?: any;
   no?: number;
+}
+export interface IRegistrationOptionTableProps {
+  no: string;
+  optionId: number;
+  supplierCode: null;
+  model: string;
+  option: string;
+  regdate: string;
+  lifeSpan: string;
+  files?: any;
 }
 
 // ------------------------ Pagination.tsx

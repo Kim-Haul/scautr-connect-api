@@ -1,52 +1,184 @@
-import React from 'react';
+import React, { useState, useRef, useEffect, Suspense } from 'react';
 import styled from 'styled-components';
 import Mobile from '../../components/exception/Mobile';
 import RegistrationOptionTable from '../../components/table/RegistrationOptionTable';
+import RegistrationOptionModal from '../../components/modal/RegistrationOptionModal';
+import SkeletonTable from '../../components/suspense/SkeletonTable';
+import { useSearchParams } from 'react-router-dom';
+import { IRegistrationProps } from '../../shared/type/Interface';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import apis from '../../shared/apis';
 
-const RegistrationOption = () => {
+const RegistrationOption = (props: IRegistrationProps) => {
+  // 등록 모달창 토글
+  const [is_open, setIsOpen] = useState<boolean>(false);
+
+  // 검색 input, 조건 select 상태관리
+  const [searchInput, setSearchInput] = useState<string>('');
+  const [searchType, setSearchType] = useState<string>('all');
+  // 검색 초기화시 input, select 초기화
+  const inputRef = useRef<HTMLInputElement | any>(null);
+  const selectRef = useRef<HTMLSelectElement | any>(null);
+  // 클라이언트단 url parameter 설정
+  const [searchParams, setSearchParams] = useSearchParams('');
+  const searchTypeUrl = searchParams.get('searchType') || 'all';
+  const searchInputUrl = searchParams.get('search') || '';
+
+  // 체크박스 컨트롤
+  const [checkBoxArr, setCheckBoxArr] = useState<number[]>([]);
+  const clickCheckBox = (e: React.MouseEvent<HTMLInputElement> | any) => {
+    checkBoxArr.includes(Number(e.target.id))
+      ? setCheckBoxArr(checkBoxArr.filter((v) => v !== Number(e.target.id)))
+      : setCheckBoxArr([...checkBoxArr, Number(e.target.id)]);
+  };
+
+  // 기계 모델 선택 삭제 api
+  const deleteRegistrationOption = async () => {
+    const list = {
+      optionId: checkBoxArr,
+    };
+
+    try {
+      const res = await apis.deleteRegistrationOption(list);
+      setCheckBoxArr([]);
+      return res;
+    } catch (e: any) {
+      if (e.response.data.message === 'EQUIPMENT_FOUND_ERR') {
+        alert(
+          '특정 설비에서 사용되고 있는 옵션입니다.\n설비관리 탭에서 설비에 사용중인 옵션을 먼저 삭제 후 다시 진행해주세요.'
+        );
+      } else {
+        alert(
+          '삭제에 실패했습니다. 관련 문제가 지속되면 관리자에게 문의 바랍니다.'
+        );
+      }
+    }
+  };
+
+  // 쿼리 클라이언트 정의
+  const queryClient = useQueryClient();
+
+  // 기계 모델 선택 삭제 쿼리
+  const { mutate: deleteRegistrationOptionMutate } = useMutation(
+    deleteRegistrationOption,
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ['loadRegistrationOption'] });
+      },
+    }
+  );
+
+  // 삭제 재확인 comfirm창
+  const checkDeleteRegistrationOption = () => {
+    if (checkBoxArr.length === 0) {
+      alert('삭제할 설비를 먼저 선택해주세요.');
+    } else {
+      if (window.confirm('정말 삭제하시겠습니까?') == true) {
+        deleteRegistrationOptionMutate();
+      } else {
+        return false;
+      }
+    }
+  };
+
+  useEffect(() => {
+    setSearchParams('');
+  }, [props.click_tab]);
+
   return (
     <Wrap>
       <Container>
         <Top>
           <div className="top_left">
-            <select>
+            <select
+              onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                setSearchType(e.target.value);
+              }}
+              ref={selectRef}
+            >
               <option value="all">All</option>
-              <option value="assignedName">기계명</option>
+              <option value="option">옵션명</option>
               <option value="model">모델명</option>
             </select>
-            <input type="text" placeholder="검색" />
-            <button className="btn_left">검색</button>
-            <button className="btn_right">초기화</button>
+            <input
+              type="text"
+              placeholder="검색"
+              onKeyPress={(e: React.KeyboardEvent<HTMLInputElement> | any) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault();
+                  setCheckBoxArr([]);
+                  setSearchParams(
+                    `search=${e.target.value}&searchType=${searchType}`
+                  );
+                }
+              }}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                setSearchInput(e.target.value);
+              }}
+              ref={inputRef}
+            />
+            <button
+              className="btn_left"
+              onClick={() => {
+                setCheckBoxArr([]);
+                setSearchParams(
+                  `search=${searchInput}&searchType=${searchType}`
+                );
+              }}
+            >
+              검색
+            </button>
+            <button
+              className="btn_right"
+              onClick={() => {
+                setSearchParams('');
+                setCheckBoxArr([]);
+                inputRef.current.value = '';
+                selectRef.current.value = 'all';
+              }}
+            >
+              초기화
+            </button>
           </div>
           <div className="top_right">
-            <button className="btn_left btn_desc">
+            <button
+              className="btn_left btn_desc"
+              onClick={() => {
+                setIsOpen(true);
+              }}
+            >
               <span>등록하기</span>
               <div className="desc">버튼을 클릭하여 설비를 등록해주세요.</div>
             </button>
-            <button className="btn_right">선택삭제</button>
+            <button
+              className="btn_right"
+              onClick={() => {
+                checkDeleteRegistrationOption();
+              }}
+            >
+              선택삭제
+            </button>
           </div>
         </Top>
         <Content>
           {/* -------- 옵션등록 테이블 -------- */}
-          <table>
-            <thead>
-              <tr>
-                <th className="th0"></th>
-                <th className="th1"></th>
-                <th className="th2">그룹</th>
-                <th className="th3">옵션명</th>
-                <th className="th4">모델명</th>
-                <th className="th5">권장사용기간</th>
-                <th className="th6">분류</th>
-                <th className="th7">파일첨부</th>
-                <th className="th8">등록일</th>
-              </tr>
-            </thead>
-            <RegistrationOptionTable />
-          </table>
+          <Suspense fallback={<SkeletonTable />}>
+            <RegistrationOptionTable
+              searchTypeUrl={searchTypeUrl}
+              searchInputUrl={searchInputUrl}
+              checkBoxArr={checkBoxArr}
+              clickCheckBox={clickCheckBox}
+            />
+          </Suspense>
           <Mobile />
         </Content>
       </Container>
+
+      <RegistrationOptionModal
+        open={is_open}
+        setIsOpen={setIsOpen}
+        header="신규 옵션 등록"
+      />
     </Wrap>
   );
 };
@@ -163,47 +295,4 @@ const Top = styled.div`
   }
 `;
 
-const Content = styled.div`
-  table {
-    width: 100%;
-    margin-top: 10px;
-    border-collapse: collapse;
-    // 화면 축소시 테이블 column 깨지는거 방지
-    @media (max-width: 1400px) {
-      display: none;
-    }
-    th {
-      padding: 10px;
-      background-color: #f6f7fb;
-      border: 1px solid #e9edf3;
-    }
-
-    .th0 {
-      width: 5rem;
-    }
-    .th1 {
-      width: 5rem;
-    }
-    .th2 {
-      width: 10rem;
-    }
-    .th3 {
-      width: 30rem;
-    }
-    .th4 {
-      width: 30rem;
-    }
-    .th5 {
-      width: 15rem;
-    }
-    .th6 {
-      width: 10rem;
-    }
-    .th7 {
-      width: 30rem;
-    }
-    .th8 {
-      width: 15rem;
-    }
-  }
-`;
+const Content = styled.div``;

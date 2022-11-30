@@ -28,13 +28,6 @@ const RegistrationMachineTable = (props: IRegistrationMachineProps) => {
     }
   };
 
-  // 검색, 초기화시 Pagination10 컴포넌트 상태 초기화
-  useEffect(() => {
-    setCurrentPage(1);
-    setStartPage(1);
-    setActive('1');
-  }, [props.searchInputUrl]);
-
   // 등록된 설비 목록 호출 쿼리
   const { data: registrationModelQuery } = useQuery(
     [
@@ -52,6 +45,13 @@ const RegistrationMachineTable = (props: IRegistrationMachineProps) => {
       },
     }
   );
+
+  // 검색, 초기화시 Pagination10 컴포넌트 상태 초기화
+  useEffect(() => {
+    setCurrentPage(1);
+    setStartPage(1);
+    setActive('1');
+  }, [props.searchInputUrl]);
 
   // 페이지네이션 처리를 위한 토탈값
   const total = registrationModelQuery?.data.count;

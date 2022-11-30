@@ -39,7 +39,7 @@ const Registration = () => {
       {click_tab ? (
         <RegistrationMachine click_tab={click_tab} />
       ) : (
-        <RegistrationOption />
+        <RegistrationOption click_tab={click_tab} />
       )}
     </Wrap>
   );

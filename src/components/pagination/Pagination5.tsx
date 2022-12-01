@@ -1,27 +1,25 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from 'react-icons/ai';
 import styled from 'styled-components';
 import { IPageProps } from '../../shared/type/Interface';
 
-const Pagination = (props: IPageProps) => {
+const Pagination5 = (props: IPageProps) => {
   const lastPage = Math.ceil(props.total / 5);
-  const [startPage, setStartPage] = useState<number>(1);
-  const [active, setActive] = useState<string>('1');
 
   const onClickPage = (e: React.MouseEvent<HTMLLIElement>) => {
-    setActive(e.currentTarget.id);
+    props.setActive!(e.currentTarget.id);
     props.setCurrentPage?.(Number(e.currentTarget.id));
   };
 
   const onClickPrevPage = (e: React.MouseEvent<HTMLButtonElement>) => {
-    setStartPage(startPage - 10);
-    setActive(e.currentTarget.id);
+    props.setStartPage!(props.startPage! - 10);
+    props.setActive!(e.currentTarget.id);
     props.setCurrentPage?.(Number(e.currentTarget.id));
   };
 
   const onClickNextPage = (e: React.MouseEvent<HTMLButtonElement>) => {
-    setStartPage(startPage + 10);
-    setActive(e.currentTarget.id);
+    props.setStartPage!(props.startPage! + 10);
+    props.setActive!(e.currentTarget.id);
     props.setCurrentPage?.(Number(e.currentTarget.id));
   };
 
@@ -29,9 +27,9 @@ const Pagination = (props: IPageProps) => {
     <Wrap>
       <button
         className="left"
-        disabled={startPage === 1}
+        disabled={props.startPage === 1}
         onClick={onClickPrevPage}
-        id={String(startPage - 10)}
+        id={String(props.startPage! - 10)}
       >
         <AiOutlineArrowLeft />
       </button>
@@ -39,17 +37,19 @@ const Pagination = (props: IPageProps) => {
         {new Array(10).fill(1).map((_, i) => {
           return (
             <React.Fragment key={i}>
-              {i + startPage <= lastPage ? (
+              {i + props.startPage! <= lastPage ? (
                 <ul>
                   <li
                     style={{
                       color:
-                        active === String(i + startPage) ? 'black' : '#d4d4d4',
+                        props.active === String(i + props.startPage!)
+                          ? 'black'
+                          : '#d4d4d4',
                     }}
                     onClick={onClickPage}
-                    id={String(i + startPage)}
+                    id={String(i + props.startPage!)}
                   >
-                    {i + startPage}
+                    {i + props.startPage!}
                   </li>
                 </ul>
               ) : null}
@@ -59,9 +59,9 @@ const Pagination = (props: IPageProps) => {
       </Page>
       <button
         className="right"
-        disabled={startPage + 10 > lastPage}
+        disabled={props.startPage! + 10 > lastPage}
         onClick={onClickNextPage}
-        id={String(startPage + 10)}
+        id={String(props.startPage! + 10)}
       >
         <AiOutlineArrowRight />
       </button>
@@ -69,7 +69,7 @@ const Pagination = (props: IPageProps) => {
   );
 };
 
-export default Pagination;
+export default Pagination5;
 
 const Wrap = styled.div`
   display: flex;

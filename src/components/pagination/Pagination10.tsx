@@ -79,7 +79,7 @@ const Wrap = styled.div`
   @media (max-width: 1400px) {
     display: none;
   }
-  // props.total / 15인 페이지네이션 컴포넌트 하단부 마진 추가
+  // props.total / 10인 페이지네이션 컴포넌트 하단부 마진 추가
   margin-bottom: 10px;
   button {
     border: 1px solid #d4d4d4;

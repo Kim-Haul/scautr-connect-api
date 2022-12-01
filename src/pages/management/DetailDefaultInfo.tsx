@@ -2,16 +2,13 @@ import React from 'react';
 import styled from 'styled-components';
 import { useQuery } from '@tanstack/react-query';
 import apis from '../../shared/apis';
-import { useParams } from 'react-router-dom';
+import { IParamsProps } from '../../shared/type/Interface';
 
-const DetailDefaultInfo = () => {
-  // url에 id값 받아오기
-  const view = useParams();
-
+const DetailDefaultInfo = (props: IParamsProps) => {
   // 디테일 페이지 기계 기본 정보 호출 api
   const getDetailMachineInfo = async () => {
     try {
-      const res = await apis.getDetailMachineInfo(view.idx);
+      const res = await apis.getDetailMachineInfo(props.view);
       return res;
     } catch (err) {
       console.log('설비 상세정보를 불러오는데 실패했습니다.');
@@ -20,7 +17,7 @@ const DetailDefaultInfo = () => {
 
   // 디테일 페이지 기계 기본 정보 호출 쿼리
   const { data: detailMachineInfoQuery } = useQuery(
-    ['loadDetailMachineInfo', view],
+    ['loadDetailMachineInfo', props.view],
     getDetailMachineInfo,
     {
       refetchOnWindowFocus: false,

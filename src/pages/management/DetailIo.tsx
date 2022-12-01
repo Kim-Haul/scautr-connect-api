@@ -1,7 +1,56 @@
 import React from 'react';
 import styled from 'styled-components';
+import apis from '../../shared/apis';
+import { useQuery } from '@tanstack/react-query';
+import { IParamsProps } from '../../shared/type/Interface';
 
-const DetailIo = () => {
+const DetailIo = (props: IParamsProps) => {
+  // plc 입력 호출 api
+  const plcInputData = async () => {
+    try {
+      const res = await apis.plcInputData(props.view);
+      return res;
+    } catch (err) {
+      console.log('설비 입력값을 불러오는데 실패했습니다.');
+    }
+  };
+
+  // plc 입력 호출 쿼리
+  const { data: plcInputDataQuery } = useQuery(
+    ['loadPlcInputData', props.view],
+    plcInputData,
+    {
+      refetchOnWindowFocus: false,
+      onSuccess: () => {},
+      onError: () => {
+        console.error('설비 입력값을 불러오는데 실패했습니다.');
+      },
+    }
+  );
+
+  // plc 출력 호출 api
+  const plcOutputData = async () => {
+    try {
+      const res = await apis.plcOutputData(props.view);
+      return res;
+    } catch (err) {
+      console.log('설비 출력값을 불러오는데 실패했습니다.');
+    }
+  };
+
+  // plc 출력 호출 쿼리
+  const { data: plcOutputDataQuery } = useQuery(
+    ['loadPlcOutputData', props.view],
+    plcOutputData,
+    {
+      refetchOnWindowFocus: false,
+      onSuccess: () => {},
+      onError: () => {
+        console.error('설비 출력값을 불러오는데 실패했습니다.');
+      },
+    }
+  );
+
   return (
     <Wrap>
       {/* -------------- 입력값 -------------- */}
@@ -20,12 +69,18 @@ const DetailIo = () => {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>현재 비가동 시간</td>
-                <td>D18</td>
-                <td>09:03:49:28</td>
-                <td>Time</td>
-              </tr>
+              {plcInputDataQuery?.data.result.map((v: any, i: number) => {
+                return (
+                  <React.Fragment key={i}>
+                    <tr>
+                      <td>{v.name}</td>
+                      <td>{v.uid}</td>
+                      <td>{v.value}</td>
+                      <td>{v.unit}</td>
+                    </tr>
+                  </React.Fragment>
+                );
+              })}
             </tbody>
           </table>
         </div>
@@ -46,12 +101,18 @@ const DetailIo = () => {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>1번 히터 온도</td>
-                <td>D02</td>
-                <td>515</td>
-                <td>℃</td>
-              </tr>
+              {plcOutputDataQuery?.data.result.map((v: any, i: number) => {
+                return (
+                  <React.Fragment key={i}>
+                    <tr>
+                      <td>{v.name}</td>
+                      <td>{v.uid}</td>
+                      <td>{v.value}</td>
+                      <td>{v.unit}</td>
+                    </tr>
+                  </React.Fragment>
+                );
+              })}
             </tbody>
           </table>
         </div>

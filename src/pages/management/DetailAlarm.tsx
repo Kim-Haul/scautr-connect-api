@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import Pagination from '../../components/pagination/Pagination';
+import Pagination5 from '../../components/pagination/Pagination5';
 import DetailAlarmTable from '../../components/table/DetailAlarmTable';
 
 const DetailAlarm = () => {
@@ -29,7 +29,7 @@ const DetailAlarm = () => {
             <DetailAlarmTable />
           </table>
         </div>
-        <Pagination
+        <Pagination5
           total={parameterHistoryTotal}
           setCurrentPage={setParameterCurrentPage}
         />

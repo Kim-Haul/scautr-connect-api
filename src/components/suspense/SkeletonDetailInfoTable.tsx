@@ -1,26 +1,26 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const SkeletonDetailTable = () => {
+const SkeletonDetailInfoTable = () => {
   return (
     <Wrap>
       <div className="table">
         <div className="skeleton_title"></div>
-        <div className="skeleton_content"></div>
+        <div className="skeleton_content first"></div>
       </div>
-      <div className="table margin">
-        <div className="skeleton_title"></div>
-        <div className="skeleton_content"></div>
+      <div className="table">
+        <div className="skeleton_title margin"></div>
+        <div className="skeleton_content second"></div>
       </div>
-      <div className="table margin">
-        <div className="skeleton_title"></div>
-        <div className="skeleton_content"></div>
+      <div className="table">
+        <div className="skeleton_title margin"></div>
+        <div className="skeleton_content third"></div>
       </div>
     </Wrap>
   );
 };
 
-export default SkeletonDetailTable;
+export default SkeletonDetailInfoTable;
 
 const Wrap = styled.div`
   width: 100%;
@@ -28,7 +28,6 @@ const Wrap = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 10px;
   .table {
     .skeleton_title {
       width: 200px;
@@ -37,11 +36,22 @@ const Wrap = styled.div`
       animation: skeleton-gradient 1.8s infinite ease-in-out;
       margin-bottom: 10px;
     }
+    .skeleton_title.margin {
+      margin-top: 20px;
+    }
     .skeleton_content {
       width: 100%;
-      height: 160px;
       background-color: #f5f7fa;
       animation: skeleton-gradient 1.8s infinite ease-in-out;
+    }
+    .first {
+      height: 135px;
+    }
+    .second {
+      height: 180px;
+    }
+    .third {
+      height: 90px;
     }
     @keyframes skeleton-gradient {
       0% {
@@ -54,8 +64,5 @@ const Wrap = styled.div`
         background-color: rgba(165, 165, 165, 0.1);
       }
     }
-  }
-  .table.margin {
-    margin-top: 10px;
   }
 `;

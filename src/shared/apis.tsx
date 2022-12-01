@@ -64,6 +64,13 @@ api.interceptors.response.use(
   }
 );
 
+// 최근 3개월간의 파라미터 히스토리
+const date = new Date();
+const year = date.getFullYear();
+const lastMonth = ('0' + (date.getMonth() - 2)).slice(-2);
+const currentMonth = ('0' + (date.getMonth() + 1)).slice(-2);
+const day = ('0' + date.getDate()).slice(-2);
+
 const apis = {
   // AUTH
   login: (data: FormValues) => api.post('/auth/login', data),
@@ -99,6 +106,10 @@ const apis = {
   getSelectOption: () => api.get('equipment/option'),
   macCheck: (data: string | undefined) => api.post('equipment/mac', data),
   //MANAGEMENT DETAIL
-  getDetailMachineInfo: (id: string | undefined) => api.get(`/equipment/${id}`)
+  getDetailMachineInfo: (id: string | undefined) => api.get(`/equipment/${id}`),
+  plcInputData: (id: string | undefined) => api.get(`/equipment/${id}/input`),
+  plcOutputData: (id: string | undefined)=> api.get(`/equipment/${id}/output`),
+  getParameterData: (id: string | undefined) => api.get(`/equipment/${id}/parameter`),
+  getParameterHistoryData: (id: string | undefined, currentPage: number | undefined) => api.get(`equipment/${id}/parameter/history?page=${currentPage}&size=5&startDate=${`${year}-${lastMonth}-${day}`}&endDate=${`${year}-${currentMonth}-${day}`}`),
 };
 export default apis;

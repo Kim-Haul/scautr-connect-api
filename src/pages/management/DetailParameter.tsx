@@ -1,11 +1,35 @@
-import React, { useState } from 'react';
+import React, { Suspense } from 'react';
 import styled from 'styled-components';
-import Pagination from '../../components/pagination/Pagination';
 import DetailParameterHistoryTable from '../../components/table/DetailParameterHistoryTable';
+import apis from '../../shared/apis';
+import { useQuery } from '@tanstack/react-query';
+import { IParamsProps } from '../../shared/type/Interface';
+import SkeletonItemSingle from '../../components/suspense/SkeletonItemSingle';
 
-const DetailParameter = () => {
-  const [parameterCurrentPage, setParameterCurrentPage] = useState<number>(1);
-  const parameterHistoryTotal: number = 78;
+const DetailParameter = (props: IParamsProps) => {
+  // 기계 세팅 값 호출 api
+  const getParameterData = async () => {
+    try {
+      const res = await apis.getParameterData(props.view);
+      return res;
+    } catch (err) {
+      console.log('기계 세팅 값을 불러오는데 실패했습니다.');
+    }
+  };
+
+  // 기계 세팅 값 호출 쿼리
+  const { data: ParameterDataQuery } = useQuery(
+    ['loadParameterData', props.view],
+    getParameterData,
+    {
+      refetchOnWindowFocus: false,
+      onSuccess: () => {},
+      onError: () => {
+        console.error('기계 세팅 값을 불러오는데 실패했습니다.');
+      },
+    }
+  );
+
   return (
     <Wrap>
       {/* -------------- 기계 세팅 값 -------------- */}
@@ -24,39 +48,26 @@ const DetailParameter = () => {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>현재 비가동 시간</td>
-                <td>D18</td>
-                <td>09:03:49:28</td>
-                <td>Time</td>
-              </tr>
+              {ParameterDataQuery?.data.result.map((v: any, i: number) => {
+                return (
+                  <React.Fragment key={i}>
+                    <tr>
+                      <td>{v.name}</td>
+                      <td>{v.uid}</td>
+                      <td>{v.value}</td>
+                      <td>{v.unit}</td>
+                    </tr>
+                  </React.Fragment>
+                );
+              })}
             </tbody>
           </table>
         </div>
       </div>
       {/* -------------- 세팅 값 변경 이력 -------------- */}
-      <div className="item parameter_history_data">
-        <div className="title">
-          <div className="top_left">세팅 값 변경 이력</div>
-        </div>
-        <div className="output_data_table">
-          <table>
-            <thead>
-              <tr>
-                <th className="th0">동작</th>
-                <th className="th1">IO</th>
-                <th className="th2">상태</th>
-                <th className="th3">단위</th>
-              </tr>
-            </thead>
-            <DetailParameterHistoryTable />
-          </table>
-        </div>
-        <Pagination
-          total={parameterHistoryTotal}
-          setCurrentPage={setParameterCurrentPage}
-        />
-      </div>
+      <Suspense fallback={<SkeletonItemSingle />}>
+        <DetailParameterHistoryTable view={props.view} />
+      </Suspense>
     </Wrap>
   );
 };
@@ -118,6 +129,22 @@ const Wrap = styled.div`
       min-width: 160px;
     }
     .th3 {
+      width: 10rem;
+      min-width: 80px;
+    }
+    .th4 {
+      width: 25rem;
+      min-width: 170px;
+    }
+    .th5 {
+      width: 25rem;
+      min-width: 170px;
+    }
+    .th6 {
+      width: 10rem;
+      min-width: 80px;
+    }
+    .th7 {
       width: 10rem;
       min-width: 80px;
     }

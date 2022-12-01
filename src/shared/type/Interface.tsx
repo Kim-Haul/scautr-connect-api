@@ -282,3 +282,8 @@ export interface ICheckStateProps {
   third: boolean;
   all: boolean;
 }
+
+// ------------------------ Detail.tsx
+export interface IParamsProps {
+  view: string | undefined;
+}

@@ -7,9 +7,14 @@ import DetailIo from './DetailIo';
 import DetailParameter from './DetailParameter';
 import DetailAlarm from './DetailAlarm';
 import DetailError from './DetailError';
-import SkeletonDetailTable from '../../components/suspense/SkeletonDetailTable';
+import SkeletonDetailInfoTable from '../../components/suspense/SkeletonDetailInfoTable';
+import SkeletonItem from '../../components/suspense/SkeletonItem';
+import { useParams } from 'react-router-dom';
 
 const Detail = () => {
+  // url에 id값 받아오기
+  const view = useParams();
+
   return (
     <Wrap>
       <Title>
@@ -21,8 +26,8 @@ const Detail = () => {
       </Title>
       <Container>
         <Top>
-          <Suspense fallback={<SkeletonDetailTable />}>
-            <DetailDefaultInfo />
+          <Suspense fallback={<SkeletonDetailInfoTable />}>
+            <DetailDefaultInfo view={view.idx} />
           </Suspense>
           <Mobile />
         </Top>
@@ -30,8 +35,12 @@ const Detail = () => {
           <div>실시간 데이터 모니터링</div>
         </div>
         <Content>
-          <DetailIo />
-          <DetailParameter />
+          <Suspense fallback={<SkeletonItem />}>
+            <DetailIo view={view.idx} />
+          </Suspense>
+          <Suspense fallback={<SkeletonItem />}>
+            <DetailParameter view={view.idx} />
+          </Suspense>
           <DetailAlarm />
           <DetailError />
         </Content>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import Pagination from '../../components/pagination/Pagination';
+import Pagination5 from '../../components/pagination/Pagination5';
 import DetailErrorTable from '../../components/table/DetailErrorTable';
 
 const DetailError = () => {
@@ -29,7 +29,7 @@ const DetailError = () => {
             <DetailErrorTable />
           </table>
         </div>
-        <Pagination
+        <Pagination5
           total={parameterHistoryTotal}
           setCurrentPage={setParameterCurrentPage}
         />

@@ -67,11 +67,11 @@ api.interceptors.response.use(
 // 최근 3개월간의 파라미터 히스토리
 const date = new Date();
 // 1,2월달 일 때, -2를 하면 음수로 날짜 오류 뜨는 걸 방지하기 위해 임시 날짜 형성
-const lastDateCal = new Date();
-lastDateCal.setMonth(lastDateCal.getMonth() - 3)
+const lastMonthCal = new Date();
+lastMonthCal.setMonth(lastMonthCal.getMonth() - 2)
 
 const year = date.getFullYear();
-const lastMonth = ('0' + (lastDateCal.getMonth() + 1)).slice(-2);
+const lastMonth = ('0' + lastMonthCal.getMonth()).slice(-2);
 const currentMonth = ('0' + (date.getMonth() + 1)).slice(-2);
 const day = ('0' + date.getDate()).slice(-2);
 

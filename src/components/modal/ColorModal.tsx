@@ -83,7 +83,7 @@ const ColorModal = (props: IModalProps) => {
       <div className={props.open ? 'openColorModal modal' : 'modal'}>
         {props.open ? (
           <div className="color_card_box">
-            {colorList.map((color, i) => {
+            {colorListBold.map((color, i) => {
               return (
                 <ColorCard
                   color={color}

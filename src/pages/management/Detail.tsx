@@ -45,7 +45,9 @@ const Detail = () => {
           <Suspense fallback={<SkeletonItemSingleBg />}>
             <DetailAlarm view={view.idx} />
           </Suspense>
-          <DetailError />
+          <Suspense fallback={<SkeletonItemSingleBg />}>
+            <DetailError view={view.idx} />
+          </Suspense>
         </Content>
       </Container>
     </Wrap>

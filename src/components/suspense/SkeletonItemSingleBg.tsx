@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const SkeletonItemSingleSm = () => {
+const SkeletonItemSingleBg = () => {
   return (
     <Wrap>
       <Table></Table>
@@ -9,7 +9,7 @@ const SkeletonItemSingleSm = () => {
   );
 };
 
-export default SkeletonItemSingleSm;
+export default SkeletonItemSingleBg;
 
 const Wrap = styled.div`
   width: 100%;
@@ -17,6 +17,7 @@ const Wrap = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  margin: 2rem 0;
 `;
 
 const Table = styled.div`

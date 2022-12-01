@@ -1,20 +1,102 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import styled from 'styled-components';
 import Pagination5 from '../../components/pagination/Pagination5';
-import DetailAlarmTable from '../../components/table/DetailAlarmTable';
+import { useQuery } from '@tanstack/react-query';
+import { IParamsProps } from '../../shared/type/Interface';
+import apis from '../../shared/apis';
 
-const DetailAlarm = () => {
-  const [parameterCurrentPage, setParameterCurrentPage] = useState<number>(1);
-  const parameterHistoryTotal: number = 78;
+const DetailAlarm = (props: IParamsProps) => {
+  // 현재 페이지 상태값 및 시작 & 엑티브 페이지 상태값 저장
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [startPage, setStartPage] = useState<number>(1);
+  const [active, setActive] = useState<string>('1');
+
+  // 날짜 검색을 위한 3개월 이전 날짜 지정(디폴트값)
+  const date = new Date();
+  // 1,2월달 일 때, -2를 하면 음수로 날짜 오류 뜨는 걸 방지하기 위해 임시 날짜 형성
+  const lastDateCal = new Date();
+  lastDateCal.setMonth(lastDateCal.getMonth() - 3)
+  
+  const year = date.getFullYear();
+  const lastMonth = ('0' + (lastDateCal.getMonth() + 1)).slice(-2);
+  const currentMonth = ('0' + (date.getMonth() + 1)).slice(-2);
+  const day = ('0' + date.getDate()).slice(-2);
+
+  // type='date' input 창을 통해 날짜 핸들링
+  const lastRef = useRef<HTMLInputElement | any>();
+  const currentRef = useRef<HTMLInputElement | any>();
+
+  const [lastDate, setLastDate] = useState(`${year}-${lastMonth}-${day}`);
+  const [curDate, setCurDate] = useState(`${year}-${currentMonth}-${day}`);
+  const [clickBtnAlarm, setClickBtnAlarm] = useState(false);
+
+  // 알람 히스토리 호출 api
+  const getAlarmHistoryData = async () => {
+    try {
+      const res = await apis.getAlarmHistoryData(
+        props.view,
+        currentPage,
+        lastDate,
+        curDate
+      );
+      return res;
+    } catch (err) {
+      console.log('알람 히스토리 조회에 실패했습니다.');
+    }
+  };
+
+  // 알람 히스토리 호출 쿼리
+  const { data: AlarmHistoryDataQuery } = useQuery(
+    ['loadAlarmHistoryData', currentPage, props.view, clickBtnAlarm],
+    getAlarmHistoryData,
+    {
+      refetchOnWindowFocus: false,
+      cacheTime: 0,
+      staleTime: 0,
+      onSuccess: (data) => {
+        console.log(data);
+      },
+      onError: () => {
+        console.error('알람 히스토리 조회에 실패했습니다.');
+      },
+    }
+  );
+
+  // 페이지네이션 처리를 위한 토탈값
+  const total: number = AlarmHistoryDataQuery?.data.count;
+
   return (
     <Wrap>
       <div className="item">
         <div className="title">
           <div className="top_left">알람내역</div>
           <div className="top_right">
-            <input type="date"></input>
-            <input type="date"></input>
-            <button>조회</button>
+            <input
+              type="date"
+              ref={lastRef}
+              onChange={() => {
+                setLastDate(lastRef.current.value);
+              }}
+              defaultValue={lastDate}
+            ></input>
+            <input
+              type="date"
+              ref={currentRef}
+              onChange={() => {
+                setCurDate(currentRef.current.value);
+              }}
+              defaultValue={curDate}
+            ></input>
+            <button
+              onClick={() => {
+                setStartPage(1);
+                setActive('1');
+                setCurrentPage(1);
+                setClickBtnAlarm(!clickBtnAlarm);
+              }}
+            >
+              조회
+            </button>
           </div>
         </div>
         <div className="alarm_table">
@@ -22,16 +104,32 @@ const DetailAlarm = () => {
             <thead>
               <tr>
                 <th className="th0">발생일자</th>
-                <th className="th1">종료일자</th>
+                <th className="th1">종료여부</th>
                 <th className="th2">알람내역</th>
               </tr>
             </thead>
-            <DetailAlarmTable />
+            <tbody>
+              {AlarmHistoryDataQuery?.data.result.map((v: any, i: number) => {
+                return (
+                  <React.Fragment key={i}>
+                    <tr>
+                      <td>{v.tsAsiaSeoulDatetime}</td>
+                      <td>{v.tp}</td>
+                      <td>{v.name}</td>
+                    </tr>
+                  </React.Fragment>
+                );
+              })}
+            </tbody>
           </table>
         </div>
         <Pagination5
-          total={parameterHistoryTotal}
-          setCurrentPage={setParameterCurrentPage}
+          total={total}
+          setCurrentPage={setCurrentPage}
+          startPage={startPage}
+          setStartPage={setStartPage}
+          active={active}
+          setActive={setActive}
         />
       </div>
     </Wrap>
@@ -84,6 +182,11 @@ const Wrap = styled.div`
     padding: 10px;
     background-color: #fff;
     border: 1px solid #ced4da;
+  }
+  td {
+    padding: 10px;
+    border: 1px solid #ced4da;
+    text-align: center;
   }
   .th0 {
     width: 12rem;

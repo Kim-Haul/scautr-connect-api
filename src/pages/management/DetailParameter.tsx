@@ -4,7 +4,7 @@ import DetailParameterHistoryTable from '../../components/table/DetailParameterH
 import apis from '../../shared/apis';
 import { useQuery } from '@tanstack/react-query';
 import { IParamsProps } from '../../shared/type/Interface';
-import SkeletonItemSingle from '../../components/suspense/SkeletonItemSingle';
+import SkeletonItemSingleSm from '../../components/suspense/SkeletonItemSingleSm';
 
 const DetailParameter = (props: IParamsProps) => {
   // 기계 세팅 값 호출 api
@@ -65,7 +65,7 @@ const DetailParameter = (props: IParamsProps) => {
         </div>
       </div>
       {/* -------------- 세팅 값 변경 이력 -------------- */}
-      <Suspense fallback={<SkeletonItemSingle />}>
+      <Suspense fallback={<SkeletonItemSingleSm />}>
         <DetailParameterHistoryTable view={props.view} />
       </Suspense>
     </Wrap>

@@ -27,9 +27,7 @@ const DetailParameterHistoryTable = (props: IParamsProps) => {
     getParameterHistoryData,
     {
       refetchOnWindowFocus: false,
-      onSuccess: (data) => {
-        console.log(data);
-      },
+      onSuccess: () => {},
       onError: () => {
         console.error('기계 세팅 값 히스토리 조회에 실패했습니다.');
       },

@@ -8,8 +8,9 @@ import DetailParameter from './DetailParameter';
 import DetailAlarm from './DetailAlarm';
 import DetailError from './DetailError';
 import SkeletonDetailInfoTable from '../../components/suspense/SkeletonDetailInfoTable';
-import SkeletonItem from '../../components/suspense/SkeletonItem';
 import { useParams } from 'react-router-dom';
+import SkeletonItem from '../../components/suspense/SkeletonItem';
+import SkeletonItemSingleBg from '../../components/suspense/SkeletonItemSingleBg';
 
 const Detail = () => {
   // url에 id값 받아오기
@@ -41,7 +42,9 @@ const Detail = () => {
           <Suspense fallback={<SkeletonItem />}>
             <DetailParameter view={view.idx} />
           </Suspense>
-          <DetailAlarm />
+          <Suspense fallback={<SkeletonItemSingleBg />}>
+            <DetailAlarm view={view.idx} />
+          </Suspense>
           <DetailError />
         </Content>
       </Container>

@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const SkeletonItemSingle = () => {
+const SkeletonItemSingleSm = () => {
   return (
     <Wrap>
       <Table></Table>
@@ -9,7 +9,7 @@ const SkeletonItemSingle = () => {
   );
 };
 
-export default SkeletonItemSingle;
+export default SkeletonItemSingleSm;
 
 const Wrap = styled.div`
   width: 100%;

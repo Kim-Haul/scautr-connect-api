@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { IoIosArrowForward } from 'react-icons/io';
 import styled from 'styled-components';
 import DetailDefaultInfo from './DetailDefaultInfo';
@@ -7,6 +7,7 @@ import DetailIo from './DetailIo';
 import DetailParameter from './DetailParameter';
 import DetailAlarm from './DetailAlarm';
 import DetailError from './DetailError';
+import SkeletonDetailTable from '../../components/suspense/SkeletonDetailTable';
 
 const Detail = () => {
   return (
@@ -20,7 +21,9 @@ const Detail = () => {
       </Title>
       <Container>
         <Top>
-          <DetailDefaultInfo />
+          <Suspense fallback={<SkeletonDetailTable />}>
+            <DetailDefaultInfo />
+          </Suspense>
           <Mobile />
         </Top>
         <div className="contour">

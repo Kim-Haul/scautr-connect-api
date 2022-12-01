@@ -28,6 +28,30 @@ export interface IDeleteRegistrationOptionApiProps {
 export interface IDeleteManagementApiProps {
   equipmentId: number[];
 }
+export interface IManagementApiProps {
+  installedDate: string | undefined;
+
+  macAddress: string | undefined;
+  modelId: number | undefined;
+  serialNumber: string | undefined;
+  option: string | undefined;
+
+  registrationNumber: string | undefined;
+  companyName: string | undefined;
+  companyAddress: string | undefined;
+  companyPhone: string | undefined;
+  companyEmail: string | undefined;
+  customerName: string | undefined;
+  customerDepartment: string | undefined;
+  customerPhone: string | undefined;
+  customerEmail: string | undefined;
+
+  supplierName: string | undefined;
+  supplierDepartment: string | undefined;
+  supplierPhone: string | undefined;
+  supplierEmail: string | undefined;
+  note: string | undefined;
+}
 
 // ------------------------ Sidebar.tsx
 export interface IViewProps {
@@ -101,6 +125,7 @@ export interface IRegistrationOptionProps {
   clickCheckBox: any;
 }
 export interface IRegistrationMachineTableProps {
+  // Management model select에서도 사용
   templateId?: number;
   template?: string;
   companyCode?: number;
@@ -113,13 +138,14 @@ export interface IRegistrationMachineTableProps {
   no?: number;
 }
 export interface IRegistrationOptionTableProps {
-  no: string;
-  optionId: number;
-  supplierCode: null;
-  model: string;
-  option: string;
-  regdate: string;
-  lifeSpan: string;
+  // Management option select에서도 사용
+  no?: string;
+  optionId?: number;
+  supplierCode?: null;
+  model?: string;
+  option?: string;
+  regdate?: string;
+  lifeSpan?: string;
   files?: any;
 }
 
@@ -135,7 +161,7 @@ export interface IPageProps {
 
 // ------------------------ Management.tsx
 export interface FormValues {
-  date?: string;
+  date?: string | undefined;
 
   company_name?: string;
   comapny_address?: string;
@@ -150,6 +176,7 @@ export interface FormValues {
   machine_serial_number?: string;
   mac_address?: string;
   registrationNumber?: string;
+  deliveryAddress?: string;
   customer_manager?: string;
   customer_contact?: string;
   customer_department?: string;
@@ -180,6 +207,10 @@ export interface IManagementTableProps {
 export interface ISwitchProps {
   modlink_click?: boolean | undefined;
   setModlinkClick?: Dispatch<SetStateAction<boolean>> | undefined;
+}
+export interface ISelectOptionProps {
+  value: number;
+  label: string;
 }
 
 // ------------------------ Login.tsx

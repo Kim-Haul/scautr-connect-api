@@ -45,9 +45,15 @@ const Signup = () => {
     } else {
       info = {
         name: data.company,
-        registrationNumber: data.registrationNumber1 + '-' + data.registrationNumber2 + '-' + data.registrationNumber3,
+        registrationNumber:
+          data.registrationNumber1 +
+          '-' +
+          data.registrationNumber2 +
+          '-' +
+          data.registrationNumber3,
         representative: data.representative,
-        phone: data.companyPhone1 + '-' + data.companyPhone2 + data.companyPhone3,
+        phone:
+          data.companyPhone1 + '-' + data.companyPhone2 + data.companyPhone3,
         user: {
           account: data.id,
           password: data.password,
@@ -98,7 +104,7 @@ const Signup = () => {
   // 이메일 인증
   const emailRef = useRef<string | undefined>('');
   emailRef.current = watch('email');
-  // 서버에서 response로 주는 인증코드를 담을 변수k
+  // 서버에서 response로 주는 인증코드를 담을 변수
   const [emailCode, setEmailCode] = useState();
   const checkEmail = async () => {
     try {

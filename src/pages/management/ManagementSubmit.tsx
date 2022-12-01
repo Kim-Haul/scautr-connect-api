@@ -1,28 +1,87 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { IoIosArrowForward } from 'react-icons/io';
 import { useForm } from 'react-hook-form';
-import { FormValues, IStyleProps } from '../../shared/type/Interface';
+import {
+  FormValues,
+  IStyleProps,
+  ISelectOptionProps,
+  IRegistrationOptionTableProps,
+  IRegistrationMachineTableProps,
+} from '../../shared/type/Interface';
 import Select from 'react-select';
 import Switch from '../../components/etc/Switch';
+import { useQuery } from '@tanstack/react-query';
+import apis from '../../shared/apis';
+import GoogleGeocode from '../../components/graph/GoogleGeocode';
 
 const ManagementSubmit = () => {
   const navigate = useNavigate();
+  // 비고 input 내용 담기
+  const noteRef = useRef<HTMLInputElement | any>(null);
 
-  const [modlink_click, setModlinkClick] = useState<boolean>(false);
+  // select 설비 선택 호출 api
+  const getSelectModel = async () => {
+    try {
+      const res = await apis.getSelectModel();
+      return res;
+    } catch (err) {
+      console.log('select 박스 설비 목록을 불러오는데 실패했습니다.');
+    }
+  };
+
+  // select 설비 선택 호출 쿼리
+  const { data: getSelectModelQuery } = useQuery(
+    ['loadSelectModel'],
+    getSelectModel,
+    {
+      refetchOnWindowFocus: false,
+      onSuccess: () => {},
+      onError: () => {
+        console.error('select 박스 설비 목록을 불러오는데 실패했습니다.');
+      },
+    }
+  );
+
+  // select 옵션 선택 호출 api
+  const getSelectOption = async () => {
+    try {
+      const res = await apis.getSelectOption();
+      return res;
+    } catch (err) {
+      console.log('select 박스 옵션 목록을 불러오는데 실패했습니다.');
+    }
+  };
+
+  // select 옵션 선택 호출 쿼리
+  const { data: getSelectOptionQuery } = useQuery(
+    ['loadSelectOption'],
+    getSelectOption,
+    {
+      refetchOnWindowFocus: false,
+      onSuccess: () => {},
+      onError: () => {
+        console.error('select 박스 옵션 목록을 불러오는데 실패했습니다.');
+      },
+    }
+  );
 
   // react-select 라이브러리 기본 옵션 및 스타일 적용
-  const MachineNameOptions = [
-    { value: '자동열성형포장기', label: '자동열성형포장기' },
-    { value: '금속검출기', label: '금속검출기' },
-    { value: '엑스레이식품검사기', label: '엑스레이식품검사기' },
+  const SelectModel = [
+    getSelectModelQuery?.data.result.map(
+      (v: IRegistrationMachineTableProps, i: number) => {
+        return { value: v.modelId, label: v.assignedName };
+      }
+    ),
   ];
 
-  const MachineOptions = [
-    { value: '자동정량충전기', label: '자동정량충전기' },
-    { value: '라벨러', label: '라벨러' },
-    { value: '파워케이블연장', label: '파워케이블연장' },
+  const SelectOptions = [
+    getSelectOptionQuery?.data.result.map(
+      (v: IRegistrationOptionTableProps, i: number) => {
+        return { value: v.optionId, label: v.option };
+      }
+    ),
   ];
 
   const colourStyles = {
@@ -34,16 +93,127 @@ const ManagementSubmit = () => {
     }),
   };
 
+  // select로 선택된 값 가져오기
+  const [selectModelState, setSelectModelState] = useState<number>();
+  const [selectOptionState, setSelectOptionState] = useState<string>();
+
+  // 폼 작성 로직
   const {
     register,
     handleSubmit,
+    clearErrors,
+    setError,
+    watch,
+    reset,
     formState: { errors },
   } = useForm<FormValues>({ mode: 'onChange' });
 
-  const onSubmit = async () => {};
+  // 모드링크 맥주소 인증
+  const [modlink_click, setModlinkClick] = useState<boolean>(false);
+  const [macCheckOk, setMacCheckOk] = useState<boolean>(false);
+  let currentMac = watch('mac_address');
+  const macCheck = async () => {
+    try {
+      await apis.macCheck(currentMac);
+      alert('인증되었습니다.');
+      setMacCheckOk(true);
+      clearErrors('mac_address');
+    } catch (e) {
+      setMacCheckOk(false);
+      setError('mac_address', { message: '유효하지 않은 맥주소입니다.' });
+    }
+  };
+
+  // 스위치 토글에 따라 렌더링 되는 input창 토글마다 초기화
+  useEffect(() => {
+    reset({ mac_address: '' });
+    setMacCheckOk(false);
+  }, [modlink_click, reset]);
+
+  const onSubmit = async (data: FormValues) => {
+    const content = {
+      installedDate: data.date,
+
+      macAddress: data.mac_address,
+      modelId: selectModelState,
+      serialNumber: data.machine_serial_number,
+      options: selectOptionState,
+      deliveryAddress: data.deliveryAddress,
+
+      registrationNumber: data.registrationNumber,
+      companyName: data.company_name,
+      companyAddress: data.comapny_address,
+      companyPhone: data.company_contact,
+      companyEmail: data.comapny_email,
+      customerName: data.customer_manager,
+      customerDepartment: data.customer_department,
+      customerPhone: data.customer_contact,
+      customerEmail: data.customer_email,
+
+      supplierName: data.company_manager,
+      supplierDepartment: data.manager_department,
+      supplierPhone: data.manager_phone,
+      supplierEmail: data.manager_email,
+      note: noteRef.current.value,
+
+      latitude: geom?.lat,
+      longitude: geom?.lng,
+    };
+
+    try {
+      await apis.addManagement(content);
+      navigate('/scautr/management');
+    } catch (e) {
+      alert('등록에 실패하였습니다. 문제가 지속되면 담당부서로 연락바랍니다.');
+    }
+  };
+
+  // 입력한 주소로부터 위도, 경도 받아오기
+  const [geom, setGeom] = useState<any>(null);
+  const currentAdress = watch('deliveryAddress');
+  const handlelocation = async () => {
+    if (currentAdress) {
+      const { lat, lng } = await GoogleGeocode(currentAdress);
+      setGeom({ lat: lat, lng: lng });
+    }
+  };
+
+  const temp = async () => {
+    const info = {
+      modelId: 81,
+      serialNumber: 'OTM500-3535',
+      macAddress: '',
+      installedDate: '2022-09-05',
+      deliveryAddress: '서울특별시 구로구 디지털로31길 12',
+      latitude: null,
+      longitude: null,
+      companyName: '아리따움',
+      companyAddress: '서울특별시 구로구 아리길3',
+      companyPhone: '010-2345-2345',
+      companyEmail: 'arittaum@naver.com',
+      registrationNumber: '111-1111-111',
+      customerName: '인아리',
+      customerDepartment: '영업부',
+      customerPhone: '010-2314-1321',
+      customerEmail: 'inari@naver.com',
+    };
+    try {
+      await apis.addManagement(info);
+      navigate('/scautr/management');
+    } catch (e) {
+      alert('등록에 실패하였습니다. 문제가 지속되면 담당부서로 연락바랍니다.');
+    }
+  };
 
   return (
     <Wrap>
+      <div
+        onClick={() => {
+          temp();
+        }}
+      >
+        전송
+      </div>
       <Title>
         <div className="main">신규 거래 등록</div>
         <div className="sub">
@@ -53,7 +223,6 @@ const ManagementSubmit = () => {
       </Title>
       <Container>
         <PostForm onSubmit={handleSubmit(onSubmit)}>
-          {/* -------------------- 1 --------------------  */}
           <Line>
             <div className="title">출고일</div>
             <hr />
@@ -92,18 +261,33 @@ const ManagementSubmit = () => {
                         autoComplete="off"
                         isInvalid={!!errors.mac_address}
                         id="inputMacAddress"
+                        disabled={macCheckOk}
                         {...register('mac_address', {
+                          validate: () =>
+                            macCheckOk ||
+                            '유효한 모드링크인지 인증확인이 필요합니다.',
                           required: '모드링크 MAC을 입력해주세요.',
                         })}
                       />
                       <div>
-                        <span>인증확인</span>
+                        <span
+                          onClick={() => {
+                            macCheck();
+                          }}
+                        >
+                          인증확인
+                        </span>
                       </div>
                     </div>
 
                     {errors.mac_address && (
                       <div className="err">{errors.mac_address.message}</div>
                     )}
+                    {macCheckOk ? (
+                      <div className="mac_address_err_resolve">
+                        인증되었습니다.
+                      </div>
+                    ) : null}
                   </React.Fragment>
                 ) : null}
               </div>
@@ -113,9 +297,11 @@ const ManagementSubmit = () => {
               <div className="content_left">
                 <label>설비 선택</label>
                 <Select
-                  options={MachineNameOptions}
-                  defaultValue={MachineNameOptions[0]}
+                  options={SelectModel[0]}
                   styles={colourStyles}
+                  onChange={(e: React.ChangeEvent<HTMLSelectElement> | any) => {
+                    setSelectModelState(e.value);
+                  }}
                 />
               </div>
               <div className="content_right">
@@ -140,11 +326,38 @@ const ManagementSubmit = () => {
             <div className="content full_width">
               <label>옵션 선택</label>
               <Select
-                options={MachineOptions}
-                defaultValue={MachineOptions[0]}
+                options={SelectOptions[0]}
                 styles={colourStyles}
                 isMulti
+                onChange={(e: React.ChangeEvent<HTMLSelectElement> | any) => {
+                  setSelectOptionState(
+                    e.map((v: ISelectOptionProps) => {
+                      return v.value;
+                    })
+                  );
+                }}
               />
+            </div>
+            {/* -------------------- 2-4 --------------------  */}
+            <div className="content">
+              <div className="content_left">
+                <label htmlFor="inputDeliveryAddress">기계 출고 위치</label>
+                <Input
+                  type="text"
+                  autoComplete="off"
+                  isInvalid={!!errors.deliveryAddress}
+                  id="inputDeliveryAddress"
+                  {...register('deliveryAddress', {
+                    required: '기계 출고 위치를 등록해주세요.',
+                  })}
+                  onBlur={() => {
+                    handlelocation();
+                  }}
+                />
+                {errors.deliveryAddress && (
+                  <div className="err">{errors.deliveryAddress.message}</div>
+                )}
+              </div>
             </div>
           </Line>
 
@@ -257,7 +470,7 @@ const ManagementSubmit = () => {
               <div className="content_right">
                 <label htmlFor="inputCustomerDepartment">소속</label>
                 <Input
-                  type="email"
+                  type="text"
                   autoComplete="off"
                   isInvalid={!!errors.customer_department}
                   id="inputCustomerDepartment"
@@ -384,7 +597,7 @@ const ManagementSubmit = () => {
             <div className="title">비고</div>
             <hr />
             <div className="content full_width">
-              <Input type="text" autoComplete="off" />
+              <Input type="text" autoComplete="off" ref={noteRef} />
             </div>
           </Line>
           {/* -------------------- 버튼 --------------------  */}
@@ -532,6 +745,11 @@ const Line = styled.div`
         color: #fff;
       }
     }
+  }
+  .mac_address_err_resolve {
+    color: #08a600;
+    font-size: 1.2rem;
+    margin-top: 0.2rem;
   }
 `;
 

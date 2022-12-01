@@ -17,6 +17,7 @@ $ yarn add google-maps-react
 $ yarn add react select
 $ yarn add @toast-ui/react-editor
 $ yarn add jwt-decode
+$ yarn add react-geocode
 
 
 // package.json
@@ -35,4 +36,5 @@ $ google-maps-react : ^2.0.6
 $ react-select : ^5.6.1
 $ @toast-ui/react-editor : ^3.2.2
 $ jwt-decode : ^3.1.2
+$ react-geocode : ^0.2.3
 ```

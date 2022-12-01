@@ -105,13 +105,13 @@ const ManagementTable = (props: IManagementProps) => {
                       {v.companyName}
                     </td>
                     {/* 설비등록시 기계명에 설정한 color를 backgroundColor로 뿌려주기 */}
-                    <td style={{ backgroundColor: v.color, color: 'black' }}>
+                    <td style={{ backgroundColor: v.color, color: 'white' }}>
                       {v.assignedName}
                     </td>
                     <td>{v.model}</td>
                     <td>{v.operation}</td>
                     <td>
-                      {v.deliveryAddress.length >= 8
+                      {v.deliveryAddress?.length >= 8
                         ? v.deliveryAddress.substr(0, 10) + '...'
                         : v.deliveryAddress}
                     </td>
@@ -192,14 +192,11 @@ const Wrap = styled.div`
   tr {
     cursor: pointer;
     &:hover {
-      background-color: #e9e9e9;
+      background-color: rgba(0, 123, 255, 0.1);
     }
     .nav_companyName {
       &:hover {
-        background-color: rgba(0, 123, 255, 0.1);
         color: #35a3dc;
-        text-decoration: underline;
-        text-underline-position: under;
       }
     }
   }

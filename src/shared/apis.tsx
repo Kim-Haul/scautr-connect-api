@@ -1,6 +1,7 @@
 import axios, { AxiosRequestConfig } from 'axios';
+import { getModeForUsageLocation } from 'typescript';
 import { getCookie, setCookieToken, deleteCookie } from './cookie';
-import { FormValues, IDeleteRegistrationModelApiProps, IDeleteRegistrationOptionApiProps, IDeleteManagementApiProps } from './type/Interface';
+import { FormValues, IDeleteRegistrationModelApiProps, IDeleteRegistrationOptionApiProps, IDeleteManagementApiProps, IManagementApiProps } from './type/Interface';
 
 const api = axios.create({
   // axios 버전이 바뀌면서 기존 문법이 안먹히던 이슈 발생
@@ -92,5 +93,12 @@ const apis = {
   //MANAGEMENT
   getManagementList: (currentPage: number, searchType: string, search: string) => api.post(`/equipment/filter?searchType=${searchType}&search=${search}&orderType=&page=${currentPage}&size=10`),
   deleteManagement: (data: IDeleteManagementApiProps) => api.delete('/equipment', { data: data }), // delete 요청에서 body값을 넘기려면 객체로 한번 감싸주어야 핢.
+  addManagement: (data: any) => api.post('/equipment', data),
+  //MANAGEMENT POST CONDITION
+  getSelectModel: () => api.get('equipment/model'),
+  getSelectOption: () => api.get('equipment/option'),
+  macCheck: (data: string | undefined) => api.post('equipment/mac', data),
+  //MANAGEMENT DETAIL
+  getDetailMachineInfo: (id: string | undefined) => api.get(`/equipment/${id}`)
 };
 export default apis;

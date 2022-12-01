@@ -1,9 +1,7 @@
 import React from 'react';
 import { IoIosArrowForward } from 'react-icons/io';
 import styled from 'styled-components';
-import DetailCustomerInfo from './DetailCustomerInfo';
-import DetailMachineInfo from './DetailMachineInfo';
-import DetailManagementInfo from './DetailManagementInfo';
+import DetailDefaultInfo from './DetailDefaultInfo';
 import Mobile from '../../components/exception/Mobile';
 import DetailIo from './DetailIo';
 import DetailParameter from './DetailParameter';
@@ -22,9 +20,7 @@ const Detail = () => {
       </Title>
       <Container>
         <Top>
-          <DetailCustomerInfo />
-          <DetailMachineInfo />
-          <DetailManagementInfo />
+          <DetailDefaultInfo />
           <Mobile />
         </Top>
         <div className="contour">

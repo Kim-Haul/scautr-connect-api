@@ -3,9 +3,56 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { BsBoxArrowInLeft, BsFillCameraFill } from 'react-icons/bs';
 import { AiOutlineRight } from 'react-icons/ai';
+import apis from '../../shared/apis';
+import { useQuery } from '@tanstack/react-query';
+import { deleteCookie } from '../../shared/cookie';
 
-const CompanyInfo = () => {
+const Setting = () => {
   const navigate = useNavigate();
+
+  // 마이페이지 & 계정설정 정보 호출 api
+  const myPage = async () => {
+    try {
+      const res = await apis.myPage();
+      return res;
+    } catch (err) {
+      console.log('계정설정 내 정보를 불러오는데 실패했습니다.');
+    }
+  };
+
+  // 마이페이지 & 계정설정 정보 호출 쿼리
+  const { data: myPageQuery } = useQuery(['loadMyPage'], myPage, {
+    refetchOnWindowFocus: false,
+    onSuccess: () => {},
+    onError: () => {
+      console.error('계정설정 내 정보를 불러오는데 실패했습니다.');
+    },
+  });
+
+  // 계정탈퇴 요청 api
+  const checkWithdrawalAccount = async () => {
+    if (
+      window.confirm(
+        '관련 데이터가 삭제될 수 있습니다.\n정말 탈퇴하시겠습니까?'
+      ) === true
+    ) {
+      const pw = prompt('비밀번호를 입력해주세요.', '');
+
+      if (pw != null) {
+        try {
+          await apis.withdrawAccount(pw);
+          deleteCookie('Authorization');
+          deleteCookie('RefreshToken');
+          alert('회원 탈퇴가 완료되었습니다!');
+        } catch (e) {
+          alert('현재 비밀번호를 정확히 입력해주세요!');
+        }
+      }
+    } else {
+      return;
+    }
+  };
+
   return (
     <Wrap>
       <Container>
@@ -31,30 +78,42 @@ const CompanyInfo = () => {
             <li>
               <div>
                 <div className="division">사용자이름</div>
-                <div className="content">전인호</div>
+                <div className="content">
+                  {myPageQuery?.data.result[0].name}
+                </div>
               </div>
             </li>
             <li>
               <div>
                 <div className="division">아이디</div>
-                <div className="content">scautr_master</div>
+                <div className="content">
+                  {myPageQuery?.data.result[0].account}
+                </div>
               </div>
             </li>
             <li>
               <div>
                 <div className="division">이메일</div>
-                <div className="content">soma@vitcon.co.kr</div>
+                <div className="content">
+                  {myPageQuery?.data.result[0].email}
+                </div>
               </div>
             </li>
             <li>
               <div>
                 <div className="division">연락처</div>
-                <div className="content">010-8790-6840</div>
+                <div className="content">
+                  {myPageQuery?.data.result[0].phone}
+                </div>
               </div>
             </li>
             <li
               onClick={() => {
-                navigate('/mypage/setting/change_pw');
+                navigate('/mypage/setting/change_pw', {
+                  state: {
+                    account: myPageQuery?.data.result[0].account,
+                  },
+                });
               }}
               className="click_possible"
             >
@@ -65,7 +124,14 @@ const CompanyInfo = () => {
               <AiOutlineRight />
             </li>
           </ul>
-          <div className="withdrawal">계정탈퇴</div>
+          <div
+            className="withdrawal"
+            onClick={() => {
+              checkWithdrawalAccount();
+            }}
+          >
+            계정탈퇴
+          </div>
         </Menu>
         <Footer>
           <div>
@@ -84,7 +150,7 @@ const CompanyInfo = () => {
   );
 };
 
-export default CompanyInfo;
+export default Setting;
 
 const Wrap = styled.div`
   width: 100%;

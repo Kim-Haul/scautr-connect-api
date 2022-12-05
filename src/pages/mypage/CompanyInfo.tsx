@@ -3,9 +3,37 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { RiErrorWarningFill } from 'react-icons/ri';
 import { BsBoxArrowInLeft } from 'react-icons/bs';
+import apis from '../../shared/apis';
+import { useQuery } from '@tanstack/react-query';
 
 const CompanyInfo = () => {
   const navigate = useNavigate();
+
+  // 회사 정보 호출 api
+  const myPageGetCompanyInfo = async () => {
+    try {
+      const res = await apis.myPageGetCompanyInfo();
+      return res;
+    } catch (err) {
+      console.log('회사 정보를 불러오는데 실패했습니다.');
+    }
+  };
+
+  // 회사 정보 호출 쿼리
+  const { data: myPageGetCompanyInfoQuery } = useQuery(
+    ['loadMyPageCompanyInfo'],
+    myPageGetCompanyInfo,
+    {
+      refetchOnWindowFocus: false,
+      onSuccess: (data) => {
+        console.log(data);
+      },
+      onError: () => {
+        console.error('회사 정보를 불러오는데 실패했습니다.');
+      },
+    }
+  );
+
   return (
     <Wrap>
       <Container>
@@ -17,26 +45,32 @@ const CompanyInfo = () => {
           <div className="desc">
             <RiErrorWarningFill />
             <div>
-              빛컨의 회사코드는 <span>1001</span> 입니다.
+              {myPageGetCompanyInfoQuery?.data.result[0].name}의 회사코드는{' '}
+              <span>
+                {myPageGetCompanyInfoQuery?.data.result[0].supplierCode}
+              </span>
+              입니다.
             </div>
           </div>
           <ul>
             <li>
               <div>
                 <div className="division">회사명</div>
-                <div className="content">빛컨</div>
+                <div className="content">
+                  {myPageGetCompanyInfoQuery?.data.result[0].name}
+                </div>
               </div>
             </li>
             <li>
               <div>
                 <div className="division">사업자 번호</div>
-                <div className="content">119-87-05616</div>
+                {myPageGetCompanyInfoQuery?.data.result[0].registrationNumber}
               </div>
             </li>
             <li>
               <div>
                 <div className="division">대표자명</div>
-                <div className="content">김민규</div>
+                {myPageGetCompanyInfoQuery?.data.result[0].representative}
               </div>
             </li>
           </ul>

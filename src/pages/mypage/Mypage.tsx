@@ -2,9 +2,57 @@ import React from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { AiOutlineRight, AiFillHome } from 'react-icons/ai';
+import { useQuery } from '@tanstack/react-query';
+import apis from '../../shared/apis';
+
+// 토큰 payload에 담겨오는 정보를 바탕으로 계정 권한 관리 접근 권한 검증
+import jwtDecode from 'jwt-decode';
+import { getCookie } from '../../shared/cookie';
+import { ITokenProps } from '../../shared/type/Interface';
 
 const Mypage = () => {
   const navigate = useNavigate();
+
+  const accessToken = getCookie('Authorization');
+  let authority: ITokenProps;
+  if (accessToken) {
+    authority = jwtDecode(accessToken);
+  }
+
+  const checkAuth = () => {
+    if (
+      authority.authority === 'ROLE_SYSTEM_ADMIN' ||
+      authority.authority === 'ROLE_SUPPLIER_ADMIN'
+    ) {
+      navigate('/mypage/approve', {
+        state: {
+          name: myPageQuery?.data.result[0].name,
+          account: myPageQuery?.data.result[0].account,
+        },
+      });
+    } else {
+      alert('접근 권한이 없습니다. 관리자에게 문의바랍니다.');
+    }
+  };
+
+  // 마이페이지 & 계정설정 정보 호출 api
+  const myPage = async () => {
+    try {
+      const res = await apis.myPage();
+      return res;
+    } catch (err) {
+      console.log('마이페이지 내 정보를 불러오는데 실패했습니다.');
+    }
+  };
+
+  // 마이페이지 & 계정설정 정보 호출 쿼리
+  const { data: myPageQuery } = useQuery(['loadMyPage'], myPage, {
+    refetchOnWindowFocus: false,
+    onSuccess: () => {},
+    onError: () => {
+      console.error('마이페이지 내 정보를 불러오는데 실패했습니다.');
+    },
+  });
   return (
     <Wrap>
       <Container>
@@ -20,8 +68,12 @@ const Mypage = () => {
           <div className="info_left">
             <img src="/images/profile.jpeg" alt="프로필 이미지" />
             <div className="user_info">
-              <div className="user_info_name">전인호 고객님</div>
-              <div className="user_info_email">soma@vitcon.co.kr</div>
+              <div className="user_info_name">
+                {myPageQuery?.data.result[0].name} 고객님
+              </div>
+              <div className="user_info_email">
+                {myPageQuery?.data.result[0].email}
+              </div>
             </div>
           </div>
           <div className="info_right">
@@ -40,8 +92,9 @@ const Mypage = () => {
               <AiOutlineRight />
             </li>
             <li
+              className="click_possible"
               onClick={() => {
-                alert('권한이 없습니다. 관리자에게 문의 바랍니다.');
+                checkAuth();
               }}
             >
               <span>계정 권한 관리</span>

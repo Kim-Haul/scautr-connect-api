@@ -76,7 +76,7 @@ const currentMonth = ('0' + (date.getMonth() + 1)).slice(-2);
 const day = ('0' + date.getDate()).slice(-2);
 
 const apis = {
-  // AUTH
+  // LOGIN
   login: (data: FormValues) => api.post('/auth/login', data),
   logout: () => api.delete('/auth/logout'),
   findPw: (data: FormValues) => api.post('/user/search/password', data),
@@ -84,6 +84,16 @@ const apis = {
   checkEmail: (data: string | undefined) => api.post('/user/email', data),
   signUpCompany: (data: FormValues) => api.post('/company', data),
   signUpUser: (data: FormValues) => api.post('/user', data),
+
+  // AUTH
+  myPage: () => api.get('/user'),
+  myPageGetCompanyInfo: () => api.get('/company/user'),
+  withdrawAccount: (data: string) => api.post('/user/withdrawal', data),
+  changePassword: (data: { account: string | undefined, password: string | undefined, newPassword: string | undefined}) => api.post('/user/reset/password', data),
+  // AUTH APPROVE
+  getCompanyAccountList: () => api.get('/admin/user'),
+  approveRequest: (id: string) => api.patch(`/admin/user/approval/${id}`),
+  rejectRequest: (id: string) => api.delete(`/admin/user/refusal/${id}`),
 
   // DASHBOARD
   getTotalStatus: () => api.get('/dashboard/status'),

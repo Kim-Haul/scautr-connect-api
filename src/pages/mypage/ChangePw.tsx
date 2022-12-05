@@ -1,12 +1,15 @@
 import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 import { BsBoxArrowInLeft } from 'react-icons/bs';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { FormValues, IStyleProps } from '../../shared/type/Interface';
+import apis from '../../shared/apis';
 
 const ChangePw = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const state = location.state;
 
   const {
     register,
@@ -15,7 +18,21 @@ const ChangePw = () => {
     formState: { errors },
   } = useForm<FormValues>({ mode: 'onChange' });
 
-  const onSubmit = () => {};
+  const onSubmit = async (data: { password?: string | undefined; new_password?: string | undefined }) => {
+    const info = {
+      account: state.account,
+      password: data.password,
+      newPassword: data.new_password,
+    };
+
+    try {
+      await apis.changePassword(info);
+      alert('비밀번호가 정상적으로 변경되었습니다!');
+      navigate(-1);
+    } catch (e) {
+      alert('현재 비밀번호를 정확히 입력해주세요!');
+    }
+  };
 
   const [capslock, setCapsLock] = useState<boolean>(false);
   const passwordRegEx =

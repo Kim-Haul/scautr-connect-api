@@ -14,6 +14,7 @@ import ManagementSubmit from './pages/management/ManagementSubmit';
 import Detail from './pages/management/Detail';
 import Registration from './pages/registration/Registration';
 import Mypage from './pages/mypage/Mypage';
+import Approve from './pages/mypage/Approve';
 import Setting from './pages/mypage/Setting';
 import CompanyInfo from './pages/mypage/CompanyInfo';
 import ChangePw from './pages/mypage/ChangePw';
@@ -72,6 +73,7 @@ function App() {
             </Route>
           </Route>
           <Route path="/mypage" element={isAuth ? <Mypage /> : <Navigate to="/" />} />
+          <Route path="/mypage/approve" element={isAuth ? <Approve /> : <Navigate to="/" />} />
           <Route path="/mypage/company_info" element={isAuth ? <CompanyInfo /> : <Navigate to="/" />} />
           <Route path="/mypage/setting" element={isAuth ? <Setting /> : <Navigate to="/" />} />
           <Route path="/mypage/setting/change_pw" element={isAuth ? <ChangePw /> : <Navigate to="/" />} />

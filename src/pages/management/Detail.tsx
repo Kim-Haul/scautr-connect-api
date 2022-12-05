@@ -11,6 +11,7 @@ import SkeletonDetailInfoTable from '../../components/suspense/SkeletonDetailInf
 import { useParams } from 'react-router-dom';
 import SkeletonItem from '../../components/suspense/SkeletonItem';
 import SkeletonItemSingleBg from '../../components/suspense/SkeletonItemSingleBg';
+import PartialError from '../../components/error/PartialError';
 
 const Detail = () => {
   // url에 id값 받아오기
@@ -35,20 +36,22 @@ const Detail = () => {
         <div className="contour">
           <div>실시간 데이터 모니터링</div>
         </div>
-        <Content>
-          <Suspense fallback={<SkeletonItem />}>
-            <DetailIo view={view.idx} />
-          </Suspense>
-          <Suspense fallback={<SkeletonItem />}>
-            <DetailParameter view={view.idx} />
-          </Suspense>
-          <Suspense fallback={<SkeletonItemSingleBg />}>
-            <DetailAlarm view={view.idx} />
-          </Suspense>
-          <Suspense fallback={<SkeletonItemSingleBg />}>
-            <DetailError view={view.idx} />
-          </Suspense>
-        </Content>
+        <PartialError>
+          <Content>
+            <Suspense fallback={<SkeletonItem />}>
+              <DetailIo view={view.idx} />
+            </Suspense>
+            <Suspense fallback={<SkeletonItem />}>
+              <DetailParameter view={view.idx} />
+            </Suspense>
+            <Suspense fallback={<SkeletonItemSingleBg />}>
+              <DetailAlarm view={view.idx} />
+            </Suspense>
+            <Suspense fallback={<SkeletonItemSingleBg />}>
+              <DetailError view={view.idx} />
+            </Suspense>
+          </Content>
+        </PartialError>
       </Container>
     </Wrap>
   );

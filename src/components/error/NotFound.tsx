@@ -8,8 +8,11 @@ const NotFound = () => {
     <Wrap>
       <img src="/images/logo.svg" alt="로고 이미지" />
       <div className="title">404 Not Found</div>
-      <div className="content">요청하신 페이지를 찾을 수 없습니다.</div>
-      <div className="content">주소를 확인해주세요.</div>
+      <div className="content">
+        요청하신 페이지를 찾을 수 없습니다. <br />
+        주소를 확인해주세요.
+      </div>
+
       <button
         onClick={() => {
           navigate('/');
@@ -40,6 +43,7 @@ const Wrap = styled.div`
   }
   .content {
     color: gray;
+    text-align: center;
     font-size: 1.4rem;
   }
 

@@ -25,6 +25,7 @@ import NoticeProgixDetail from './pages/board/NoticeProgixDetail';
 import NoticeProgixPost from './pages/board/NoticeProgixPost';
 import NoticeInquiry from './pages/board/NoticeInquiry';
 import NoticeInquiryDetail from './pages/board/NoticeInquiryDetail';
+import NotFound from './components/error/NotFound';
 import { ITokenProps } from './shared/type/Interface';
 
 // 토큰 payload에 담겨오는 정보를 바탕으로 로그인 권한 검증
@@ -74,6 +75,7 @@ function App() {
           <Route path="/mypage/company_info" element={isAuth ? <CompanyInfo /> : <Navigate to="/" />} />
           <Route path="/mypage/setting" element={isAuth ? <Setting /> : <Navigate to="/" />} />
           <Route path="/mypage/setting/change_pw" element={isAuth ? <ChangePw /> : <Navigate to="/" />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </ThemeProvider>
     </React.Fragment>

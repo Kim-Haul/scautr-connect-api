@@ -176,7 +176,7 @@ export interface FormValues {
   machine_serial_number?: string;
   mac_address?: string;
   registrationNumber?: string;
-  deliveryAddress?: string;
+
   customer_manager?: string;
   customer_contact?: string;
   customer_department?: string;
@@ -200,7 +200,7 @@ export interface IManagementTableProps {
   assignedName: string;
   model: string;
   operation: string;
-  deliveryAddress: string;
+  companyAddress: string;
   customerCode: string | null;
 }
 // ------------------------ Management.tsx & Switch.tsx
@@ -273,6 +273,10 @@ export interface IStyleProps {
 // ------------------------ Board.tsx
 export interface IToggleProps {
   toggleOn: boolean;
+}
+export interface INoticeProps {
+  searchTypeUrl: string;
+  searchInputUrl: string;
 }
 
 // ------------------------ Agree.tsx

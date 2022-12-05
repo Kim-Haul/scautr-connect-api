@@ -19,7 +19,7 @@ const GoogleMap = (props) => {
       const res = await apis.getLocation();
       return res;
     } catch (err) {
-      console.log('호출에러', err);
+      console.log('구글맵 설비 위치 호출에 실패했습니다.');
     }
   };
 
@@ -31,7 +31,7 @@ const GoogleMap = (props) => {
       refetchOnWindowFocus: false,
       onSuccess: () => {},
       onError: () => {
-        console.error('에러 발생!');
+        console.error('구글맵 설비 위치 호출에 실패했습니다.');
       },
     }
   );
@@ -64,7 +64,7 @@ const GoogleMap = (props) => {
         >
           <Content>
             <div className="company">{selectedElement.customerCorp}</div>
-            <div className="content">{selectedElement.deliveryAddress}</div>
+            <div className="content">{selectedElement.companyAddress}</div>
             <div className="model">
               {selectedElement.assignedName} ({selectedElement.model})
             </div>

@@ -1,5 +1,4 @@
 import axios, { AxiosRequestConfig } from 'axios';
-import { getModeForUsageLocation } from 'typescript';
 import { getCookie, setCookieToken, deleteCookie } from './cookie';
 import { FormValues, IDeleteRegistrationModelApiProps, IDeleteRegistrationOptionApiProps, IDeleteManagementApiProps, IManagementApiProps } from './type/Interface';
 
@@ -84,7 +83,6 @@ const apis = {
   checkEmail: (data: string | undefined) => api.post('/user/email', data),
   signUpCompany: (data: FormValues) => api.post('/company', data),
   signUpUser: (data: FormValues) => api.post('/user', data),
-
   // AUTH
   myPage: () => api.get('/user'),
   myPageGetCompanyInfo: () => api.get('/company/user'),
@@ -94,38 +92,44 @@ const apis = {
   getCompanyAccountList: () => api.get('/admin/user'),
   approveRequest: (id: string) => api.patch(`/admin/user/approval/${id}`),
   rejectRequest: (id: string) => api.delete(`/admin/user/refusal/${id}`),
-
   // DASHBOARD
   getTotalStatus: () => api.get('/dashboard/status'),
   getModlinkConnection: () => api.get('/dashboard/equipment/modlink'),
   getModelCardList: () => api.get('/dashboard/model/status'),
   toogleBookmark: (id: number) => api.patch(`/dashboard/bookmark/${id}`),
   getLocation: () => api.get('/dashboard/equipment/location'),
-
   // REGISTRATION
   getRegistrationModel: (currentPage: number, searchType: string, search: string) => api.get(`/model?page=${currentPage}&size=10&searchType=${searchType}&search=${search}`),
   deleteRegistrationModel: (data: IDeleteRegistrationModelApiProps) => api.delete('/model', { data: data }), // delete 요청에서 body값을 넘기려면 객체로 한번 감싸주어야 핢.
   // addRegistrationModel: 별도의 content-type 설정을 위해 RegistrationMachineModal 컴포넌트에서 따로 선언
-
   getRegistrationOption: (currentPage: number, searchType: string, search: string) => api.get(`/option?page=${currentPage}&size=10&searchType=${searchType}&search=${search}`),
   deleteRegistrationOption: (data: IDeleteRegistrationOptionApiProps) => api.delete('/option', { data: data }), // delete 요청에서 body값을 넘기려면 객체로 한번 감싸주어야 핢.
   // addRegistrationOption: 별도의 content-type 설정을 위해 RegistrationMachineModal 컴포넌트에서 따로 선언
-
   //MANAGEMENT
   getManagementList: (currentPage: number, searchType: string, search: string) => api.post(`/equipment/filter?searchType=${searchType}&search=${search}&orderType=&page=${currentPage}&size=10`),
   deleteManagement: (data: IDeleteManagementApiProps) => api.delete('/equipment', { data: data }), // delete 요청에서 body값을 넘기려면 객체로 한번 감싸주어야 핢.
   addManagement: (data: any) => api.post('/equipment', data),
   //MANAGEMENT POST CONDITION
-  getSelectModel: () => api.get('equipment/model'),
-  getSelectOption: () => api.get('equipment/option'),
-  macCheck: (data: string | undefined) => api.post('equipment/mac', data),
+  getSelectModel: () => api.get('/equipment/model'),
+  getSelectOption: () => api.get('/equipment/option'),
+  macCheck: (data: string | undefined) => api.post('/equipment/mac', data),
   //MANAGEMENT DETAIL
   getDetailMachineInfo: (id: string | undefined) => api.get(`/equipment/${id}`),
   plcInputData: (id: string | undefined) => api.get(`/equipment/${id}/input`),
   plcOutputData: (id: string | undefined)=> api.get(`/equipment/${id}/output`),
   getParameterData: (id: string | undefined) => api.get(`/equipment/${id}/parameter`),
-  getParameterHistoryData: (id: string | undefined, currentPage: number | undefined) => api.get(`equipment/${id}/parameter/history?page=${currentPage}&size=5&startDate=${`${year}-${lastMonth}-${day}`}&endDate=${`${year}-${currentMonth}-${day}`}`),
-  getAlarmHistoryData: (id : string | undefined, currentPage: number, last: string | undefined, current: string | undefined) => api.get(`equipment/${id}/alarm/history?page=${currentPage}&size=5&startDate=${last}&endDate=${current}`),
-  getErrorHistoryData: (id : string | undefined, currentPage: number, last: string | undefined, current: string | undefined) => api.get(`equipment/${id}/error/history?page=${currentPage}&size=5&startDate=${last}&endDate=${current}`),
+  getParameterHistoryData: (id: string | undefined, currentPage: number | undefined) => api.get(`/equipment/${id}/parameter/history?page=${currentPage}&size=5&startDate=${`${year}-${lastMonth}-${day}`}&endDate=${`${year}-${currentMonth}-${day}`}`),
+  getAlarmHistoryData: (id : string | undefined, currentPage: number, last: string | undefined, current: string | undefined) => api.get(`/equipment/${id}/alarm/history?page=${currentPage}&size=5&startDate=${last}&endDate=${current}`),
+  getErrorHistoryData: (id : string | undefined, currentPage: number, last: string | undefined, current: string | undefined) => api.get(`/equipment/${id}/error/history?page=${currentPage}&size=5&startDate=${last}&endDate=${current}`),
+  //BOARD NOTICE PROGIX
+  getNoticeProgix: (currentPage: number, searchType: string, search: string) => api.get(`/notice?page=${currentPage}&size=10&searchType=${searchType}&search=${search}`),
+  getNoticeProgixDetail: (id : string | undefined) => api.get(`/notice/${id}`),
+  addNoticeProgix: (data: any) => api.post('/notice', data),
+  deleteNoticeProgix: (id : string | undefined) => api.delete(`/notice/${id}`),
+  //BOARD INQUIRY
+  getNoticeInquiry: (currentPage: number, searchType: string, search: string) => api.get(`/inquiry?searchType=${searchType}&search=${search}&orderType=&order=&page=${currentPage}&size=10`),
+  getNoticeInquiryDetail: (id : string | undefined) => api.get(`/inquiry/${id}`),
+  addNoticeInquiry: (data: any) => api.post('/inquiry', data),
+  deleteNoticeInquiry: (id : string | undefined) => api.delete(`/inquiry/${id}`),
 };
 export default apis;

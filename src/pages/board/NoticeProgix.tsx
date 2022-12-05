@@ -1,28 +1,75 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import Mobile from '../../components/exception/Mobile';
 import NoticeProgixTable from '../../components/table/NoticeProgixTable';
 
 const NoticeProgix = () => {
   const navigate = useNavigate();
 
+  // 검색 input, 조건 select 상태관리
+  const [searchInput, setSearchInput] = useState<string>('');
+  const [searchType, setSearchType] = useState<string>('all');
+  // 검색 초기화시 input, select 초기화
+  const inputRef = useRef<HTMLInputElement | any>(null);
+  const selectRef = useRef<HTMLSelectElement | any>(null);
+  // 클라이언트단 url parameter 설정
+  const [searchParams, setSearchParams] = useSearchParams('');
+  const searchTypeUrl = searchParams.get('searchType') || 'all';
+  const searchInputUrl = searchParams.get('search') || '';
+
   return (
     <Wrap>
       <Container>
         <Top>
           <div className="top_left">
-            <select>
+            <select
+              onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                setSearchType(e.target.value);
+              }}
+              ref={selectRef}
+            >
               <option value="all">All</option>
-              <option value="notic">공지사항</option>
-              <option value="event">이벤트</option>
-              <option value="update">업데이트</option>
-              <option value="inspection">점검</option>
-              <option value="etc">기타</option>
+              <option value="title">제목</option>
+              <option value="content">내용</option>
+              <option value="classification">분류</option>
             </select>
-            <input type="text" placeholder="검색" />
-            <button className="btn_left">검색</button>
-            <button className="btn_right">초기화</button>
+            <input
+              type="text"
+              placeholder="검색"
+              onKeyPress={(e: React.KeyboardEvent<HTMLInputElement> | any) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault();
+                  setSearchParams(
+                    `search=${e.target.value}&searchType=${searchType}`
+                  );
+                }
+              }}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                setSearchInput(e.target.value);
+              }}
+              ref={inputRef}
+            />
+            <button
+              className="btn_left"
+              onClick={() => {
+                setSearchParams(
+                  `search=${searchInput}&searchType=${searchType}`
+                );
+              }}
+            >
+              검색
+            </button>
+            <button
+              className="btn_right"
+              onClick={() => {
+                setSearchParams('');
+                inputRef.current.value = '';
+                selectRef.current.value = 'all';
+              }}
+            >
+              초기화
+            </button>
           </div>
           <div className="top_right">
             <button
@@ -37,18 +84,10 @@ const NoticeProgix = () => {
         </Top>
         <Content>
           {/* -------- 프로직스 공지사항 -------- */}
-          <table>
-            <thead>
-              <tr>
-                <th className="th0">NO</th>
-                <th className="th1">분류</th>
-                <th className="th2">제목</th>
-                <th className="th3">작성자</th>
-                <th className="th4">작성일</th>
-              </tr>
-            </thead>
-            <NoticeProgixTable />
-          </table>
+          <NoticeProgixTable
+            searchTypeUrl={searchTypeUrl}
+            searchInputUrl={searchInputUrl}
+          />
           <Mobile />
         </Content>
       </Container>
@@ -134,35 +173,4 @@ const Top = styled.div`
   }
 `;
 
-const Content = styled.div`
-  table {
-    width: 100%;
-    margin-top: 10px;
-    border-collapse: collapse;
-    // 화면 축소시 테이블 column 깨지는거 방지
-    @media (max-width: 1400px) {
-      display: none;
-    }
-    th {
-      padding: 10px;
-      background-color: #f6f7fb;
-      border: 1px solid #e9edf3;
-    }
-
-    .th0 {
-      width: 5rem;
-    }
-    .th1 {
-      width: 10rem;
-    }
-    .th2 {
-      width: 43rem;
-    }
-    .th3 {
-      width: 11rem;
-    }
-    .th4 {
-      width: 10rem;
-    }
-  }
-`;
+const Content = styled.div``;

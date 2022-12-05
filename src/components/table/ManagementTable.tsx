@@ -111,9 +111,9 @@ const ManagementTable = (props: IManagementProps) => {
                     <td>{v.model}</td>
                     <td>{v.operation}</td>
                     <td>
-                      {v.deliveryAddress?.length >= 8
-                        ? v.deliveryAddress.substr(0, 10) + '...'
-                        : v.deliveryAddress}
+                      {v.companyAddress?.length >= 8
+                        ? v.companyAddress.substr(0, 10) + '...'
+                        : v.companyAddress}
                     </td>
                     <td>{v.customerCode === null ? '미사용' : '사용'}</td>
                   </tr>

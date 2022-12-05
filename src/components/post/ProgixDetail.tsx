@@ -1,49 +1,121 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { BiDotsVerticalRounded } from 'react-icons/bi';
-import { IToggleProps } from '../../shared/type/Interface';
+import apis from '../../shared/apis';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
 const ProgixDetail = () => {
   const [open_modal, setOpenModal] = useState<boolean>(false);
+  const navigate = useNavigate();
+
+  // url에 id값 받아오기
+  const view = useParams();
+
+  // 기계사 공지 세부사항 호출 api
+  const getNoticeProgixDetail = async () => {
+    try {
+      const res = await apis.getNoticeProgixDetail(view.idx);
+      return res;
+    } catch (err) {
+      console.log('기계사 공지 세부사항을 불러오는데 실패했습니다.');
+    }
+  };
+
+  // 기계사 공지 세부사항 호출 쿼리
+  const { data: NoticeProgixDetailQuery } = useQuery(
+    ['loadNoticeProgixDetail', view.idx],
+    getNoticeProgixDetail,
+    {
+      refetchOnWindowFocus: false,
+      onSuccess: () => {},
+      onError: () => {
+        console.error('기계사 공지 세부사항을 불러오는데 실패했습니다.');
+      },
+    }
+  );
+
+  // 기계사 해당 공지사항 삭제 api
+  const deleteNoticeProgix = async (id: string) => {
+    try {
+      const res = await apis.deleteNoticeProgix(id);
+      alert('삭제가 완료되었습니다.');
+      navigate('/scautr/board/notice/progix');
+      return res;
+    } catch (e) {
+      console.log('해당 공지사항 삭제에 실패하였습니다.');
+    }
+  };
+
+  // 쿼리 클라이언트 정의
+  const queryClient = useQueryClient();
+
+  // 기계사 해당 공지사항 삭제 쿼리
+  const { mutate: deleteNoticeProgixMutate } = useMutation(deleteNoticeProgix, {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['loadNoticeProgixDetail'] });
+    },
+  });
+
+  // 삭제 재확인 comfirm창
+  const checkDeleteNoticeProgix = (id: string) => {
+    if (window.confirm('정말 삭제하시겠습니까?') === true) {
+      deleteNoticeProgixMutate(id);
+    }
+  };
 
   return (
     <React.Fragment>
       <Content>
-        <div className="row title">냉각기 쿨러 모델 교체</div>
+        <div className="row title">
+          {NoticeProgixDetailQuery?.data.result[0].title}
+        </div>
         <div className="row info">
-          <div className="div">정지영(jyy****)</div>
-          <div className="div">2022-11-21</div>
+          <div className="div">
+            {NoticeProgixDetailQuery?.data.result[0].name} (
+            {NoticeProgixDetailQuery?.data.result[0].account})
+          </div>
+          <div className="div">
+            {NoticeProgixDetailQuery?.data.result[0].regdate}
+          </div>
           <BiDotsVerticalRounded
             onClick={() => {
               setOpenModal(!open_modal);
             }}
           />
           {open_modal ? (
-            <Modal toggleOn={open_modal}>
+            <Modal>
               <ul>
-                <li>수정하기</li>
-                <li>삭제하기</li>
+                <li
+                  onClick={() => {
+                    alert('준비 중인 기능입니다.');
+                  }}
+                >
+                  수정하기
+                </li>
+                <li
+                  onClick={() => {
+                    checkDeleteNoticeProgix(
+                      NoticeProgixDetailQuery?.data.result[0].noticeId
+                    );
+                  }}
+                >
+                  삭제하기
+                </li>
               </ul>
             </Modal>
           ) : null}
         </div>
         <div className="row content">
-          기존 EF-603 쿨러 재고 소진으로 인하여
-          <br />
-          11월 28일자 이후 주문건에 대해서는 DD-03 모델로 변경되어 출고됩니다.
-          <br />
-          <br />
-          참고 바랍니다.
-          <br />
-          <br />
+          {NoticeProgixDetailQuery?.data.result[0].content}
         </div>
       </Content>
-      <Bottom>
+      {/* <Bottom>
         <div className="column">▾ 이전글</div>
         <div className="column">고객센터 휴무안내</div>
         <div className="column">정지영</div>
         <div className="column">2022-11-01</div>
-      </Bottom>
+      </Bottom> */}
     </React.Fragment>
   );
 };
@@ -97,26 +169,26 @@ const Content = styled.div`
   }
 `;
 
-const Bottom = styled.div`
-  @media (max-width: 1200px) {
-    display: none;
-  }
-  display: grid;
-  grid-template-columns: 150px 1fr 150px 200px;
-  .column {
-    padding: 10px;
-    border: 1px solid #ced4da;
-    border-top: none;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    &:first-child,
-    &:nth-child(2),
-    &:nth-child(3) {
-      border-right: none;
-    }
-  }
-`;
+// const Bottom = styled.div`
+//   @media (max-width: 1200px) {
+//     display: none;
+//   }
+//   display: grid;
+//   grid-template-columns: 150px 1fr 150px 200px;
+//   .column {
+//     padding: 10px;
+//     border: 1px solid #ced4da;
+//     border-top: none;
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+//     &:first-child,
+//     &:nth-child(2),
+//     &:nth-child(3) {
+//       border-right: none;
+//     }
+//   }
+// `;
 
 const Modal = styled.div`
   position: absolute;
@@ -131,10 +203,6 @@ const Modal = styled.div`
   border: 1px solid ${(props) => props.theme.color.PastelBlue};
   box-shadow: 1px 1px 5px 1px #d4d4d4;
   color: #000;
-  @media (max-width: ${(props) => props.theme.breakpoints.TabletMin}) {
-    // 1200px 이하 화면에서는 display:none;
-    display: ${(props: IToggleProps) => props.toggleOn && 'none'};
-  }
   ul {
     list-style: none;
     li {

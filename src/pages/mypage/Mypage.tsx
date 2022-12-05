@@ -41,7 +41,7 @@ const Mypage = () => {
       const res = await apis.myPage();
       return res;
     } catch (err) {
-      console.log('마이페이지 내 정보를 불러오는데 실패했습니다.');
+      console.log('마이페이지 계정 정보를 불러오는데 실패했습니다.');
     }
   };
 
@@ -50,7 +50,7 @@ const Mypage = () => {
     refetchOnWindowFocus: false,
     onSuccess: () => {},
     onError: () => {
-      console.error('마이페이지 내 정보를 불러오는데 실패했습니다.');
+      console.error('마이페이지 계정 정보를 불러오는데 실패했습니다.');
     },
   });
   return (

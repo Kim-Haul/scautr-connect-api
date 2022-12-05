@@ -138,7 +138,6 @@ const ManagementSubmit = () => {
       modelId: selectModelState,
       serialNumber: data.machine_serial_number,
       options: selectOptionState,
-      deliveryAddress: data.deliveryAddress,
 
       registrationNumber: data.registrationNumber,
       companyName: data.company_name,
@@ -170,7 +169,7 @@ const ManagementSubmit = () => {
 
   // 입력한 주소로부터 위도, 경도 받아오기
   const [geom, setGeom] = useState<any>(null);
-  const currentAdress = watch('deliveryAddress');
+  const currentAdress = watch('comapny_address');
   const handlelocation = async () => {
     if (currentAdress) {
       const { lat, lng } = await GoogleGeocode(currentAdress);
@@ -178,42 +177,8 @@ const ManagementSubmit = () => {
     }
   };
 
-  const temp = async () => {
-    const info = {
-      modelId: 81,
-      serialNumber: 'OTM500-3535',
-      macAddress: '',
-      installedDate: '2022-09-05',
-      deliveryAddress: '서울특별시 구로구 디지털로31길 12',
-      latitude: null,
-      longitude: null,
-      companyName: '아리따움',
-      companyAddress: '서울특별시 구로구 아리길3',
-      companyPhone: '010-2345-2345',
-      companyEmail: 'arittaum@naver.com',
-      registrationNumber: '111-1111-111',
-      customerName: '인아리',
-      customerDepartment: '영업부',
-      customerPhone: '010-2314-1321',
-      customerEmail: 'inari@naver.com',
-    };
-    try {
-      await apis.addManagement(info);
-      navigate('/scautr/management');
-    } catch (e) {
-      alert('등록에 실패하였습니다. 문제가 지속되면 담당부서로 연락바랍니다.');
-    }
-  };
-
   return (
     <Wrap>
-      <div
-        onClick={() => {
-          temp();
-        }}
-      >
-        전송
-      </div>
       <Title>
         <div className="main">신규 거래 등록</div>
         <div className="sub">
@@ -338,27 +303,6 @@ const ManagementSubmit = () => {
                 }}
               />
             </div>
-            {/* -------------------- 2-4 --------------------  */}
-            <div className="content">
-              <div className="content_left">
-                <label htmlFor="inputDeliveryAddress">기계 출고 위치</label>
-                <Input
-                  type="text"
-                  autoComplete="off"
-                  isInvalid={!!errors.deliveryAddress}
-                  id="inputDeliveryAddress"
-                  {...register('deliveryAddress', {
-                    required: '기계 출고 위치를 등록해주세요.',
-                  })}
-                  onBlur={() => {
-                    handlelocation();
-                  }}
-                />
-                {errors.deliveryAddress && (
-                  <div className="err">{errors.deliveryAddress.message}</div>
-                )}
-              </div>
-            </div>
           </Line>
 
           {/* -------------------- 3 --------------------  */}
@@ -410,6 +354,9 @@ const ManagementSubmit = () => {
                   {...register('comapny_address', {
                     required: '주소를 입력해주세요.',
                   })}
+                  onBlur={() => {
+                    handlelocation();
+                  }}
                 />
                 {errors.comapny_address && (
                   <div className="err">{errors.comapny_address.message}</div>

@@ -1,16 +1,18 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import { deleteCookie } from '../../shared/cookie';
 
-const NotFound = () => {
+const ErrorComponent = () => {
   const navigate = useNavigate();
+
   return (
     <Wrap>
       <img src="/images/logo.svg" alt="로고 이미지" />
-      <div className="title">404 Not Found</div>
+      <div className="title">서버에서 해당 정보를 불러 올 수 없습니다.</div>
       <div className="content">
-        요청하신 페이지를 찾을 수 없습니다. <br />
-        주소를 확인해주세요.
+        잠시 후 다시 시도해주세요. <br />
+        관련 문제가 지속되면 담당 부서로 연락바랍니다.
       </div>
       <button
         onClick={() => {
@@ -20,11 +22,21 @@ const NotFound = () => {
       >
         돌아가기
       </button>
+      <button
+        onClick={() => {
+          deleteCookie('Authorization');
+          deleteCookie('RefreshToken');
+          navigate('/');
+        }}
+        style={{ background: '#FDAB3D' }}
+      >
+        처음으로
+      </button>
     </Wrap>
   );
 };
 
-export default NotFound;
+export default ErrorComponent;
 
 const Wrap = styled.div`
   width: 100%;

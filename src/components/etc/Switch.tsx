@@ -12,8 +12,7 @@ const Switch = (props: ISwitchProps) => {
         id="react-switch-new"
         type="checkbox"
         onClick={() => {
-          props.setModlinkClick!(!props.modlink_click);
-          props.setSelectRepresentative!(!props.selectRepresentative);
+          props._setClick!(!props._click);
         }}
       />
       <label className="react-switch-label" htmlFor="react-switch-new">

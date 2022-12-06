@@ -205,10 +205,8 @@ export interface IManagementTableProps {
 }
 // ------------------------ Management.tsx & Switch.tsx
 export interface ISwitchProps {
-  modlink_click?: boolean | undefined;
-  setModlinkClick?: Dispatch<SetStateAction<boolean>> | undefined;
-  selectRepresentative?: boolean | undefined;
-  setSelectRepresentative?: Dispatch<SetStateAction<boolean>> | undefined;
+  _click?: boolean | undefined;
+  _setClick?: Dispatch<SetStateAction<boolean>> | undefined;
 }
 export interface ISelectOptionProps {
   value: number;

@@ -109,7 +109,7 @@ const ManagementSubmit = () => {
   } = useForm<FormValues>({ mode: 'onChange' });
 
   // 모드링크 맥주소 인증
-  const [modlink_click, setModlinkClick] = useState<boolean>(false);
+  const [_click, _setClick] = useState<boolean>(false);
   const [macCheckOk, setMacCheckOk] = useState<boolean>(false);
   let currentMac = watch('mac_address');
   const macCheck = async () => {
@@ -128,7 +128,7 @@ const ManagementSubmit = () => {
   useEffect(() => {
     reset({ mac_address: '' });
     setMacCheckOk(false);
-  }, [modlink_click, reset]);
+  }, [_click, reset]);
 
   const onSubmit = async (data: FormValues) => {
     const content = {
@@ -211,13 +211,10 @@ const ManagementSubmit = () => {
             <div className="content">
               <div className="content_left">
                 <label> 스마트머신(MODLINK) 연동</label>
-                <Switch
-                  modlink_click={modlink_click}
-                  setModlinkClick={setModlinkClick}
-                />
+                <Switch _click={_click} _setClick={_setClick} />
               </div>
               <div className="content_right">
-                {modlink_click ? (
+                {_click ? (
                   <React.Fragment>
                     <label htmlFor="inputMacAddress">MAC</label>
                     <div className="macAddressbox">

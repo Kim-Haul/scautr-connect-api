@@ -2,8 +2,38 @@ import React from 'react';
 import styled from 'styled-components';
 import { Editor } from '@toast-ui/react-editor';
 import '@toast-ui/editor/dist/toastui-editor.css';
+import axios from 'axios';
+import { getCookie } from '../../shared/cookie';
 
 const ProgixToastEditor = (props: any) => {
+  // 파일 업로드를 위한 개별 content-Type 설정
+  const accessToken = getCookie('Authorization');
+  // 업로드 이미지 관리
+  const onUploadImage = async (blob: any, callback: any) => {
+    try {
+      const formData = new FormData();
+      formData.append('file', blob);
+      const url = await axios.post(
+        `${process.env.REACT_APP_BACKEND_TEMP_ADDRESS}/notice/image`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+      console.log('아아');
+      callback(
+        `${process.env.REACT_APP_S3_FILE_UPLOAD}/${url.data.result[0]}`,
+        'alt text'
+      );
+      props.SetImgList((state: any) => [...state, url.data.result[0]]);
+    } catch (err) {}
+
+    return false;
+  };
+
   return (
     <Wrap>
       <Editor
@@ -21,6 +51,9 @@ const ProgixToastEditor = (props: any) => {
           ['code', 'codeblock'],
         ]}
         useCommandShortcut={false} // 키보드 입력 컨트롤 방지
+        hooks={{
+          addImageBlobHook: onUploadImage,
+        }} // 이미지 가로채기
       ></Editor>
     </Wrap>
   );

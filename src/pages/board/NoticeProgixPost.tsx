@@ -12,20 +12,23 @@ const NoticeProgixPost = () => {
   // select로 선택된 값 가져오기
   const [selectSort, setSelectSort] = useState<string | undefined>('all');
   // 대표글 설정 상태 가져오기
-  const [selectRepresentative, setSelectRepresentative] =
-    useState<boolean>(false);
+  const [_click, _setClick] = useState<boolean>(false);
   // toastEditor content 내용 가져오기
   const editorRef = useRef<any>();
+  // 이미지 가로채기
+  const [imgList, SetImgList] = useState<string[]>([]);
 
   // 게시글 작성 요청
   const onSubmit = async () => {
     const content = {
-      classificationId: selectSort,
+      classificationId: Number(selectSort),
       title: titleRef.current.value,
       content: editorRef.current?.getInstance().getHTML(),
+      top: _click,
+      images: imgList,
     };
     try {
-      await apis.addManagement(content);
+      await apis.addNoticeProgix(content);
       navigate('/scautr/board/notice/progix');
     } catch (e) {
       alert('등록에 실패하였습니다. 문제가 지속되면 담당부서로 연락바랍니다.');
@@ -75,12 +78,11 @@ const NoticeProgixPost = () => {
                   setSelectSort(e.target.value);
                 }}
               >
-                <option value="all">All</option>
-                <option value="notic">공지사항</option>
-                <option value="event">이벤트</option>
-                <option value="update">업데이트</option>
-                <option value="inspection">점검</option>
-                <option value="etc">기타</option>
+                <option value="1">공지사항</option>
+                <option value="2">이벤트</option>
+                <option value="3">업데이트</option>
+                <option value="4">점검</option>
+                <option value="5">기타</option>
               </select>
             </div>
           </div>
@@ -93,14 +95,11 @@ const NoticeProgixPost = () => {
           <div className="row grid">
             <div className="grid_left">대표글 설정</div>
             <div className="grid_right">
-              <Switch
-                selectRepresentative={selectRepresentative}
-                setSelectRepresentative={setSelectRepresentative}
-              />
+              <Switch _click={_click} _setClick={_setClick} />
             </div>
           </div>
           <div className="row editor">
-            <ProgixToastEditor editorRef={editorRef} />
+            <ProgixToastEditor editorRef={editorRef} SetImgList={SetImgList} />
           </div>
         </Content>
       </Container>

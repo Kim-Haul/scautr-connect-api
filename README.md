@@ -18,6 +18,8 @@ $ yarn add react select
 $ yarn add @toast-ui/react-editor
 $ yarn add jwt-decode
 $ yarn add react-geocode
+$ yarn add dompurify
+$ yarn add @types/dompurify
 
 
 // package.json
@@ -37,4 +39,6 @@ $ react-select : ^5.6.1
 $ @toast-ui/react-editor : ^3.2.2
 $ jwt-decode : ^3.1.2
 $ react-geocode : ^0.2.3
+$ dompurify : ^2.4.1
+$ @types/dompurify : ^2.4.0
 ```

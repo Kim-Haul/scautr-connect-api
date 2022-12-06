@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { IoIosArrowDown } from 'react-icons/io';
 import { BsPencilSquare } from 'react-icons/bs';
@@ -6,10 +6,26 @@ import { AiFillCloseSquare } from 'react-icons/ai';
 import { useParams } from 'react-router-dom';
 import apis from '../../shared/apis';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import jwtDecode from 'jwt-decode';
+import { getCookie } from '../../shared/cookie';
+import { ITokenProps } from '../../shared/type/Interface';
+import Dompurify from 'dompurify';
 
 const InquiryDetail = () => {
   // url에 id값 받아오기
   const view = useParams();
+
+  // 토큰 payload에 담겨오는 정보를 바탕으로 답변 수정&삭제 버튼 노출 검증
+  const [isAuth, setIsAuth] = useState<string>('');
+  useEffect(() => {
+    const accessToken = getCookie('Authorization');
+    let authority: ITokenProps;
+
+    if (accessToken) {
+      authority = jwtDecode(accessToken);
+      setIsAuth(authority.sub);
+    }
+  }, []);
 
   // 문의사항 세부사항 호출 api
   const getNoticeInquiryDetail = async () => {
@@ -67,6 +83,37 @@ const InquiryDetail = () => {
     }
   };
 
+  const textareaRef = useRef<HTMLTextAreaElement | any>(null);
+  // 문의 세부사항 답변 등록 api
+  const addNoticeInquiry = async (id: string) => {
+    const content = {
+      inquiryId: id,
+      answer: textareaRef.current.value,
+    };
+    try {
+      const res = await apis.addNoticeInquiry(content);
+      return res;
+    } catch (err) {
+      console.log('답변 등록에 실패하였습니다.');
+    }
+  };
+
+  // 문의 세부사항 답변 등록 쿼리
+  const { mutate: addNoticeInquiryMutate } = useMutation(addNoticeInquiry, {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['loadNoticeInquiryDetail'] });
+    },
+  });
+
+  // 등록 재확인 comfirm창
+  const addNoticeInquiryCheck = (id: string) => {
+    if (window.confirm('답변을 작성하시겠습니까?') === true) {
+      addNoticeInquiryMutate(id);
+    } else {
+      return false;
+    }
+  };
+
   return (
     <React.Fragment>
       <Content>
@@ -100,25 +147,36 @@ const InquiryDetail = () => {
             </div>
             <div className="answer_content">
               <div className="answer_content_title">답변입니다.</div>
-              <div>{NoticeInquiryDetailQuery?.data.result[0].answer}</div>
-              <div className="answer_content_edit">
-                <span className="left_svg">
-                  <BsPencilSquare
-                    onClick={() => {
-                      alert('준비 중인 기능입니다.');
-                    }}
-                  />
-                </span>
-                <span className="right_svg">
-                  <AiFillCloseSquare
-                    onClick={() => {
-                      checkDeleteNoticeInquiry(
-                        NoticeInquiryDetailQuery?.data.result[0].inquiryId
-                      );
-                    }}
-                  />
-                </span>
-              </div>
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: Dompurify.sanitize(
+                    String(NoticeInquiryDetailQuery?.data.result[0].answer)
+                  ),
+                }}
+              ></div>
+              {isAuth ===
+              NoticeInquiryDetailQuery?.data.result[0].supplierAccount ? (
+                <React.Fragment>
+                  <div className="answer_content_edit">
+                    <span className="left_svg">
+                      <BsPencilSquare
+                        onClick={() => {
+                          alert('준비 중인 기능입니다.');
+                        }}
+                      />
+                    </span>
+                    <span className="right_svg">
+                      <AiFillCloseSquare
+                        onClick={() => {
+                          checkDeleteNoticeInquiry(
+                            NoticeInquiryDetailQuery?.data.result[0].inquiryId
+                          );
+                        }}
+                      />
+                    </span>
+                  </div>
+                </React.Fragment>
+              ) : null}
             </div>
           </React.Fragment>
         ) : (
@@ -128,8 +186,16 @@ const InquiryDetail = () => {
             </div>
             <hr />
             <div className="answer_textarea">
-              <textarea placeholder="내용을 입력해주세요." />
-              <button>답글작성</button>
+              <textarea placeholder="내용을 입력해주세요." ref={textareaRef} />
+              <button
+                onClick={() => {
+                  addNoticeInquiryCheck(
+                    NoticeInquiryDetailQuery?.data.result[0].inquiryId
+                  );
+                }}
+              >
+                답변작성
+              </button>
             </div>
           </React.Fragment>
         )}

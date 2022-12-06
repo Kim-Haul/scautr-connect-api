@@ -100,11 +100,46 @@ const Wrap = styled.div`
   }
 `;
 
+// const Page = styled.div`
+//   display: flex;
+//   cursor: pointer;
+//   ul {
+//     list-style: none;
+//     li {
+//       border: 1px solid #d4d4d4;
+//       width: 25px;
+//       height: 25px;
+//       color: #d4d4d4;
+//       display: flex;
+//       justify-content: center;
+//       align-items: center;
+//     }
+//   }
+// `;
+
+// 선이 이중으로 겹치는거 방지
 const Page = styled.div`
   display: flex;
   cursor: pointer;
   ul {
     list-style: none;
+    &:nth-child(1),
+    &:nth-child(2),
+    &:nth-child(3),
+    &:nth-child(4),
+    &:nth-child(5),
+    &:nth-child(6),
+    &:nth-child(7),
+    &:nth-child(8),
+    &:nth-child(9),
+    &:nth-child(10) {
+      li {
+        border-right: none;
+      }
+    }
+    &:last-child {
+      border-right: 1px solid #d4d4d4;
+    }
     li {
       border: 1px solid #d4d4d4;
       width: 25px;

@@ -3,10 +3,11 @@ import styled from 'styled-components';
 import { Editor } from '@toast-ui/react-editor';
 import '@toast-ui/editor/dist/toastui-editor.css';
 
-const ProgixToastEditor = () => {
+const ProgixToastEditor = (props: any) => {
   return (
     <Wrap>
       <Editor
+        ref={props.editorRef} // DOM 선택용 useRef
         placeholder="내용을 입력해주세요."
         previewStyle="vertical" // 미리보기 스타일 지정
         height="600px" // 에디터 창 높이

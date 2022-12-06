@@ -207,6 +207,8 @@ export interface IManagementTableProps {
 export interface ISwitchProps {
   modlink_click?: boolean | undefined;
   setModlinkClick?: Dispatch<SetStateAction<boolean>> | undefined;
+  selectRepresentative?: boolean | undefined;
+  setSelectRepresentative?: Dispatch<SetStateAction<boolean>> | undefined;
 }
 export interface ISelectOptionProps {
   value: number;

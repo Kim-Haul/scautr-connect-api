@@ -40,7 +40,7 @@ const RegistrationMachineModal = (props: IModalProps) => {
     formData.append('multipartFile', fileObjectRef.current.files[0]);
     formData.append('lifeSpan', data.duration);
     formData.append('note', noteRef.current.value);
-    formData.append('tempId ', selectRef.current.value);
+    formData.append('templateId ', selectRef.current.value);
 
     try {
       // 파일 업로드를 위한 개별 content-Type 설정
@@ -169,11 +169,11 @@ const RegistrationMachineModal = (props: IModalProps) => {
                 </Line>
                 {/* -------------------- 4 --------------------  */}
                 <Line>
-                  <label htmlFor="inputDuration">권장 사용기간</label>
+                  <label htmlFor="inputDuration">권장 사용기간(개월)</label>
                   <Input
                     type="text"
                     autoComplete="off"
-                    placeholder="2년 3개월"
+                    placeholder="24"
                     isInvalid={!!errors.duration}
                     id="inputDuration"
                     {...register('duration', {

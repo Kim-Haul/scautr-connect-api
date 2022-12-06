@@ -110,6 +110,7 @@ const ProgixDetail = () => {
           {NoticeProgixDetailQuery?.data.result[0].content}
         </div>
       </Content>
+      {/* 기획안 수정으로 인한 해당 섹션 잠시 보류 */}
       {/* <Bottom>
         <div className="column">▾ 이전글</div>
         <div className="column">고객센터 휴무안내</div>

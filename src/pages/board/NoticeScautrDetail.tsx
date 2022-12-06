@@ -24,7 +24,7 @@ const NoticeScautrDetail = () => {
             <button
               className="btn_right"
               onClick={() => {
-                navigate(-1);
+                navigate('/scautr/board/notice/scautr');
               }}
             >
               목록

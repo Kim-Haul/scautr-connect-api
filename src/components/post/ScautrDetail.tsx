@@ -16,10 +16,11 @@ const ScautrDetail = () => {
           <br />
         </div>
       </Content>
-      <Bottom>
+      {/* 기획안 수정으로 인한 해당 섹션 잠시 보류 */}
+      {/* <Bottom>
         <div className="column">▾ 이전글</div>
         <div className="column">(이벤트)제상기능 업데이트 안내</div>
-      </Bottom>
+      </Bottom> */}
     </React.Fragment>
   );
 };
@@ -43,21 +44,21 @@ const Content = styled.div`
   }
 `;
 
-const Bottom = styled.div`
-  @media (max-width: 1200px) {
-    display: none;
-  }
-  display: grid;
-  grid-template-columns: 150px 1fr;
-  .column {
-    padding: 10px;
-    border: 1px solid #ced4da;
-    border-top: none;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    &:first-child {
-      border-right: none;
-    }
-  }
-`;
+// const Bottom = styled.div`
+//   @media (max-width: 1200px) {
+//     display: none;
+//   }
+//   display: grid;
+//   grid-template-columns: 150px 1fr;
+//   .column {
+//     padding: 10px;
+//     border: 1px solid #ced4da;
+//     border-top: none;
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+//     &:first-child {
+//       border-right: none;
+//     }
+//   }
+// `;

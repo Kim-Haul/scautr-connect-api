@@ -167,7 +167,7 @@ const Card = styled.div`
     border: 1px solid #e1e1e1;
     min-height: 260px;
     display: grid;
-    grid-template-rows: min-height(70px) min-height(130px) 1fr;
+    grid-template-rows: min-height(70px) min-height(120px) 1fr;
     .top {
       min-height: 70px;
       padding: 10px;
@@ -186,7 +186,7 @@ const Card = styled.div`
       }
     }
     .middle {
-      min-height: 130px;
+      min-height: 120px;
       padding: 10px;
       border-bottom: 1px solid #e1e1e1;
       display: flex;

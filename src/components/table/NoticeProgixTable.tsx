@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { INoticeProps } from '../../shared/type/Interface';
 import Pagination10 from '../pagination/Pagination10';
 import apis from '../../shared/apis';
@@ -8,6 +8,7 @@ import { useQuery } from '@tanstack/react-query';
 
 const NoticeProgixTable = (props: INoticeProps) => {
   const navigate = useNavigate();
+  const location = useLocation();
   // 현재 페이지 상태값 및 시작 & 엑티브 페이지 상태값 저장
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [startPage, setStartPage] = useState<number>(1);
@@ -34,6 +35,8 @@ const NoticeProgixTable = (props: INoticeProps) => {
       currentPage,
       props.searchTypeUrl,
       props.searchInputUrl,
+      // 상위탭으로 컴포넌트 이동시 기존 캐시 데이터가 보이는 현상 방지
+      location.pathname,
     ],
     getNoticeProgix,
     {

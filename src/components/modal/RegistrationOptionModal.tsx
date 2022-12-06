@@ -117,11 +117,11 @@ const RegistrationOptionModal = (props: IModalProps) => {
                 </Line>
                 {/* -------------------- 3 --------------------  */}
                 <Line>
-                  <label htmlFor="inputDuration">권장 사용기간</label>
+                  <label htmlFor="inputDuration">권장 사용기간(개월)</label>
                   <Input
                     type="text"
                     autoComplete="off"
-                    placeholder="2년 3개월"
+                    placeholder="24"
                     isInvalid={!!errors.duration}
                     id="inputDuration"
                     {...register('duration', {

@@ -2,7 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import { ISwitchProps } from '../../shared/type/Interface';
 
-// ManagementSubmit에서 사용하는 MAC input창 조건부 렌더링을 위해 props 전달
+// ManagementSubmit에서 사용하는 MAC input창 조건부 렌더링을 위해 props 전달 &
+// 기계사 공지사항 작성시 대표글 작성여부 체크를 위한 props 전달
 const Switch = (props: ISwitchProps) => {
   return (
     <Wrap>
@@ -12,6 +13,7 @@ const Switch = (props: ISwitchProps) => {
         type="checkbox"
         onClick={() => {
           props.setModlinkClick!(!props.modlink_click);
+          props.setSelectRepresentative!(!props.selectRepresentative);
         }}
       />
       <label className="react-switch-label" htmlFor="react-switch-new">

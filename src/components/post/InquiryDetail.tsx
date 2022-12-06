@@ -1,36 +1,141 @@
 import React from 'react';
 import styled from 'styled-components';
 import { IoIosArrowDown } from 'react-icons/io';
+import { BsPencilSquare } from 'react-icons/bs';
+import { AiFillCloseSquare } from 'react-icons/ai';
+import { useParams } from 'react-router-dom';
+import apis from '../../shared/apis';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
 const InquiryDetail = () => {
+  // url에 id값 받아오기
+  const view = useParams();
+
+  // 문의사항 세부사항 호출 api
+  const getNoticeInquiryDetail = async () => {
+    try {
+      const res = await apis.getNoticeInquiryDetail(view.idx);
+      return res;
+    } catch (err) {
+      console.log('문의사항 세부내용을 불러오는데 실패했습니다.');
+    }
+  };
+
+  // 문의사항 세부사항 호출 쿼리
+  const { data: NoticeInquiryDetailQuery } = useQuery(
+    ['loadNoticeInquiryDetail', view.idx],
+    getNoticeInquiryDetail,
+    {
+      refetchOnWindowFocus: false,
+      onSuccess: () => {},
+      onError: () => {
+        console.error('문의사항 세부내용을 불러오는데 실패했습니다.');
+      },
+    }
+  );
+
+  // 문의 세부사항 답변 삭제 api
+  const deleteNoticeInquiry = async (id: string) => {
+    try {
+      const res = await apis.deleteNoticeInquiry(id);
+      alert('삭제가 완료되었습니다.');
+      return res;
+    } catch (e) {
+      console.log('문의사항 답변 삭제에 실패하였습니다.');
+    }
+  };
+
+  // 쿼리 클라이언트 정의
+  const queryClient = useQueryClient();
+
+  // 문의 세부사항 답변 삭제 쿼리
+  const { mutate: deleteNoticeInquiryMutate } = useMutation(
+    deleteNoticeInquiry,
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ['loadNoticeInquiryDetail'],
+        });
+      },
+    }
+  );
+
+  // 삭제 재확인 comfirm창
+  const checkDeleteNoticeInquiry = (id: string) => {
+    if (window.confirm('정말 삭제하시겠습니까?') === true) {
+      deleteNoticeInquiryMutate(id);
+    }
+  };
+
   return (
     <React.Fragment>
       <Content>
-        <div className="row title">Wifi-Link의 TCP,AP 관련 문의</div>
+        <div className="row title">
+          {NoticeInquiryDetailQuery?.data.result[0].title}
+        </div>
         <div className="row info">
-          <div className="div">신선식품</div>
-          <div className="div">최예랑(cyr****)</div>
-          <div className="div">2022-11-25</div>
+          <div className="div">
+            {NoticeInquiryDetailQuery?.data.result[0].customerCompany}
+          </div>
+          <div className="div">
+            {NoticeInquiryDetailQuery?.data.result[0].customerName}(
+            {NoticeInquiryDetailQuery?.data.result[0].customerAccount})
+          </div>
+          <div className="div">
+            {NoticeInquiryDetailQuery?.data.result[0].questionRegdate}
+          </div>
         </div>
         <div className="row content">
-          TF303 모델에 wifi 연결이 가능한가요?
-          <br />
-          가능하다면 해당 모델 추가 견적 문의 드립니다.
-          <br />
-          <br />
+          {NoticeInquiryDetailQuery?.data.result[0].question}
         </div>
       </Content>
       <Answer>
-        <div className="answer_title">
-          <span>답변</span> <IoIosArrowDown />
-        </div>
-        <hr />
-        <div className="answer_textarea">
-          <textarea placeholder="내용을 입력해주세요." />
-          <button>답글작성</button>
-        </div>
+        {NoticeInquiryDetailQuery?.data.result[0].status === '답변 완료' ? (
+          <React.Fragment>
+            <div className="answer_title">
+              <span className="answer_title_left">답변</span>
+              <span>
+                {NoticeInquiryDetailQuery?.data.result[0].supplierName}
+              </span>
+            </div>
+            <div className="answer_content">
+              <div className="answer_content_title">답변입니다.</div>
+              <div>{NoticeInquiryDetailQuery?.data.result[0].answer}</div>
+              <div className="answer_content_edit">
+                <span className="left_svg">
+                  <BsPencilSquare
+                    onClick={() => {
+                      alert('준비 중인 기능입니다.');
+                    }}
+                  />
+                </span>
+                <span className="right_svg">
+                  <AiFillCloseSquare
+                    onClick={() => {
+                      checkDeleteNoticeInquiry(
+                        NoticeInquiryDetailQuery?.data.result[0].inquiryId
+                      );
+                    }}
+                  />
+                </span>
+              </div>
+            </div>
+          </React.Fragment>
+        ) : (
+          <React.Fragment>
+            <div className="answer_title">
+              <span>답변</span> <IoIosArrowDown />
+            </div>
+            <hr />
+            <div className="answer_textarea">
+              <textarea placeholder="내용을 입력해주세요." />
+              <button>답글작성</button>
+            </div>
+          </React.Fragment>
+        )}
       </Answer>
-      <Bottom>
+      {/* 기획안 수정으로 인한 해당 섹션 잠시 보류 */}
+      {/* <Bottom>
         <div className="column">▾ 이전글</div>
         <div className="column">배송문의</div>
         <div className="column writer">
@@ -38,7 +143,7 @@ const InquiryDetail = () => {
           <span className="inquiry_writer_name"> 정지영(jyy****)</span>
         </div>
         <div className="column">2022-11-01</div>
-      </Bottom>
+      </Bottom> */}
     </React.Fragment>
   );
 };
@@ -103,6 +208,36 @@ const Answer = styled.div`
     svg {
       margin-left: 5px;
     }
+    .answer_title_left {
+      background-color: #35a3dc;
+      color: #fff;
+      padding: 2px;
+      width: 40px;
+      border-radius: 5px;
+      font-weight: 500;
+      text-align: center;
+      margin-right: 10px;
+    }
+  }
+  .answer_content {
+    margin-top: 5px;
+    .answer_content_title {
+      color: #35a3dc;
+      font-weight: 500;
+    }
+    .answer_content_edit {
+      margin-top: 5px;
+      svg {
+        color: gray;
+        cursor: pointer;
+      }
+      .left_svg {
+        margin-right: 5px;
+        svg {
+          width: 13px;
+        }
+      }
+    }
   }
   .answer_textarea {
     display: grid;
@@ -127,34 +262,34 @@ const Answer = styled.div`
   }
 `;
 
-const Bottom = styled.div`
-  @media (max-width: 1200px) {
-    display: none;
-  }
-  display: grid;
-  grid-template-columns: 150px 1fr 150px 200px;
-  .column {
-    padding: 3.6px;
-    border: 1px solid #ced4da;
-    border-top: none;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    &:first-child,
-    &:nth-child(2),
-    &:nth-child(3) {
-      border-right: none;
-    }
-  }
-  .column.writer {
-    display: flex;
-    flex-direction: column;
-    font-size: 1.5rem;
-    .inquiry_writer_company {
-      margin-bottom: -5px;
-      font-weight: 600;
-    }
-    .inquiry_writer_name {
-    }
-  }
-`;
+// const Bottom = styled.div`
+//   @media (max-width: 1200px) {
+//     display: none;
+//   }
+//   display: grid;
+//   grid-template-columns: 150px 1fr 150px 200px;
+//   .column {
+//     padding: 3.6px;
+//     border: 1px solid #ced4da;
+//     border-top: none;
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+//     &:first-child,
+//     &:nth-child(2),
+//     &:nth-child(3) {
+//       border-right: none;
+//     }
+//   }
+//   .column.writer {
+//     display: flex;
+//     flex-direction: column;
+//     font-size: 1.5rem;
+//     .inquiry_writer_company {
+//       margin-bottom: -5px;
+//       font-weight: 600;
+//     }
+//     .inquiry_writer_name {
+//     }
+//   }
+// `;

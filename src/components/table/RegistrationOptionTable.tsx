@@ -93,7 +93,7 @@ const RegistrationOptionTable = (props: IRegistrationOptionProps) => {
                     <td>-</td>
                     <td>{v.option}</td>
                     <td>{v.model}</td>
-                    <td>{v.lifeSpan}</td>
+                    <td>{v.lifeSpan}개월</td>
                     <td>옵션</td>
                     <td
                       className="file_download"

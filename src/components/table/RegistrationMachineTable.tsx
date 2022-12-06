@@ -93,7 +93,7 @@ const RegistrationMachineTable = (props: IRegistrationMachineProps) => {
                     <td>{v.template}</td>
                     <td>{v.assignedName}</td>
                     <td>{v.model}</td>
-                    <td>{v.lifeSpan}</td>
+                    <td>{v.lifeSpan}개월</td>
                     <td>기계</td>
                     <td
                       className="file_download"

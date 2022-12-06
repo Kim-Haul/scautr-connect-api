@@ -1,11 +1,36 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import Switch from '../../components/etc/Switch';
 import ProgixToastEditor from '../../components/post/ProgixToastEditor';
+import apis from '../../shared/apis';
 
 const NoticeProgixPost = () => {
   const navigate = useNavigate();
+  // 제목 가져오기
+  const titleRef = useRef<HTMLInputElement | any>(null);
+  // select로 선택된 값 가져오기
+  const [selectSort, setSelectSort] = useState<string | undefined>('all');
+  // 대표글 설정 상태 가져오기
+  const [selectRepresentative, setSelectRepresentative] =
+    useState<boolean>(false);
+  // toastEditor content 내용 가져오기
+  const editorRef = useRef<any>();
+
+  // 게시글 작성 요청
+  const onSubmit = async () => {
+    const content = {
+      classificationId: selectSort,
+      title: titleRef.current.value,
+      content: editorRef.current?.getInstance().getHTML(),
+    };
+    try {
+      await apis.addManagement(content);
+      navigate('/scautr/board/notice/progix');
+    } catch (e) {
+      alert('등록에 실패하였습니다. 문제가 지속되면 담당부서로 연락바랍니다.');
+    }
+  };
 
   return (
     <Wrap>
@@ -30,7 +55,14 @@ const NoticeProgixPost = () => {
             >
               목록
             </button>
-            <button className="btn_right">작성완료</button>
+            <button
+              className="btn_right"
+              onClick={() => {
+                onSubmit();
+              }}
+            >
+              작성완료
+            </button>
           </div>
         </Top>
         <Content>
@@ -38,7 +70,11 @@ const NoticeProgixPost = () => {
           <div className="row grid">
             <div className="grid_left">분류</div>
             <div className="grid_right">
-              <select>
+              <select
+                onChange={(e: React.ChangeEvent<HTMLSelectElement> | any) => {
+                  setSelectSort(e.target.value);
+                }}
+              >
                 <option value="all">All</option>
                 <option value="notic">공지사항</option>
                 <option value="event">이벤트</option>
@@ -51,17 +87,20 @@ const NoticeProgixPost = () => {
           <div className="row grid">
             <div className="grid_left">제목</div>
             <div className="grid_right">
-              <input type="text" />
+              <input type="text" ref={titleRef} />
             </div>
           </div>
           <div className="row grid">
             <div className="grid_left">대표글 설정</div>
             <div className="grid_right">
-              <Switch />
+              <Switch
+                selectRepresentative={selectRepresentative}
+                setSelectRepresentative={setSelectRepresentative}
+              />
             </div>
           </div>
           <div className="row editor">
-            <ProgixToastEditor />
+            <ProgixToastEditor editorRef={editorRef} />
           </div>
         </Content>
       </Container>

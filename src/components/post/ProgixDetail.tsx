@@ -4,6 +4,7 @@ import { BiDotsVerticalRounded } from 'react-icons/bi';
 import apis from '../../shared/apis';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { Viewer } from '@toast-ui/react-editor';
 
 const ProgixDetail = () => {
   const [open_modal, setOpenModal] = useState<boolean>(false);
@@ -107,7 +108,9 @@ const ProgixDetail = () => {
           ) : null}
         </div>
         <div className="row content">
-          {NoticeProgixDetailQuery?.data.result[0].content}
+          <Viewer
+            initialValue={NoticeProgixDetailQuery?.data.result[0].content}
+          />
         </div>
       </Content>
       {/* 기획안 수정으로 인한 해당 섹션 잠시 보류 */}

@@ -58,6 +58,11 @@ const NoticeProgixTable = (props: INoticeProps) => {
   // 페이지네이션 처리를 위한 토탈값
   const total = noticeProgixQuery?.data.count;
 
+  // list 첫번째 요소에 대표글 여부 확인하기
+  useEffect(() => {
+    props.setExistTop(noticeProgixQuery?.data.result[0].top);
+  }, [props, noticeProgixQuery?.data.result]);
+
   return (
     <Wrap>
       <table>
@@ -74,31 +79,66 @@ const NoticeProgixTable = (props: INoticeProps) => {
           {noticeProgixQuery?.data.result.map((v: any, i: number) => {
             return (
               <React.Fragment key={i}>
-                <tr
-                  onClick={() => {
-                    navigate(
-                      `/scautr/board/notice/progix/detail/${v.noticeId}`
-                    );
-                  }}
-                >
-                  <td>{v.no}</td>
-                  <td>{v.classification}</td>
-                  <td>{v.title}</td>
-                  <td>
-                    <div className="writer">
-                      <div className="writer_wrap">
-                        <img
-                          src="/images/board_profile.png"
-                          alt="프로필 이미지"
-                        />
-                        <span>
-                          {v.name}({v.account})
-                        </span>
+                {/* 대표글 설정 여부 검사 */}
+                {v.top === true ? (
+                  <tr
+                    onClick={() => {
+                      navigate(
+                        `/scautr/board/notice/progix/detail/${v.noticeId}`
+                      );
+                    }}
+                    style={{
+                      backgroundColor: '#0f5070',
+                      fontWeight: '500',
+                      color: '#fff',
+                    }}
+                  >
+                    <td>대표</td>
+                    <td>{v.classification}</td>
+                    <td>{v.title}</td>
+                    <td>
+                      <div className="writer">
+                        <div className="writer_wrap">
+                          <img
+                            src="/images/board_profile.png"
+                            alt="프로필 이미지"
+                            style={{ filter: 'invert(100%)' }}
+                          />
+                          <span>
+                            {v.name}({v.account})
+                          </span>
+                        </div>
                       </div>
-                    </div>
-                  </td>
-                  <td>{v.regdate}</td>
-                </tr>
+                    </td>
+                    <td>{v.regdate}</td>
+                  </tr>
+                ) : (
+                  <tr
+                    onClick={() => {
+                      navigate(
+                        `/scautr/board/notice/progix/detail/${v.noticeId}`
+                      );
+                    }}
+                  >
+                    <td>{v.no}</td>
+                    <td>{v.classification}</td>
+                    <td>{v.title}</td>
+                    <td>
+                      <div className="writer">
+                        <div className="writer_wrap">
+                          <img
+                            src="/images/board_profile.png"
+                            alt="프로필 이미지"
+                          />
+                          <span>
+                            {v.name}({v.account})
+                          </span>
+                        </div>
+                      </div>
+                    </td>
+                    <td>{v.regdate}</td>
+                  </tr>
+                )}
               </React.Fragment>
             );
           })}
@@ -156,7 +196,9 @@ const Wrap = styled.div`
   .writer {
     display: flex;
     align-items: center;
-    justify-content: center;
+    // td 내부에서 작성자 왼쪽 정렬 통일성을 위한 마진 추가
+    justify-content: left;
+    margin-left: 20px;
     .writer_wrap {
       width: 100%;
       display: flex;
@@ -172,7 +214,7 @@ const Wrap = styled.div`
   tr {
     cursor: pointer;
     &:hover {
-      background-color: #e9e9e9;
+      background-color: rgba(0, 123, 255, 0.1);
     }
   }
 `;

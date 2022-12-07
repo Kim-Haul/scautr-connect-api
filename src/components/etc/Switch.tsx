@@ -11,6 +11,7 @@ const Switch = (props: ISwitchProps) => {
         className="react-switch-checkbox"
         id="react-switch-new"
         type="checkbox"
+        disabled={props.existTop}
         onClick={() => {
           props._setClick!(!props._click);
         }}

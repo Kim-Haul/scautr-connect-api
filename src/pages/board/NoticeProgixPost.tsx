@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import Switch from '../../components/etc/Switch';
 import ProgixToastEditor from '../../components/post/ProgixToastEditor';
 import apis from '../../shared/apis';
@@ -10,18 +10,22 @@ const NoticeProgixPost = () => {
   // 제목 가져오기
   const titleRef = useRef<HTMLInputElement | any>(null);
   // select로 선택된 값 가져오기
-  const [selectSort, setSelectSort] = useState<string | undefined>('all');
+  const [selectSort, setSelectSort] = useState<number | undefined>(1);
   // 대표글 설정 상태 가져오기
   const [_click, _setClick] = useState<boolean>(false);
   // toastEditor content 내용 가져오기
   const editorRef = useRef<any>();
   // 이미지 가로채기
   const [imgList, SetImgList] = useState<string[]>([]);
+  // 대표글 여부 확인
+  const location = useLocation();
+  const state = location.state;
+  const existTop = state.existTop;
 
   // 게시글 작성 요청
   const onSubmit = async () => {
     const content = {
-      classificationId: Number(selectSort),
+      classificationId: selectSort,
       title: titleRef.current.value,
       content: editorRef.current?.getInstance().getHTML(),
       top: _click,
@@ -95,7 +99,15 @@ const NoticeProgixPost = () => {
           <div className="row grid">
             <div className="grid_left">대표글 설정</div>
             <div className="grid_right">
-              <Switch _click={_click} _setClick={_setClick} />
+              <Switch
+                _click={_click}
+                _setClick={_setClick}
+                existTop={existTop}
+              />
+              <span className="desc">
+                대표글은 1개만 설정이 가능합니다. 기존에 대표글이 있는경우
+                설정이 불가능합니다.
+              </span>
             </div>
           </div>
           <div className="row editor">
@@ -210,6 +222,11 @@ const Content = styled.div`
       input {
         width: 100%;
       }
+    }
+    .desc {
+      margin-left: 10px;
+      font-size: 1.2rem;
+      color: gray;
     }
   }
   .row.editor {

@@ -17,6 +17,8 @@ const NoticeProgix = () => {
   const [searchParams, setSearchParams] = useSearchParams('');
   const searchTypeUrl = searchParams.get('searchType') || 'all';
   const searchInputUrl = searchParams.get('search') || '';
+  // 공지사항 작성시, 대표글 여부에 따른 스위치 핸들링
+  const [existTop, setExistTop] = useState<boolean>(false);
 
   return (
     <Wrap>
@@ -75,7 +77,11 @@ const NoticeProgix = () => {
             <button
               className="btn_left"
               onClick={() => {
-                navigate('/scautr/board/notice/progix/post');
+                navigate('/scautr/board/notice/progix/post', {
+                  state: {
+                    existTop,
+                  },
+                });
               }}
             >
               <span>글쓰기</span>
@@ -87,6 +93,7 @@ const NoticeProgix = () => {
           <NoticeProgixTable
             searchTypeUrl={searchTypeUrl}
             searchInputUrl={searchInputUrl}
+            setExistTop={setExistTop}
           />
           <Mobile />
         </Content>

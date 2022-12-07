@@ -144,7 +144,7 @@ const Wrap = styled.div`
   tr {
     cursor: pointer;
     &:hover {
-      background-color: #e9e9e9;
+      background-color: rgba(0, 123, 255, 0.1);
     }
   }
 `;

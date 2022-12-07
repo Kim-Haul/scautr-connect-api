@@ -207,6 +207,7 @@ export interface IManagementTableProps {
 export interface ISwitchProps {
   _click?: boolean | undefined;
   _setClick?: Dispatch<SetStateAction<boolean>> | undefined;
+  existTop?: boolean;
 }
 export interface ISelectOptionProps {
   value: number;
@@ -277,6 +278,7 @@ export interface IToggleProps {
 export interface INoticeProps {
   searchTypeUrl: string;
   searchInputUrl: string;
+  setExistTop?: any;
 }
 
 // ------------------------ Agree.tsx

@@ -15,6 +15,8 @@ const Switch = (props: ISwitchProps) => {
         onClick={() => {
           props._setClick!(!props._click);
         }}
+        checked={props._click}
+        readOnly
       />
       <label className="react-switch-label" htmlFor="react-switch-new">
         <span className="react-switch-button" />

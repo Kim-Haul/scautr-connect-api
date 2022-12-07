@@ -91,7 +91,13 @@ const RegistrationMachineTable = (props: IRegistrationMachineProps) => {
                     </td>
                     <td>{v.no}</td>
                     <td>{v.template}</td>
-                    <td>{v.assignedName}</td>
+                    <td className="preview_color_td">
+                      {v.assignedName}
+                      <div
+                        className="circle"
+                        style={{ backgroundColor: v.color }}
+                      ></div>
+                    </td>
                     <td>{v.model}</td>
                     <td>{v.lifeSpan}개월</td>
                     <td>기계</td>
@@ -191,6 +197,22 @@ const Wrap = styled.div`
         color: #35a3dc;
         text-decoration: underline;
         text-underline-position: under;
+      }
+    }
+    .preview_color_td {
+      // td에 클래스명을 주니 기존에 td에 부여된 border가 중복으로 보이는 현상 핸들링
+      border: none;
+      border-bottom: 1px solid #e9edf3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      .circle {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background-color: gray;
+        margin-top: 2px;
+        margin-left: 8px;
       }
     }
   }

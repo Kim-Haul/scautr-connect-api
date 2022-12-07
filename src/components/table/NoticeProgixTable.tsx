@@ -60,7 +60,7 @@ const NoticeProgixTable = (props: INoticeProps) => {
 
   // list 첫번째 요소에 대표글 여부 확인하기
   useEffect(() => {
-    props.setExistTop(noticeProgixQuery?.data.result[0].top);
+    props.setExistTop(noticeProgixQuery?.data.result[0]?.top);
   }, [props, noticeProgixQuery?.data.result]);
 
   return (
@@ -89,7 +89,7 @@ const NoticeProgixTable = (props: INoticeProps) => {
                     }}
                     style={{
                       backgroundColor: '#0f5070',
-                      fontWeight: '500',
+                      fontWeight: '400',
                       color: '#fff',
                     }}
                   >

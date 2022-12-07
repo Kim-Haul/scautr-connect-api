@@ -136,6 +136,7 @@ export interface IRegistrationMachineTableProps {
   regdate?: string;
   files?: any;
   no?: number;
+  color?: string;
 }
 export interface IRegistrationOptionTableProps {
   // Management option select에서도 사용
@@ -175,6 +176,7 @@ export interface FormValues {
 
   machine_serial_number?: string;
   mac_address?: string;
+  mac?: string;
   registrationNumber?: string;
 
   customer_manager?: string;

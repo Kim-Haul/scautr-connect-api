@@ -1,10 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useQuery } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
 import apis from '../../shared/apis';
 import { IParamsProps } from '../../shared/type/Interface';
 
 const DetailDefaultInfo = (props: IParamsProps) => {
+  const navigate = useNavigate();
+
   // 디테일 페이지 기계 기본 정보 호출 api
   const getDetailMachineInfo = async () => {
     try {
@@ -34,7 +37,50 @@ const DetailDefaultInfo = (props: IParamsProps) => {
         <div className="customer_info_title">
           <div className="top_left">거래처 정보</div>
           <div className="top_right">
-            <button className="btn_left">수정하기</button>
+            <button
+              className="btn_left"
+              onClick={() => {
+                navigate('/scautr/management/edit', {
+                  state: {
+                    // 수정 페이지 defaultValue값 설정을 위해 state로 넘겨주기
+                    installedDate: detailMachineInfoQuery?.data.result[0].installedDate,
+                    equipmentId: detailMachineInfoQuery?.data.result[0].equipmentId,
+
+                    registrationNumber: detailMachineInfoQuery?.data.result[0].registrationNumber,
+                    // 기계명이랑 옵션을 그대로 edit로 넘겨서 select의 default 값으로 설정 고려사항
+                    assignedName: detailMachineInfoQuery?.data.result[0].assignedName,
+                    option: detailMachineInfoQuery?.data.result[0].option,
+                    serialNumber: detailMachineInfoQuery?.data.result[0].serialNumber,
+                    macAddress: detailMachineInfoQuery?.data.result[0].macAddress,
+                    modelId: detailMachineInfoQuery?.data.result[0].modelId,
+                    modelIndex: detailMachineInfoQuery?.data.result[0].modelIndex,
+                    options: detailMachineInfoQuery?.data.result[0].options,
+                    optionIndex: detailMachineInfoQuery?.data.result[0].optionIndex,
+
+                    companyName: detailMachineInfoQuery?.data.result[0].companyName,
+                    companyAddress: detailMachineInfoQuery?.data.result[0].companyAddress,
+                    companyPhone: detailMachineInfoQuery?.data.result[0].companyPhone,
+                    companyEmail: detailMachineInfoQuery?.data.result[0].companyEmail,
+                    customerName: detailMachineInfoQuery?.data.result[0].customerName,
+                    customerPhone: detailMachineInfoQuery?.data.result[0].customerPhone,
+                    customerEmail: detailMachineInfoQuery?.data.result[0].customerEmail,
+                    customerDepartment: detailMachineInfoQuery?.data.result[0].customerDepartment,
+                    customerId: detailMachineInfoQuery?.data.result[0].customerId,
+
+                    supplierName: detailMachineInfoQuery?.data.result[0].supplierName,
+                    note: detailMachineInfoQuery?.data.result[0].note,
+                    supplierDepartment: detailMachineInfoQuery?.data.result[0].supplierDepartment,
+                    supplierPhone: detailMachineInfoQuery?.data.result[0].supplierPhone,
+                    supplierEmail: detailMachineInfoQuery?.data.result[0].supplierEmail,
+
+                    latitude: detailMachineInfoQuery?.data.result[0].latitude,
+                    longitude: detailMachineInfoQuery?.data.result[0].longitude,
+                  },
+                });
+              }}
+            >
+              수정하기
+            </button>
             <button className="btn_left">A/S 이력</button>
             <button className="btn_right">알림전송</button>
           </div>

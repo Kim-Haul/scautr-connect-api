@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { IoIosArrowForward } from 'react-icons/io';
 import { useForm } from 'react-hook-form';
 import {
@@ -16,7 +16,10 @@ import { useQuery } from '@tanstack/react-query';
 import apis from '../../shared/apis';
 import GoogleGeocode from '../../components/graph/GoogleGeocode';
 
-const ManagementSubmit = () => {
+const ManagementSubmitEdit = () => {
+  const location = useLocation();
+  const state = location.state;
+
   const navigate = useNavigate();
   // 비고 input 내용 담기
   const noteRef = useRef<HTMLInputElement | any>(null);
@@ -93,9 +96,13 @@ const ManagementSubmit = () => {
     }),
   };
 
-  // select로 선택된 값 가져오기
-  const [selectModelState, setSelectModelState] = useState<number>();
-  const [selectOptionState, setSelectOptionState] = useState<string>();
+  // select로 선택된 값 가져오기 && 기존에 state로 넘어오는 상태를 초기값으로 지정
+  const [selectModelState, setSelectModelState] = useState<number>(
+    state.modelId
+  );
+  const [selectOptionState, setSelectOptionState] = useState<string>(
+    state.options
+  );
 
   // 폼 작성 로직
   const {
@@ -114,7 +121,10 @@ const ManagementSubmit = () => {
   let currentMac = watch('mac_address');
   const macCheck = async () => {
     try {
-      await apis.macCheck({ macAddress : currentMac });
+      await apis.macCheck({
+        macAddress: currentMac,
+        equipmentId: state.equipmentId,
+      });
       alert('인증되었습니다.');
       setMacCheckOk(true);
       clearErrors('mac_address');
@@ -133,6 +143,7 @@ const ManagementSubmit = () => {
   const onSubmit = async (data: FormValues) => {
     const content = {
       installedDate: data.date,
+      equipmentId: state.equipmentId,
 
       macAddress: data.mac_address,
       modelId: selectModelState,
@@ -157,11 +168,15 @@ const ManagementSubmit = () => {
 
       latitude: geom?.lat,
       longitude: geom?.lng,
+
+      // 기존에 등록되어있는 위도, 경도 들고오기
+      // latitude: geom?.lat || state.latitude,
+      // longitude: geom?.lng || state.longitude
     };
 
-    console.log(content)
+    console.log(content);
     try {
-      await apis.addManagement(content);
+      await apis.editManagement(content);
       navigate('/scautr/management');
     } catch (e) {
       alert('등록에 실패하였습니다. 문제가 지속되면 담당부서로 연락바랍니다.');
@@ -177,6 +192,18 @@ const ManagementSubmit = () => {
       setGeom({ lat: lat, lng: lng });
     }
   };
+
+  // 기존에 맥 어드레스가 있는 경우 Switch 핸들링
+  useEffect(() => {
+    if (state.macAddress != null) {
+      _setClick(true);
+    }
+  }, [state.macAddress]);
+
+  // 기존에 등록되어있는 위도, 경도 들고오기
+  useEffect(() => {
+    setGeom({ lat: state.latitude, lng: state.longitude });
+  }, [state]);
 
   return (
     <Wrap>
@@ -198,6 +225,7 @@ const ManagementSubmit = () => {
                 autoComplete="off"
                 isInvalid={!!errors.date}
                 id="inputDate"
+                defaultValue={state.installedDate}
                 {...register('date', {
                   required: '출고날짜를 입력해주세요.',
                 })}
@@ -225,6 +253,7 @@ const ManagementSubmit = () => {
                         isInvalid={!!errors.mac_address}
                         id="inputMacAddress"
                         disabled={macCheckOk}
+                        defaultValue={state.macAddress}
                         {...register('mac_address', {
                           validate: () =>
                             macCheckOk ||
@@ -242,7 +271,12 @@ const ManagementSubmit = () => {
                         </span>
                       </div>
                     </div>
-
+                    {/* 기존 맥주소가 있으면 기존 맥주소 표시 */}
+                    {state.macAddress ? (
+                      <div className="err" style={{ color: 'blue' }}>
+                        기존 맥주소 : {state.macAddress}
+                      </div>
+                    ) : null}
                     {errors.mac_address && (
                       <div className="err">{errors.mac_address.message}</div>
                     )}
@@ -265,6 +299,7 @@ const ManagementSubmit = () => {
                   onChange={(e: React.ChangeEvent<HTMLSelectElement> | any) => {
                     setSelectModelState(e.value);
                   }}
+                  defaultValue={SelectModel[0][state.modelIndex]}
                 />
               </div>
               <div className="content_right">
@@ -274,6 +309,7 @@ const ManagementSubmit = () => {
                   autoComplete="off"
                   isInvalid={!!errors.machine_serial_number}
                   id="inputMachineSerialNumber"
+                  defaultValue={state.serialNumber}
                   {...register('machine_serial_number', {
                     required: '시리얼 번호를 입력해주세요.',
                   })}
@@ -299,6 +335,9 @@ const ManagementSubmit = () => {
                     })
                   );
                 }}
+                defaultValue={state.optionIndex.map((v: any) => {
+                  return SelectOptions[0][v];
+                })}
               />
             </div>
           </Line>
@@ -316,6 +355,7 @@ const ManagementSubmit = () => {
                   autoComplete="off"
                   isInvalid={!!errors.date}
                   id="inputRegistrationNumber"
+                  defaultValue={state.registrationNumber}
                   {...register('registrationNumber', {
                     required: '사업자등록번호를 입력해주세요.',
                   })}
@@ -334,6 +374,7 @@ const ManagementSubmit = () => {
                   autoComplete="off"
                   isInvalid={!!errors.company_name}
                   id="inputCompanyName"
+                  defaultValue={state.companyName}
                   {...register('company_name', {
                     required: '거래처명을 입력해주세요.',
                   })}
@@ -349,6 +390,7 @@ const ManagementSubmit = () => {
                   autoComplete="off"
                   isInvalid={!!errors.comapny_address}
                   id="inputCompanyAddress"
+                  defaultValue={state.companyAddress}
                   {...register('comapny_address', {
                     required: '주소를 입력해주세요.',
                   })}
@@ -371,6 +413,7 @@ const ManagementSubmit = () => {
                   placeholder="-를 포함하여 입력해주세요"
                   isInvalid={!!errors.company_contact}
                   id="inputCompanyContact"
+                  defaultValue={state.companyPhone}
                   {...register('company_contact', {
                     required: '회사 연락처를 입력해주세요.',
                   })}
@@ -386,6 +429,7 @@ const ManagementSubmit = () => {
                   autoComplete="off"
                   isInvalid={!!errors.comapny_email}
                   id="inputCompanyEmail"
+                  defaultValue={state.companyEmail}
                   {...register('comapny_email', {
                     required: '회사 이메일을 입력해주세요.',
                   })}
@@ -404,6 +448,7 @@ const ManagementSubmit = () => {
                   autoComplete="off"
                   isInvalid={!!errors.customer_manager}
                   id="inputCustomerManager"
+                  defaultValue={state.customerName}
                   {...register('customer_manager', {
                     required: '해당 거래처 담당자를 입력해주세요.',
                   })}
@@ -419,6 +464,7 @@ const ManagementSubmit = () => {
                   autoComplete="off"
                   isInvalid={!!errors.customer_department}
                   id="inputCustomerDepartment"
+                  defaultValue={state.customerDepartment}
                   {...register('customer_department', {
                     required: '소속을 입력해주세요.',
                   })}
@@ -440,6 +486,7 @@ const ManagementSubmit = () => {
                   placeholder="-를 포함하여 입력해주세요"
                   isInvalid={!!errors.company_contact}
                   id="inputCustomerContact"
+                  defaultValue={state.customerPhone}
                   {...register('customer_contact', {
                     required: '해당 거래처 담당자 연락처를 입력해주세요.',
                   })}
@@ -455,6 +502,7 @@ const ManagementSubmit = () => {
                   autoComplete="off"
                   isInvalid={!!errors.customer_email}
                   id="inputCustomerEmail"
+                  defaultValue={state.customerEmail}
                   {...register('customer_email', {
                     required: '이메일을 입력해주세요.',
                   })}
@@ -478,6 +526,7 @@ const ManagementSubmit = () => {
                   autoComplete="off"
                   isInvalid={!!errors.company_manager}
                   id="inputCompanyManager"
+                  defaultValue={state.supplierName}
                   {...register('company_manager', {
                     required: '자사 거래처 관리자를 입력해주세요.',
                   })}
@@ -493,6 +542,7 @@ const ManagementSubmit = () => {
                   autoComplete="off"
                   isInvalid={!!errors.manager_department}
                   id="inputManagerDepartment"
+                  defaultValue={state.supplierDepartment}
                   {...register('manager_department', {
                     required: '소속을 입력해주세요.',
                   })}
@@ -512,6 +562,7 @@ const ManagementSubmit = () => {
                   placeholder="-를 포함하여 입력해주세요"
                   isInvalid={!!errors.manager_phone}
                   id="inputManagerPhone"
+                  defaultValue={state.supplierPhone}
                   {...register('manager_phone', {
                     required: '자사 관리자 연락처를 입력해주세요.',
                   })}
@@ -527,6 +578,7 @@ const ManagementSubmit = () => {
                   autoComplete="off"
                   isInvalid={!!errors.manager_email}
                   id="inputManagerEmail"
+                  defaultValue={state.supplierEmail}
                   {...register('manager_email', {
                     required: '자사 관리자 이메일을 입력해주세요.',
                   })}
@@ -542,7 +594,13 @@ const ManagementSubmit = () => {
             <div className="title">비고</div>
             <hr />
             <div className="content full_width">
-              <Input type="text" autoComplete="off" ref={noteRef} />
+              <Input
+                type="text"
+                autoComplete="off"
+                ref={noteRef}
+                // defaultValue로 설정되어 있는 값이 noteRef에 잡히는지는 검증 필요.
+                defaultValue={state.note}
+              />
             </div>
           </Line>
           {/* -------------------- 버튼 --------------------  */}
@@ -557,7 +615,7 @@ const ManagementSubmit = () => {
               >
                 취소
               </button>
-              <button className="btn_right">등록</button>
+              <button className="btn_right">수정</button>
             </div>
           </Line>
         </PostForm>
@@ -566,7 +624,7 @@ const ManagementSubmit = () => {
   );
 };
 
-export default ManagementSubmit;
+export default ManagementSubmitEdit;
 
 const Wrap = styled.div`
   width: 98.5%;

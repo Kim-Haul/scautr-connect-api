@@ -2,7 +2,7 @@ import React from 'react';
 import { GlobalStyles } from './shared/styles/GlobalStyle';
 import { ThemeProvider } from 'styled-components';
 import Theme from './shared/styles/Theme';
-import { Routes, Route, useNavigate, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import Login from './pages/login/Login';
 import FindPw from './pages/login/FindPw';
 import Agree from './pages/login/Agree';
@@ -11,6 +11,7 @@ import Layout from './components/common/Layout';
 import Dashboard from './pages/dashboard/Dashboard';
 import Management from './pages/management/Management';
 import ManagementSubmit from './pages/management/ManagementSubmit';
+import ManagementSubmitEdit from './pages/management/ManagementSubmitEdit';
 import Detail from './pages/management/Detail';
 import Registration from './pages/registration/Registration';
 import Mypage from './pages/mypage/Mypage';
@@ -65,6 +66,7 @@ function App() {
                 <Route path="/scautr/dashboard" element={<Dashboard />} />
                 <Route path="/scautr/management" element={<Management />} />
                 <Route path="/scautr/management/submit" element={<ManagementSubmit />} />
+                <Route path="/scautr/management/edit" element={<ManagementSubmitEdit />} />
                 <Route path="/scautr/management/detail/:idx" element={<Detail />} />
                 <Route path="/scautr/management/registration" element={<Registration />}
                 />

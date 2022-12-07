@@ -7,7 +7,7 @@ import NoticeInquiryTable from '../../components/table/NoticeInquiryTable';
 const NoticeInquiry = () => {
   // 검색 input, 조건 select 상태관리
   const [searchInput, setSearchInput] = useState<string>('');
-  const [searchType, setSearchType] = useState<string>('all');
+  const [searchType, setSearchType] = useState<string>('title');
   // 검색 초기화시 input, select 초기화
   const inputRef = useRef<HTMLInputElement | any>(null);
   const selectRef = useRef<HTMLSelectElement | any>(null);
@@ -27,9 +27,11 @@ const NoticeInquiry = () => {
               }}
               ref={selectRef}
             >
-              <option value="all">All</option>
-              <option value="use">사용문의</option>
-              <option value="etc">기타문의</option>
+              <option value="title">제목</option>
+              <option value="content">내용</option>
+              <option value="classification">분류</option>
+              <option value="customerCompany">회사이름</option>
+              <option value="customerName">고객명</option>
             </select>
             <input
               type="text"
@@ -62,7 +64,9 @@ const NoticeInquiry = () => {
               onClick={() => {
                 setSearchParams('');
                 inputRef.current.value = '';
-                selectRef.current.value = 'all';
+                selectRef.current.value = 'title';
+                setSearchInput('');
+                setSearchType('');
               }}
             >
               초기화

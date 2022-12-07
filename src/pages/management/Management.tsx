@@ -131,6 +131,8 @@ const Management = () => {
                 setCheckBoxArr([]);
                 inputRef.current.value = '';
                 selectRef.current.value = 'all';
+                setSearchInput('');
+                setSearchType('');
               }}
             >
               초기화

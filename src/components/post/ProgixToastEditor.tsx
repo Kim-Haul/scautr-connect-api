@@ -23,7 +23,6 @@ const ProgixToastEditor = (props: any) => {
           },
         }
       );
-      console.log('아아');
       callback(
         `${process.env.REACT_APP_S3_FILE_UPLOAD}/${url.data.result[0]}`,
         'alt text'

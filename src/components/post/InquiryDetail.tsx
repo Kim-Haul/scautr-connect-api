@@ -150,9 +150,10 @@ const InquiryDetail = () => {
               <div
                 dangerouslySetInnerHTML={{
                   __html: Dompurify.sanitize(
-                    String(NoticeInquiryDetailQuery?.data.result[0].answer)
+                    NoticeInquiryDetailQuery?.data.result[0].answer
                   ),
                 }}
+                className="answer_content_detail"
               ></div>
               {isAuth ===
               NoticeInquiryDetailQuery?.data.result[0].supplierAccount ? (
@@ -290,6 +291,9 @@ const Answer = styled.div`
     .answer_content_title {
       color: #35a3dc;
       font-weight: 500;
+    }
+    .answer_content_detail {
+      word-break: break-all;
     }
     .answer_content_edit {
       margin-top: 5px;

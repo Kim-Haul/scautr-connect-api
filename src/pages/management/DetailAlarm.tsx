@@ -111,7 +111,7 @@ const DetailAlarm = (props: IParamsProps) => {
                 return (
                   <React.Fragment key={i}>
                     <tr>
-                      <td>{v.tsAsiaSeoulDatetime}</td>
+                      <td>{v.ts}</td>
                       <td>{v.tf}</td>
                       <td>{v.name}</td>
                     </tr>

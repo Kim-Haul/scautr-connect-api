@@ -27,6 +27,9 @@ const InquiryDetail = () => {
     }
   }, []);
 
+  // 수정 여부 토글
+  const [isEdit, setIsEdit] = useState<boolean>(false);
+
   // 문의사항 세부사항 호출 api
   const getNoticeInquiryDetail = async () => {
     try {
@@ -105,10 +108,36 @@ const InquiryDetail = () => {
     },
   });
 
+  // 문의 세부사항 답변 수정 api
+  const editNoticeInquiry = async (id: string) => {
+    const content = {
+      inquiryId: id,
+      answer: textareaRef.current.value,
+    };
+    try {
+      const res = await apis.editNoticeInquiry(content);
+      setIsEdit(false);
+      return res;
+    } catch (err) {
+      console.log('답변 등록에 실패하였습니다.');
+    }
+  };
+
+  // 문의 세부사항 답변 수정 쿼리
+  const { mutate: editNoticeInquiryMutate } = useMutation(editNoticeInquiry, {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['loadNoticeInquiryDetail'] });
+    },
+  });
+
   // 등록 재확인 comfirm창
   const addNoticeInquiryCheck = (id: string) => {
     if (window.confirm('답변을 작성하시겠습니까?') === true) {
-      addNoticeInquiryMutate(id);
+      if (isEdit) {
+        editNoticeInquiryMutate(id);
+      } else {
+        addNoticeInquiryMutate(id);
+      }
     } else {
       return false;
     }
@@ -138,48 +167,85 @@ const InquiryDetail = () => {
       </Content>
       <Answer>
         {NoticeInquiryDetailQuery?.data.result[0].status === '답변 완료' ? (
-          <React.Fragment>
-            <div className="answer_title">
-              <span className="answer_title_left">답변</span>
-              <span>
-                {NoticeInquiryDetailQuery?.data.result[0].supplierName}
-              </span>
-            </div>
-            <div className="answer_content">
-              <div className="answer_content_title">답변입니다.</div>
-              <div
-                dangerouslySetInnerHTML={{
-                  __html: Dompurify.sanitize(
-                    NoticeInquiryDetailQuery?.data.result[0].answer
-                  ),
-                }}
-                className="answer_content_detail"
-              ></div>
-              {isAuth ===
-              NoticeInquiryDetailQuery?.data.result[0].supplierAccount ? (
-                <React.Fragment>
-                  <div className="answer_content_edit">
-                    <span className="left_svg">
-                      <BsPencilSquare
-                        onClick={() => {
-                          alert('준비 중인 기능입니다.');
-                        }}
-                      />
-                    </span>
-                    <span className="right_svg">
-                      <AiFillCloseSquare
-                        onClick={() => {
-                          checkDeleteNoticeInquiry(
-                            NoticeInquiryDetailQuery?.data.result[0].inquiryId
-                          );
-                        }}
-                      />
-                    </span>
-                  </div>
-                </React.Fragment>
-              ) : null}
-            </div>
-          </React.Fragment>
+          // 답변 완료 상태일때 답변이 뜨면서, 권한이 있으면 수정&삭제 버튼이 활성화 되는데
+          // 1. 답변 완료 상태를 한번 체크하고, 2. 수정 버튼을 클릭하였나를 한번 더 체크
+          isEdit ? (
+            <React.Fragment>
+              <div className="answer_title">
+                <span>답변</span> <IoIosArrowDown />
+              </div>
+              <hr />
+              <div className="answer_textarea">
+                <textarea
+                  placeholder="내용을 입력해주세요."
+                  defaultValue={NoticeInquiryDetailQuery?.data.result[0].answer}
+                  ref={textareaRef}
+                />
+                <div className="edit_btn_box">
+                  <button
+                    onClick={() => {
+                      addNoticeInquiryCheck(
+                        NoticeInquiryDetailQuery?.data.result[0].inquiryId
+                      );
+                    }}
+                  >
+                    수정
+                  </button>
+                  <button
+                    className="cancel"
+                    onClick={() => {
+                      setIsEdit(false);
+                    }}
+                  >
+                    취소
+                  </button>
+                </div>
+              </div>
+            </React.Fragment>
+          ) : (
+            <React.Fragment>
+              <div className="answer_title">
+                <span className="answer_title_left">답변</span>
+                <span>
+                  {NoticeInquiryDetailQuery?.data.result[0].supplierName}
+                </span>
+              </div>
+              <div className="answer_content">
+                <div className="answer_content_title">답변입니다.</div>
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: Dompurify.sanitize(
+                      NoticeInquiryDetailQuery?.data.result[0].answer
+                    ),
+                  }}
+                  className="answer_content_detail"
+                ></div>
+                {isAuth ===
+                NoticeInquiryDetailQuery?.data.result[0].supplierAccount ? (
+                  <React.Fragment>
+                    <div className="answer_content_edit">
+                      <span className="left_svg">
+                        <BsPencilSquare
+                          onClick={() => {
+                            setIsEdit(true);
+                          }}
+                        />
+                      </span>
+                      <span className="right_svg">
+                        <AiFillCloseSquare
+                          onClick={() => {
+                            checkDeleteNoticeInquiry(
+                              NoticeInquiryDetailQuery?.data.result[0].inquiryId
+                            );
+                          }}
+                        />
+                      </span>
+                    </div>
+                  </React.Fragment>
+                ) : null}
+              </div>
+            </React.Fragment>
+          )
         ) : (
           <React.Fragment>
             <div className="answer_title">
@@ -328,6 +394,20 @@ const Answer = styled.div`
       height: 100%;
       background-color: ${(props) => props.theme.color.PastelBlue};
       font-size: 1.5rem;
+    }
+    .edit_btn_box {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      button {
+        height: 45%;
+        font-size: 1.6rem;
+      }
+      .cancel {
+        background-color: #f6f7fb;
+        border: 1px solid #e9edf3;
+        color: #9497a8;
+      }
     }
   }
 `;

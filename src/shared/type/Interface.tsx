@@ -151,6 +151,8 @@ export interface IRegistrationOptionTableProps {
   regdate?: string;
   lifeSpan?: string;
   files?: any;
+  note?: string;
+  saveName?: string;
 }
 
 // ------------------------ Pagination.tsx

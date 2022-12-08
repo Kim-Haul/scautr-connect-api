@@ -39,16 +39,16 @@ const RegistrationMachineModal = (props: IModalProps) => {
       // 파일 업로드를 위한 개별 content-Type 설정
       const accessToken = getCookie('Authorization');
       // 추가 or 수정 여부에 따른 axios 요청 조건부 렌더링
+      const formData = new FormData();
+      formData.append('assignedName', data.assignedName);
+      formData.append('model', data.model);
+      formData.append('color', color);
+      formData.append('multipartFile', fileObjectRef.current.files[0]);
+      formData.append('lifeSpan', data.duration);
+      formData.append('note', noteRef.current.value);
+      formData.append('templateId', selectRef.current.value);
       if (props.info !== undefined) {
         // 수정
-        const formData = new FormData();
-        formData.append('assignedName', data.assignedName);
-        formData.append('model', data.model);
-        formData.append('color', color);
-        formData.append('multipartFile', fileObjectRef.current.files[0]);
-        formData.append('lifeSpan', data.duration);
-        formData.append('note', noteRef.current.value);
-        formData.append('templateId', selectRef.current.value);
         await axios.post(
           `${process.env.REACT_APP_BACKEND_TEMP_ADDRESS}/model/${props.info?.modelId}`,
           formData,
@@ -64,14 +64,6 @@ const RegistrationMachineModal = (props: IModalProps) => {
         }
       } else {
         // 추가
-        const formData = new FormData();
-        formData.append('assignedName', data.assignedName);
-        formData.append('model', data.model);
-        formData.append('color', color);
-        formData.append('multipartFile', fileObjectRef.current.files[0]);
-        formData.append('lifeSpan', data.duration);
-        formData.append('note', noteRef.current.value);
-        formData.append('templateId', selectRef.current.value);
         await axios.post(
           `${process.env.REACT_APP_BACKEND_TEMP_ADDRESS}/model`,
           formData,

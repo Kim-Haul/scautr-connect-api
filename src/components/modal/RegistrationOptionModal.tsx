@@ -10,6 +10,7 @@ import { AiOutlinePaperClip } from 'react-icons/ai';
 import { useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { getCookie } from '../../shared/cookie';
+import apis from '../../shared/apis';
 
 const RegistrationOptionModal = (props: IModalProps) => {
   // 비고 input 내용 담기
@@ -35,17 +36,38 @@ const RegistrationOptionModal = (props: IModalProps) => {
     try {
       // 파일 업로드를 위한 개별 content-Type 설정
       const accessToken = getCookie('Authorization');
-      await axios.post(
-        `${process.env.REACT_APP_BACKEND_TEMP_ADDRESS}/option`,
-        formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            Authorization: `Bearer ${accessToken}`,
-          },
+      // 추가 or 수정 여부에 따른 axios 요청 조건부 렌더링
+      if (props.info !== undefined) {
+        // 수정
+        await axios.post(
+          `${process.env.REACT_APP_BACKEND_TEMP_ADDRESS}/option/${props.info?.optionId}`,
+          formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        );
+        if (delFile && props.info?.delfiles != null) {
+          await apis.deleteRegistrationOptionFiles([props.info?.delfiles]);
         }
-      );
+      } else {
+        // 추가
+        await axios.post(
+          `${process.env.REACT_APP_BACKEND_TEMP_ADDRESS}/option`,
+          formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        );
+      }
+
       reset();
+      setDelFile(false);
       props.setIsOpen(false);
       // 등록 후, 기본 조회 쿼리 재호출
       queryClient.invalidateQueries({ queryKey: ['loadRegistrationOption'] });
@@ -62,6 +84,9 @@ const RegistrationOptionModal = (props: IModalProps) => {
     fileRef.current.value = e.target.value;
   };
 
+  // 수정시 기존 첨부파일 삭제 여부 확인
+  const [delFile, setDelFile] = useState<boolean>(false);
+
   return (
     <Wrap>
       <div className={props.open ? 'openModal modal' : 'modal'}>
@@ -73,6 +98,7 @@ const RegistrationOptionModal = (props: IModalProps) => {
                 className="close"
                 onClick={() => {
                   reset();
+                  setDelFile(false);
                   props.setIsOpen(false);
                 }}
               >
@@ -90,6 +116,7 @@ const RegistrationOptionModal = (props: IModalProps) => {
                     placeholder="접착 라벨기"
                     isInvalid={!!errors.assignedName}
                     id="inputOption"
+                    defaultValue={props.info?.option}
                     {...register('option', {
                       required: '옵션명을 입력해주세요.',
                     })}
@@ -107,6 +134,7 @@ const RegistrationOptionModal = (props: IModalProps) => {
                     placeholder="CF303"
                     isInvalid={!!errors.model}
                     id="inputModel"
+                    defaultValue={props.info?.model}
                     {...register('model', {
                       required: '모델명을 입력해주세요.',
                     })}
@@ -121,9 +149,10 @@ const RegistrationOptionModal = (props: IModalProps) => {
                   <Input
                     type="text"
                     autoComplete="off"
-                    placeholder="24"
+                    placeholder="숫자만 입력해주세요. (ex: 24)"
                     isInvalid={!!errors.duration}
                     id="inputDuration"
+                    defaultValue={props.info?.lifeSpan}
                     {...register('duration', {
                       required: '권장 사용기간을 입력해주세요.',
                     })}
@@ -137,8 +166,14 @@ const RegistrationOptionModal = (props: IModalProps) => {
                 <Line>
                   <div className="filebox">
                     <label htmlFor="inputAttach">첨부파일</label>
+                    {/* input 커스마이징 껍데기 */}
                     <div className="upload-name-div">
-                      <input className="upload-name" ref={fileRef} readOnly />
+                      <input
+                        className="upload-name"
+                        ref={fileRef}
+                        defaultValue={props.info?.multipartFile}
+                        readOnly
+                      />
                       <label htmlFor="inputAttach">
                         <AiOutlinePaperClip />
                       </label>
@@ -150,10 +185,23 @@ const RegistrationOptionModal = (props: IModalProps) => {
                       id="inputAttach"
                       onChange={(e) => {
                         changeFile(e);
+                        setDelFile(true);
                       }}
                       ref={fileObjectRef}
                     />
                   </div>
+                  {props.info?.multipartFile && delFile === false ? (
+                    <div
+                      className="attach"
+                      style={{ color: 'red', cursor: 'pointer' }}
+                      onClick={() => {
+                        fileRef.current.value = '';
+                        setDelFile(true);
+                      }}
+                    >
+                      기존 첨부파일 삭제
+                    </div>
+                  ) : null}
                   <div className="attach">하나의 파일만 선택이 가능합니다.</div>
                 </Line>
                 {/* -------------------- 5 --------------------  */}
@@ -162,6 +210,7 @@ const RegistrationOptionModal = (props: IModalProps) => {
                   <textarea
                     autoComplete="off"
                     id="inputTextarea"
+                    defaultValue={props.info?.note}
                     ref={noteRef}
                   />
                 </Line>

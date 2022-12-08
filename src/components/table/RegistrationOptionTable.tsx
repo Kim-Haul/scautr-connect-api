@@ -7,12 +7,18 @@ import {
   IRegistrationOptionTableProps,
   IRegistrationOptionProps,
 } from '../../shared/type/Interface';
+import RegistrationOptionModal from '../modal/RegistrationOptionModal';
 
 const RegistrationOptionTable = (props: IRegistrationOptionProps) => {
   // 현재 페이지 상태값 및 시작 & 엑티브 페이지 상태값 저장
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [startPage, setStartPage] = useState<number>(1);
   const [active, setActive] = useState<string>('1');
+
+  // 내용 수정을 위한 현재값 저장
+  const [info, setInfo] = useState<any>({});
+  // 수정 모달창 토글
+  const [is_open_edit, setIsOpenEdit] = useState<boolean>(false);
 
   // 등록된 설비 목록 호출 api
   const getRegistrationOption = async () => {
@@ -77,7 +83,19 @@ const RegistrationOptionTable = (props: IRegistrationOptionProps) => {
             (v: IRegistrationOptionTableProps, i: number) => {
               return (
                 <React.Fragment key={i}>
-                  <tr>
+                  <tr
+                    onClick={() => {
+                      setInfo({
+                        option: v.option,
+                        model: v.model,
+                        optionId: v.optionId,
+                        lifeSpan: v.lifeSpan,
+                        note: v.note,
+                        multipartFile: v.files[0]?.name,
+                        delfiles: v.files[0]?.fileId,
+                      });
+                    }}
+                  >
                     <td>
                       <input
                         type="checkbox"
@@ -91,7 +109,14 @@ const RegistrationOptionTable = (props: IRegistrationOptionProps) => {
                     </td>
                     <td>{v.no}</td>
                     <td>-</td>
-                    <td>{v.option}</td>
+                    <td
+                      className="option_title"
+                      onClick={() => {
+                        setIsOpenEdit(true);
+                      }}
+                    >
+                      {v.option}
+                    </td>
                     <td>{v.model}</td>
                     <td>{v.lifeSpan}개월</td>
                     <td>옵션</td>
@@ -119,6 +144,15 @@ const RegistrationOptionTable = (props: IRegistrationOptionProps) => {
           )}
         </tbody>
       </table>
+
+      {/* 수정모달 */}
+      <RegistrationOptionModal
+        open={is_open_edit}
+        setIsOpen={setIsOpenEdit}
+        info={info}
+        header="옵션 정보 수정"
+      />
+
       <Pagination10
         total={total}
         setCurrentPage={setCurrentPage}
@@ -192,6 +226,11 @@ const Wrap = styled.div`
         color: #35a3dc;
         text-decoration: underline;
         text-underline-position: under;
+      }
+    }
+    .option_title {
+      &:hover {
+        color: #35a3dc;
       }
     }
   }

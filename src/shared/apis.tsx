@@ -106,6 +106,7 @@ const apis = {
   getRegistrationOption: (currentPage: number, searchType: string, search: string) => api.get(`/option?page=${currentPage}&size=10&searchType=${searchType}&search=${search}`),
   deleteRegistrationOption: (data: IDeleteRegistrationOptionApiProps) => api.delete('/option', { data: data }), // delete 요청에서 body값을 넘기려면 객체로 한번 감싸주어야 핢.
   // addRegistrationOption: 별도의 content-type 설정을 위해 RegistrationMachineModal 컴포넌트에서 따로 선언
+  deleteRegistrationOptionFiles: (data: number[]) => api.delete('/option/file', { data: data }),
   //MANAGEMENT
   getManagementList: (currentPage: number, searchType: string, search: string) => api.post(`/equipment/filter?searchType=${searchType}&search=${search}&orderType=&page=${currentPage}&size=10`),
   deleteManagement: (data: IDeleteManagementApiProps) => api.delete('/equipment', { data: data }), // delete 요청에서 body값을 넘기려면 객체로 한번 감싸주어야 핢.
@@ -132,6 +133,7 @@ const apis = {
   getNoticeInquiry: (currentPage: number, searchType: string, search: string) => api.get(`/inquiry?searchType=${searchType}&search=${search}&orderType=&order=&page=${currentPage}&size=10`),
   getNoticeInquiryDetail: (id : string | undefined) => api.get(`/inquiry/${id}`),
   addNoticeInquiry: (data: any) => api.post('/inquiry', data),
+  editNoticeInquiry: (data: any) => api.put('/inquiry', data),
   deleteNoticeInquiry: (id : string | undefined) => api.delete(`/inquiry/${id}`),
 };
 export default apis;

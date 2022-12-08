@@ -45,9 +45,7 @@ const RegistrationMachineTable = (props: IRegistrationMachineProps) => {
     getRegistrationModel,
     {
       refetchOnWindowFocus: false,
-      onSuccess: (data) => {
-        console.log(data);
-      },
+      onSuccess: () => {},
       onError: () => {
         console.error('등록된 설비 목록을 불러오는데 실패했습니다.');
       },

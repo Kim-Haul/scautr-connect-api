@@ -124,10 +124,14 @@ const apis = {
   getParameterHistoryData: (id: string | undefined, currentPage: number | undefined) => api.get(`/equipment/${id}/parameter/history?page=${currentPage}&size=5&startDate=${`${year}-${lastMonth}-${day}`}&endDate=${`${year}-${currentMonth}-${day}`}`),
   getAlarmHistoryData: (id : string | undefined, currentPage: number, last: string | undefined, current: string | undefined) => api.get(`/equipment/${id}/alarm/history?page=${currentPage}&size=5&startDate=${last}&endDate=${current}`),
   getErrorHistoryData: (id : string | undefined, currentPage: number, last: string | undefined, current: string | undefined) => api.get(`/equipment/${id}/error/history?page=${currentPage}&size=5&startDate=${last}&endDate=${current}`),
+  //BOARD NOTICE SCAUTR
+  getNoticeScautr: (currentPage: number, searchType: string, search: string) => api.get(`/notice/scautr?page=${currentPage}&size=10&searchType=${searchType}&search=${search}`),
+  getNoticeScautrDetail: (id : string | undefined) => api.get(`/notice/scautr/${id}`),
   //BOARD NOTICE PROGIX
   getNoticeProgix: (currentPage: number, searchType: string, search: string) => api.get(`/notice?page=${currentPage}&size=10&searchType=${searchType}&search=${search}`),
   getNoticeProgixDetail: (id : string | undefined) => api.get(`/notice/${id}`),
   addNoticeProgix: (data: any) => api.post('/notice', data),
+  editNoticeProgix: (data: any, id : string | undefined) => api.put(`/notice/${id}`, data),
   deleteNoticeProgix: (id : string | undefined) => api.delete(`/notice/${id}`),
   //BOARD INQUIRY
   getNoticeInquiry: (currentPage: number, searchType: string, search: string) => api.get(`/inquiry?searchType=${searchType}&search=${search}&orderType=&order=&page=${currentPage}&size=10`),

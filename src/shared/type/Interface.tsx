@@ -140,6 +140,7 @@ export interface IRegistrationMachineTableProps {
   color?: string;
   note?: string;
   saveName?: string;
+  equipmentCnt?: number;
 }
 export interface IRegistrationOptionTableProps {
   // Management option select에서도 사용
@@ -153,6 +154,7 @@ export interface IRegistrationOptionTableProps {
   files?: any;
   note?: string;
   saveName?: string;
+  equipmentCnt?: number;
 }
 
 // ------------------------ Pagination.tsx
@@ -209,6 +211,8 @@ export interface IManagementTableProps {
   operation: string;
   companyAddress: string;
   customerCode: string | null;
+  error: boolean;
+  alarm: boolean;
 }
 // ------------------------ Management.tsx & Switch.tsx
 export interface ISwitchProps {

@@ -73,7 +73,7 @@ const RegistrationOptionTable = (props: IRegistrationOptionProps) => {
             <th className="th3">옵션명</th>
             <th className="th4">모델명</th>
             <th className="th5">권장사용기간</th>
-            <th className="th6">분류</th>
+            <th className="th6">사용</th>
             <th className="th7">파일첨부</th>
             <th className="th8">등록일</th>
           </tr>
@@ -119,7 +119,7 @@ const RegistrationOptionTable = (props: IRegistrationOptionProps) => {
                     </td>
                     <td>{v.model}</td>
                     <td>{v.lifeSpan}개월</td>
-                    <td>옵션</td>
+                    <td>{v.equipmentCnt}대</td>
                     <td
                       className="file_download"
                       onClick={() => {

@@ -1,19 +1,49 @@
 import React from 'react';
 import styled from 'styled-components';
-import { IToggleProps } from '../../shared/type/Interface';
+import { useQuery } from '@tanstack/react-query';
+import { useParams } from 'react-router-dom';
+import apis from '../../shared/apis';
+import { Viewer } from '@toast-ui/react-editor';
 
 const ScautrDetail = () => {
+  // url에 id값 받아오기
+  const view = useParams();
+
+  // 스카우터 공지 세부사항 호출 api
+  const getNoticeScautrDetail = async () => {
+    try {
+      const res = await apis.getNoticeScautrDetail(view.idx);
+      return res;
+    } catch (err) {
+      console.log('스카우터 공지 세부사항을 불러오는데 실패했습니다.');
+    }
+  };
+
+  // 스카우터 공지 세부사항 호출 쿼리
+  const { data: NoticeScautrDetailQuery } = useQuery(
+    ['loadNoticeScautrDetail', view.idx],
+    getNoticeScautrDetail,
+    {
+      refetchOnWindowFocus: false,
+      onSuccess: (data) => {
+        console.log(data);
+      },
+      onError: () => {
+        console.error('스카우터 공지 세부사항을 불러오는데 실패했습니다.');
+      },
+    }
+  );
+
   return (
     <React.Fragment>
       <Content>
-        <div className="row title">스카우터 서버 정기 점검 안내</div>
+        <div className="row title">
+          {NoticeScautrDetailQuery?.data.result[0].title}
+        </div>
         <div className="row content">
-          <br />
-          정기적으로 서비스 안정화 작업이 진행중입니다.
-          <br />
-          관련 문의는 담당 부서로 연락바랍니다.
-          <br />
-          <br />
+          <Viewer
+            initialValue={NoticeScautrDetailQuery?.data.result[0].content}
+          />
         </div>
       </Content>
       {/* 기획안 수정으로 인한 해당 섹션 잠시 보류 */}

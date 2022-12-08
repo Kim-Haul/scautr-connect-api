@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { INoticeProps } from '../../shared/type/Interface';
 import Pagination10 from '../pagination/Pagination10';
+import apis from '../../shared/apis';
+import { useQuery } from '@tanstack/react-query';
 
 const NoticeScautrTable = (props: INoticeProps) => {
   const navigate = useNavigate();
@@ -12,43 +14,39 @@ const NoticeScautrTable = (props: INoticeProps) => {
   const [startPage, setStartPage] = useState<number>(1);
   const [active, setActive] = useState<string>('1');
 
-  const registration_query = [
+  // 공지사항 목록 호출 api
+  const getNoticeScautr = async () => {
+    try {
+      const res = await apis.getNoticeScautr(
+        currentPage,
+        props.searchTypeUrl,
+        props.searchInputUrl
+      );
+      return res;
+    } catch (err) {
+      console.log('공지사항 목록을 불러오는데 실패했습니다.');
+    }
+  };
+
+  // 공지사항 목록 호출 쿼리
+  const { data: NoticeScautrQuery } = useQuery(
+    [
+      'loadNoticeScautr',
+      currentPage,
+      props.searchTypeUrl,
+      props.searchInputUrl,
+    ],
+    getNoticeScautr,
     {
-      id: '5',
-      classification: '공지사항',
-      title: '스카우터 서버 정기 점검 안내',
-      author: 'VITCON',
-      date: '2022-11-28',
-    },
-    {
-      id: '4',
-      classification: '업데이트',
-      title: '펌웨어 디바이스 업데이트',
-      author: 'VITCON',
-      date: '2022-11-21',
-    },
-    {
-      id: '3',
-      classification: '공지사항',
-      title: '11월 4주차 고객센터 휴무 안내',
-      author: 'VITCON',
-      date: '2022-11-16',
-    },
-    {
-      id: '2',
-      classification: '공지사항',
-      title: '모듈 센서 추가 견적서 안내',
-      author: 'VITCON',
-      date: '2022-11-13',
-    },
-    {
-      id: '1',
-      classification: '공지사항',
-      title: '스카우터 데이터 연동 메뉴얼',
-      author: 'VITCON',
-      date: '2022-11-09',
-    },
-  ];
+      refetchOnWindowFocus: false,
+      onSuccess: (data) => {
+        console.log(data);
+      },
+      onError: () => {
+        console.error('공지사항 목록을 불러오는데 실패했습니다.');
+      },
+    }
+  );
 
   // 검색, 초기화시 Pagination10 컴포넌트 상태 초기화
   useEffect(() => {
@@ -73,19 +71,21 @@ const NoticeScautrTable = (props: INoticeProps) => {
           </tr>
         </thead>
         <tbody>
-          {registration_query.map((v, i) => {
+          {NoticeScautrQuery?.data.result.map((v: any, i: number) => {
             return (
               <React.Fragment key={i}>
                 <tr
                   onClick={() => {
-                    navigate('/scautr/board/notice/scautr/detail/172');
+                    navigate(
+                      `/scautr/board/notice/scautr/detail/${v.noticeId}`
+                    );
                   }}
                 >
-                  <td>{v.id}</td>
+                  <td>{v.no}</td>
                   <td>{v.classification}</td>
                   <td>{v.title}</td>
-                  <td>{v.author}</td>
-                  <td>{v.date}</td>
+                  <td>{v.name}</td>
+                  <td>{v.regdate}</td>
                 </tr>
               </React.Fragment>
             );

@@ -1,9 +1,10 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Switch from '../../components/etc/Switch';
 import ProgixToastEditor from '../../components/post/ProgixToastEditor';
 import apis from '../../shared/apis';
+import { useQueryClient } from '@tanstack/react-query';
 
 const NoticeProgixPost = () => {
   const navigate = useNavigate();
@@ -22,6 +23,9 @@ const NoticeProgixPost = () => {
   const state = location.state;
   const existTop = state.existTop;
 
+    // 쿼리 클라이언트 정의
+    const queryClient = useQueryClient();
+
   // 게시글 작성 요청
   const onSubmit = async () => {
     const content = {
@@ -31,13 +35,47 @@ const NoticeProgixPost = () => {
       top: _click,
       images: imgList,
     };
-    try {
-      await apis.addNoticeProgix(content);
-      navigate('/scautr/board/notice/progix');
-    } catch (e) {
-      alert('등록에 실패하였습니다. 문제가 지속되면 담당부서로 연락바랍니다.');
+
+    if (state.title === undefined) {
+      try {
+        // 추가
+        await apis.addNoticeProgix(content);
+        navigate('/scautr/board/notice/progix');
+      } catch (e) {
+        alert(
+          '등록에 실패하였습니다. 문제가 지속되면 담당부서로 연락바랍니다.'
+        );
+      }
+    } else {
+      try {
+        // 수정
+        await apis.editNoticeProgix(content, state.noticeId);
+        queryClient.removeQueries({
+          queryKey: ['loadNoticeProgixDetail'],
+        });
+        navigate(`/scautr/board/notice/progix/detail/${state.noticeId}`);
+
+      } catch (e) {
+        alert(
+          '수정에 실패하였습니다. 문제가 지속되면 담당부서로 연락바랍니다.'
+        );
+      }
     }
   };
+
+  // 수정시 기존 분류값 가져오기
+  useEffect(() => {
+    if (state.classificationId !== undefined) {
+      setSelectSort(state.classificationId);
+    }
+  }, [state.classificationId]);
+
+  // 기존 대표글 인지 확인
+  useEffect(() => {
+    if (state.top === true) {
+      _setClick(true);
+    }
+  }, [state.top]);
 
   return (
     <Wrap>
@@ -81,6 +119,7 @@ const NoticeProgixPost = () => {
                 onChange={(e: React.ChangeEvent<HTMLSelectElement> | any) => {
                   setSelectSort(e.target.value);
                 }}
+                defaultValue={state.classificationId}
               >
                 <option value="1">공지사항</option>
                 <option value="2">이벤트</option>
@@ -93,7 +132,7 @@ const NoticeProgixPost = () => {
           <div className="row grid">
             <div className="grid_left">제목</div>
             <div className="grid_right">
-              <input type="text" ref={titleRef} />
+              <input type="text" defaultValue={state.title} ref={titleRef} />
             </div>
           </div>
           <div className="row grid">
@@ -111,7 +150,11 @@ const NoticeProgixPost = () => {
             </div>
           </div>
           <div className="row editor">
-            <ProgixToastEditor editorRef={editorRef} SetImgList={SetImgList} />
+            <ProgixToastEditor
+              editorRef={editorRef}
+              SetImgList={SetImgList}
+              defaultValue={state.content}
+            />
           </div>
         </Content>
       </Container>

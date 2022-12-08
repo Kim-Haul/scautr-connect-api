@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { BiDotsVerticalRounded } from 'react-icons/bi';
 import apis from '../../shared/apis';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Viewer } from '@toast-ui/react-editor';
+import jwtDecode from 'jwt-decode';
+import { getCookie } from '../../shared/cookie';
+import { ITokenProps } from '../../shared/type/Interface';
 
 const ProgixDetail = () => {
   const [open_modal, setOpenModal] = useState<boolean>(false);
@@ -12,6 +15,18 @@ const ProgixDetail = () => {
 
   // url에 id값 받아오기
   const view = useParams();
+
+  // 토큰 payload에 담겨오는 정보를 바탕으로 답변 수정&삭제 버튼 노출 검증
+  const [isAuth, setIsAuth] = useState<string>('');
+  useEffect(() => {
+    const accessToken = getCookie('Authorization');
+    let authority: ITokenProps;
+
+    if (accessToken) {
+      authority = jwtDecode(accessToken);
+      setIsAuth(authority.sub);
+    }
+  }, []);
 
   // 기계사 공지 세부사항 호출 api
   const getNoticeProgixDetail = async () => {
@@ -79,17 +94,29 @@ const ProgixDetail = () => {
           <div className="div">
             {NoticeProgixDetailQuery?.data.result[0].regdate}
           </div>
-          <BiDotsVerticalRounded
-            onClick={() => {
-              setOpenModal(!open_modal);
-            }}
-          />
+          {/* 권한 여부 검사 후 수정&삭제 버튼 노출 */}
+          {isAuth === NoticeProgixDetailQuery?.data.result[0].account ? (
+            <BiDotsVerticalRounded
+              onClick={() => {
+                setOpenModal(!open_modal);
+              }}
+            />
+          ) : null}
+
           {open_modal ? (
             <Modal>
               <ul>
                 <li
                   onClick={() => {
-                    alert('준비 중인 기능입니다.');
+                    navigate('/scautr/board/notice/progix/post', {
+                      state: {
+                        classificationId: NoticeProgixDetailQuery?.data.result[0].classificationId,
+                        title: NoticeProgixDetailQuery?.data.result[0].title,
+                        top: NoticeProgixDetailQuery?.data.result[0].top,
+                        content: NoticeProgixDetailQuery?.data.result[0].content,
+                        noticeId: NoticeProgixDetailQuery?.data.result[0].noticeId,
+                      },
+                    });
                   }}
                 >
                   수정하기

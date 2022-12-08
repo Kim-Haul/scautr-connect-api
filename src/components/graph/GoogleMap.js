@@ -76,7 +76,7 @@ const GoogleMap = (props) => {
 };
 
 export default GoogleApiWrapper({
-  apiKey: 'AIzaSyDQuy4QWYWQX_WvvT0JTyHYFoccEPtsvxM',
+  apiKey: process.env.REACT_APP_GOOGLE_MAP_API_KEY,
 })(GoogleMap);
 
 const Wrap = styled.div`

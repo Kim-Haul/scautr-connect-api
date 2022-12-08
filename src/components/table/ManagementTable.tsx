@@ -42,7 +42,9 @@ const ManagementTable = (props: IManagementProps) => {
     getManagementList,
     {
       refetchOnWindowFocus: false,
-      onSuccess: () => {},
+      onSuccess: (data) => {
+        console.log(data)
+      },
       onError: () => {
         console.error('등록된 설비관리 목록을 불러오는데 실패했습니다.');
       },

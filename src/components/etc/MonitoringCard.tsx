@@ -167,8 +167,8 @@ const Card = styled.div`
   display: grid;
   // 기본 디스플레이에서 카드를 3개씩
   grid-template-columns: repeat(auto-fill, minmax(30%, auto));
-  column-gap: 2rem;
-  row-gap: 2rem;
+  column-gap: 1rem;
+  row-gap: 1rem;
   // 1800px 디스플레이 이상에서 카드를 4개씩
   @media (min-width: 1800px) {
     // 남은 공간을 자동으로 채워주는 auto-fit은 살짝 어색해서 auto-fill으로
@@ -178,13 +178,11 @@ const Card = styled.div`
   // 950px 디스플레이 이하에서 카드를 2개씩
   @media (max-width: 950px) {
     grid-template-columns: repeat(auto-fill, minmax(40%, auto));
-    column-gap: 1.5rem;
-    row-gap: 1.5rem;
   }
   .wrap {
     background-color: #fff;
     border: 1px solid #e1e1e1;
-    min-height: 250px;
+    min-height: 260px;
     display: grid;
     grid-template-rows: min-height(70px) min-height(120px) 1fr;
     .top {

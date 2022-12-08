@@ -83,7 +83,7 @@ const Container = styled.div`
   width: 100%;
   grid-template-columns: 1fr 2fr;
   column-gap: 2rem;
-  row-gap: 1.5rem;
+  row-gap: 1rem;
   // 1500px 디스플레이 이하에서 우측 컨테이너 내부 카드 찌그러짐 방지를 위해 wrap
   @media (max-width: 1500px) {
     grid-template-columns: 100%;
@@ -95,7 +95,6 @@ const LeftContainer = styled.div`
   flex-direction: column;
   width: 100%;
   // 우측 컨테이터가 좌측 컨테이너보다 높이가 작을 때 임시 여백 설정 및 제거
-  margin-bottom: 2rem;
   @media (max-width: 1500px) {
     margin-bottom: 0;
   }

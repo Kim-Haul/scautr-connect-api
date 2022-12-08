@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import {
   IModalProps,
@@ -12,6 +12,7 @@ import ColorModal from './ColorModal';
 import { useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { getCookie } from '../../shared/cookie';
+import apis from '../../shared/apis';
 
 const RegistrationMachineModal = (props: IModalProps) => {
   // 컬러 모달창 토글
@@ -22,6 +23,7 @@ const RegistrationMachineModal = (props: IModalProps) => {
   const noteRef = useRef<HTMLInputElement | any>(null);
   // select 선택 값 담기
   const selectRef = useRef<HTMLSelectElement | any>(null);
+
   const {
     register,
     handleSubmit,
@@ -33,36 +35,63 @@ const RegistrationMachineModal = (props: IModalProps) => {
   const queryClient = useQueryClient();
 
   const onSubmit = async (data: any) => {
-    const formData = new FormData();
-    formData.append('assignedName', data.assignedName);
-    formData.append('model', data.model);
-    formData.append('color', color);
-    formData.append('multipartFile', fileObjectRef.current.files[0]);
-    formData.append('lifeSpan', data.duration);
-    formData.append('note', noteRef.current.value);
-    formData.append('templateId ', selectRef.current.value);
-
     try {
       // 파일 업로드를 위한 개별 content-Type 설정
       const accessToken = getCookie('Authorization');
-      await axios.post(
-        `${process.env.REACT_APP_BACKEND_TEMP_ADDRESS}/model`,
-        formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            Authorization: `Bearer ${accessToken}`,
-          },
+      // 추가 or 수정 여부에 따른 axios 요청 조건부 렌더링
+      if (props.info !== undefined) {
+        // 수정
+        const formData = new FormData();
+        formData.append('assignedName', data.assignedName);
+        formData.append('model', data.model);
+        formData.append('color', color);
+        formData.append('multipartFile', fileObjectRef.current.files[0]);
+        formData.append('lifeSpan', data.duration);
+        formData.append('note', noteRef.current.value);
+        formData.append('templateId', selectRef.current.value);
+        await axios.post(
+          `${process.env.REACT_APP_BACKEND_TEMP_ADDRESS}/model/${props.info?.modelId}`,
+          formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        );
+        if (delFile && props.info?.delfiles != null) {
+          await apis.deleteRegistrationModelFiles([props.info?.delfiles]);
         }
-      );
+      } else {
+        // 추가
+        const formData = new FormData();
+        formData.append('assignedName', data.assignedName);
+        formData.append('model', data.model);
+        formData.append('color', color);
+        formData.append('multipartFile', fileObjectRef.current.files[0]);
+        formData.append('lifeSpan', data.duration);
+        formData.append('note', noteRef.current.value);
+        formData.append('templateId', selectRef.current.value);
+        await axios.post(
+          `${process.env.REACT_APP_BACKEND_TEMP_ADDRESS}/model`,
+          formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        );
+      }
       reset();
       setColor('#e1e1e1');
+      setDelFile(false);
       setColorOpen(false);
       props.setIsOpen(false);
       // 등록 후, 기본 조회 쿼리 재호출
       queryClient.invalidateQueries({ queryKey: ['loadRegistrationModel'] });
     } catch (e) {
-      console.log('설비 등록에 실패했습니다.');
+      console.log('설비 등록/수정에 실패했습니다.');
     }
   };
 
@@ -73,6 +102,16 @@ const RegistrationMachineModal = (props: IModalProps) => {
   const changeFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     fileRef.current.value = e.target.value;
   };
+
+  // 수정시 컬러 색깔 담아오기
+  useEffect(() => {
+    if (props.info?.color !== undefined) {
+      setColor(props.info?.color);
+    }
+  }, [props.info?.color, props.open]);
+
+  // 수정시 기존 첨부파일 삭제 여부 확인
+  const [delFile, setDelFile] = useState<boolean>(false);
 
   return (
     <Wrap>
@@ -86,6 +125,7 @@ const RegistrationMachineModal = (props: IModalProps) => {
                 onClick={() => {
                   reset();
                   setColor('#e1e1e1');
+                  setDelFile(false);
                   setColorOpen(false);
                   props.setIsOpen(false);
                 }}
@@ -98,7 +138,14 @@ const RegistrationMachineModal = (props: IModalProps) => {
                 {/* -------------------- 1 --------------------  */}
                 <Line>
                   <label>그룹 선택</label>
-                  <select ref={selectRef} defaultValue="default">
+                  <select
+                    ref={selectRef}
+                    defaultValue={
+                      props.info?.templateId !== undefined
+                        ? props.info?.templateId
+                        : 'default'
+                    }
+                  >
                     <option value="default" disabled hidden>
                       선택
                     </option>
@@ -128,6 +175,7 @@ const RegistrationMachineModal = (props: IModalProps) => {
                       className="assigned-name"
                       isInvalid={!!errors.assignedName}
                       id="inputAssignedName"
+                      defaultValue={props.info?.assignedName}
                       {...register('assignedName', {
                         required: '기계명을 입력해주세요.',
                       })}
@@ -159,6 +207,7 @@ const RegistrationMachineModal = (props: IModalProps) => {
                     placeholder="GP250"
                     isInvalid={!!errors.model}
                     id="inputModel"
+                    defaultValue={props.info?.model}
                     {...register('model', {
                       required: '모델명을 입력해주세요.',
                     })}
@@ -173,9 +222,10 @@ const RegistrationMachineModal = (props: IModalProps) => {
                   <Input
                     type="text"
                     autoComplete="off"
-                    placeholder="24"
+                    placeholder="숫자만 입력해주세요. (ex: 24)"
                     isInvalid={!!errors.duration}
                     id="inputDuration"
+                    defaultValue={props.info?.lifeSpan}
                     {...register('duration', {
                       required: '권장 사용기간을 입력해주세요.',
                     })}
@@ -189,8 +239,14 @@ const RegistrationMachineModal = (props: IModalProps) => {
                 <Line>
                   <div className="filebox">
                     <label htmlFor="inputAttach">첨부파일</label>
+                    {/* input 커스마이징 껍데기 */}
                     <div className="upload-name-div">
-                      <input className="upload-name" ref={fileRef} readOnly />
+                      <input
+                        className="upload-name"
+                        ref={fileRef}
+                        defaultValue={props.info?.multipartFile}
+                        readOnly
+                      />
                       <label htmlFor="inputAttach">
                         <AiOutlinePaperClip />
                       </label>
@@ -202,10 +258,23 @@ const RegistrationMachineModal = (props: IModalProps) => {
                       id="inputAttach"
                       onChange={(e) => {
                         changeFile(e);
+                        setDelFile(true);
                       }}
                       ref={fileObjectRef}
                     />
                   </div>
+                  {props.info?.multipartFile && delFile === false ? (
+                    <div
+                      className="attach"
+                      style={{ color: 'red', cursor: 'pointer' }}
+                      onClick={() => {
+                        fileRef.current.value = '';
+                        setDelFile(true);
+                      }}
+                    >
+                      기존 첨부파일 삭제
+                    </div>
+                  ) : null}
                   <div className="attach">하나의 파일만 선택이 가능합니다.</div>
                 </Line>
                 {/* -------------------- 6 --------------------  */}
@@ -214,6 +283,7 @@ const RegistrationMachineModal = (props: IModalProps) => {
                   <textarea
                     autoComplete="off"
                     id="inputTextarea"
+                    defaultValue={props.info?.note}
                     ref={noteRef}
                   />
                 </Line>

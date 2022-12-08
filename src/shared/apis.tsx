@@ -102,6 +102,7 @@ const apis = {
   getRegistrationModel: (currentPage: number, searchType: string, search: string) => api.get(`/model?page=${currentPage}&size=10&searchType=${searchType}&search=${search}`),
   deleteRegistrationModel: (data: IDeleteRegistrationModelApiProps) => api.delete('/model', { data: data }), // delete 요청에서 body값을 넘기려면 객체로 한번 감싸주어야 핢.
   // addRegistrationModel: 별도의 content-type 설정을 위해 RegistrationMachineModal 컴포넌트에서 따로 선언
+  deleteRegistrationModelFiles: (data: number[]) => api.delete('/model/file', { data: data }),
   getRegistrationOption: (currentPage: number, searchType: string, search: string) => api.get(`/option?page=${currentPage}&size=10&searchType=${searchType}&search=${search}`),
   deleteRegistrationOption: (data: IDeleteRegistrationOptionApiProps) => api.delete('/option', { data: data }), // delete 요청에서 body값을 넘기려면 객체로 한번 감싸주어야 핢.
   // addRegistrationOption: 별도의 content-type 설정을 위해 RegistrationMachineModal 컴포넌트에서 따로 선언

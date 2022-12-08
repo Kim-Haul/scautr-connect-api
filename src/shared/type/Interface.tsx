@@ -99,6 +99,7 @@ export interface IModalProps {
   setIsOpen: Dispatch<SetStateAction<boolean>>;
   header?: string;
   setColor?: Dispatch<SetStateAction<string>>;
+  info?: any | undefined;
 }
 export interface FormValues {
   assignedName?: string;
@@ -137,6 +138,8 @@ export interface IRegistrationMachineTableProps {
   files?: any;
   no?: number;
   color?: string;
+  note?: string;
+  saveName?: string;
 }
 export interface IRegistrationOptionTableProps {
   // Management option select에서도 사용

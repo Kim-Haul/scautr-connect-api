@@ -7,12 +7,18 @@ import {
   IRegistrationMachineTableProps,
   IRegistrationMachineProps,
 } from '../../shared/type/Interface';
+import RegistrationMachineModal from '../modal/RegistrationMachineModal';
 
 const RegistrationMachineTable = (props: IRegistrationMachineProps) => {
   // 현재 페이지 상태값 및 시작 & 엑티브 페이지 상태값 저장
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [startPage, setStartPage] = useState<number>(1);
   const [active, setActive] = useState<string>('1');
+
+  // 내용 수정을 위한 현재값 저장
+  const [info, setInfo] = useState<any>({});
+  // 수정 모달창 토글
+  const [is_open_edit, setIsOpenEdit] = useState<boolean>(false);
 
   // 등록된 설비 목록 호출 api
   const getRegistrationModel = async () => {
@@ -39,7 +45,9 @@ const RegistrationMachineTable = (props: IRegistrationMachineProps) => {
     getRegistrationModel,
     {
       refetchOnWindowFocus: false,
-      onSuccess: () => {},
+      onSuccess: (data) => {
+        console.log(data);
+      },
       onError: () => {
         console.error('등록된 설비 목록을 불러오는데 실패했습니다.');
       },
@@ -77,7 +85,21 @@ const RegistrationMachineTable = (props: IRegistrationMachineProps) => {
             (v: IRegistrationMachineTableProps, i: number) => {
               return (
                 <React.Fragment key={i}>
-                  <tr>
+                  <tr
+                    onClick={() => {
+                      setInfo({
+                        assignedName: v.assignedName,
+                        model: v.model,
+                        modelId: v.modelId,
+                        color: v.color,
+                        lifeSpan: v.lifeSpan,
+                        note: v.note,
+                        templateId: v.templateId,
+                        multipartFile: v.files[0]?.name,
+                        delfiles: v.files[0]?.fileId,
+                      });
+                    }}
+                  >
                     <td>
                       <input
                         type="checkbox"
@@ -91,7 +113,12 @@ const RegistrationMachineTable = (props: IRegistrationMachineProps) => {
                     </td>
                     <td>{v.no}</td>
                     <td>{v.template}</td>
-                    <td className="preview_color_td">
+                    <td
+                      className="preview_color_td"
+                      onClick={() => {
+                        setIsOpenEdit(true);
+                      }}
+                    >
                       {v.assignedName}
                       <div
                         className="circle"
@@ -125,6 +152,15 @@ const RegistrationMachineTable = (props: IRegistrationMachineProps) => {
           )}
         </tbody>
       </table>
+
+      {/* 수정모달 */}
+      <RegistrationMachineModal
+        open={is_open_edit}
+        setIsOpen={setIsOpenEdit}
+        info={info}
+        header="기기 정보 수정"
+      />
+
       <Pagination10
         total={total}
         setCurrentPage={setCurrentPage}
@@ -213,6 +249,9 @@ const Wrap = styled.div`
         background-color: gray;
         margin-top: 2px;
         margin-left: 8px;
+      }
+      &:hover {
+        color: #35a3dc;
       }
     }
   }

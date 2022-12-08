@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import ProgixDetail from '../../components/post/ProgixDetail';
+import ProgixDetail from '../../components/detail/ProgixDetail';
 
 const NoticeProgixDetail = () => {
   const navigate = useNavigate();

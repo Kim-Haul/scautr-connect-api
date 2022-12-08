@@ -69,7 +69,8 @@ const Mypage = () => {
             <img src="/images/profile.jpeg" alt="프로필 이미지" />
             <div className="user_info">
               <div className="user_info_name">
-                {myPageQuery?.data.result[0].name} 고객님
+                {myPageQuery?.data.result[0].name} 고객님 (
+                {myPageQuery?.data.result[0].account})
               </div>
               <div className="user_info_email">
                 {myPageQuery?.data.result[0].email}

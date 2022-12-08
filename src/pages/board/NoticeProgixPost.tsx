@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Switch from '../../components/etc/Switch';
-import ProgixToastEditor from '../../components/post/ProgixToastEditor';
+import ProgixToastEditor from '../../components/detail/ProgixToastEditor';
 import apis from '../../shared/apis';
 import { useQueryClient } from '@tanstack/react-query';
 
@@ -23,8 +23,8 @@ const NoticeProgixPost = () => {
   const state = location.state;
   const existTop = state.existTop;
 
-    // 쿼리 클라이언트 정의
-    const queryClient = useQueryClient();
+  // 쿼리 클라이언트 정의
+  const queryClient = useQueryClient();
 
   // 게시글 작성 요청
   const onSubmit = async () => {
@@ -54,7 +54,6 @@ const NoticeProgixPost = () => {
           queryKey: ['loadNoticeProgixDetail'],
         });
         navigate(`/scautr/board/notice/progix/detail/${state.noticeId}`);
-
       } catch (e) {
         alert(
           '수정에 실패하였습니다. 문제가 지속되면 담당부서로 연락바랍니다.'

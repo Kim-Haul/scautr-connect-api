@@ -88,21 +88,22 @@ const NoticeProgixTable = (props: INoticeProps) => {
                       );
                     }}
                     style={{
-                      backgroundColor: '#0f5070',
-                      fontWeight: '400',
-                      color: '#fff',
+                      backgroundColor: '#f9f9f8',
+                      fontWeight: 'bold',
+                      color: '#ff4e59',
                     }}
                   >
-                    <td>대표</td>
+                    <td className="top_td">
+                      <span className="top_span">대표</span>
+                    </td>
                     <td>{v.classification}</td>
                     <td>{v.title}</td>
-                    <td>
+                    <td style={{ color: '#000', fontWeight: 'normal' }}>
                       <div className="writer">
                         <div className="writer_wrap">
                           <img
                             src="/images/board_profile.png"
                             alt="프로필 이미지"
-                            style={{ filter: 'invert(100%)' }}
                           />
                           <span>
                             {v.name}({v.account})
@@ -110,7 +111,9 @@ const NoticeProgixTable = (props: INoticeProps) => {
                         </div>
                       </div>
                     </td>
-                    <td>{v.regdate}</td>
+                    <td style={{ color: '#000', fontWeight: 'normal' }}>
+                      {v.regdate}
+                    </td>
                   </tr>
                 ) : (
                   <tr
@@ -182,7 +185,8 @@ const Wrap = styled.div`
       width: 43rem;
     }
     .th3 {
-      width: 11rem;
+      width: 15rem;
+      min-width: 15rem;
     }
     .th4 {
       width: 10rem;
@@ -198,7 +202,7 @@ const Wrap = styled.div`
     align-items: center;
     // td 내부에서 작성자 왼쪽 정렬 통일성을 위한 마진 추가
     justify-content: left;
-    margin-left: 20px;
+
     .writer_wrap {
       width: 100%;
       display: flex;
@@ -209,6 +213,25 @@ const Wrap = styled.div`
         // img가 글자보다 살짝 위로 있는 느낌이 들어서 margin-top
         margin-top: 3px;
       }
+    }
+  }
+  // 대표글 설정시 하이라이트 효과
+  .top_td {
+    // 해당 td에만 flex를 주니 border가 겹치는 효과 발생
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 8px;
+    border: none;
+    border-left: 1px solid #e9edf3;
+    .top_span {
+      border: 1px solid #ffc6c9;
+      background-color: #ffe3e4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 56px;
+      padding: 3px;
     }
   }
   tr {

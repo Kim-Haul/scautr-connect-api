@@ -43,7 +43,7 @@ const ManagementTable = (props: IManagementProps) => {
     {
       refetchOnWindowFocus: false,
       onSuccess: (data) => {
-        console.log(data)
+        console.log(data);
       },
       onError: () => {
         console.error('등록된 설비관리 목록을 불러오는데 실패했습니다.');
@@ -73,8 +73,9 @@ const ManagementTable = (props: IManagementProps) => {
             <th className="th4">기계명</th>
             <th className="th5">모델명</th>
             <th className="th6">기계상태</th>
-            <th className="th7">위치</th>
-            <th className="th8">PROGIX</th>
+            <th className="th7">출력</th>
+            <th className="th8">S/N</th>
+            <th className="th9">PROGIX</th>
           </tr>
         </thead>
         <tbody>
@@ -113,10 +114,16 @@ const ManagementTable = (props: IManagementProps) => {
                     <td>{v.model}</td>
                     <td>{v.operation}</td>
                     <td>
-                      {v.companyAddress?.length >= 8
-                        ? v.companyAddress.substr(0, 10) + '...'
-                        : v.companyAddress}
+                      <div className="mark">
+                        {v.alarm === true ? (
+                          <div className="mark_alarm">알람</div>
+                        ) : null}
+                        {v.error === true ? (
+                          <div className="mark_error">에러</div>
+                        ) : null}
+                      </div>
                     </td>
+                    <td>{v.serialNumber}</td>
                     <td>{v.customerCode === null ? '미사용' : '사용'}</td>
                   </tr>
                 </React.Fragment>
@@ -180,9 +187,12 @@ const Wrap = styled.div`
       width: 10rem;
     }
     .th7 {
-      width: 30rem;
+      width: 10rem;
     }
     .th8 {
+      width: 20rem;
+    }
+    .th9 {
       width: 10rem;
     }
   }
@@ -190,6 +200,29 @@ const Wrap = styled.div`
     padding: 10px;
     border: 1px solid #e9edf3;
     text-align: center;
+    .mark {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      .mark_alarm {
+        border: 1px solid #ffc6c9;
+        background-color: #ffe3e4;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 40px;
+        color: #ff4e59;
+      }
+      .mark_error {
+        border: 1px solid #ffc6c9;
+        background-color: #ffe3e4;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 40px;
+        color: #ff4e59;
+      }
+    }
   }
   tr {
     cursor: pointer;

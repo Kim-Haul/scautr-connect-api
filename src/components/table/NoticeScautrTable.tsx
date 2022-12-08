@@ -39,9 +39,7 @@ const NoticeScautrTable = (props: INoticeProps) => {
     getNoticeScautr,
     {
       refetchOnWindowFocus: false,
-      onSuccess: (data) => {
-        console.log(data);
-      },
+      onSuccess: () => {},
       onError: () => {
         console.error('공지사항 목록을 불러오는데 실패했습니다.');
       },

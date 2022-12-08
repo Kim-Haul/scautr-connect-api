@@ -8,10 +8,25 @@ import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
 import { IToggleProps, IScrollYProps } from '../../shared/type/Interface';
 import { deleteCookie } from '../../shared/cookie';
 import apis from '../../shared/apis';
+import jwtDecode from 'jwt-decode';
+import { getCookie } from '../../shared/cookie';
+import { ITokenProps } from '../../shared/type/Interface';
 
 const Header = (props: IScrollYProps) => {
   const navigate = useNavigate();
   const [is_mypage, setIsMypage] = useState<boolean>(false);
+
+  // 토큰 payload에 담겨오는 정보를 바탕으로 헤더에 정보노출
+  const [isAuth, setIsAuth] = useState<string>('');
+  useEffect(() => {
+    const accessToken = getCookie('Authorization');
+    let authority: ITokenProps;
+
+    if (accessToken) {
+      authority = jwtDecode(accessToken);
+      setIsAuth(authority.sub);
+    }
+  }, []);
 
   // 모달 영역 밖 클릭시 닫기
   const modalEl = useRef<HTMLDivElement | any>(null);
@@ -89,6 +104,7 @@ const Header = (props: IScrollYProps) => {
               </Profile>
               <Modal toggleOn={is_mypage}>
                 <ul>
+                  <li>{isAuth} 님</li>
                   <li
                     onClick={() => {
                       navigate('/mypage');
@@ -235,7 +251,16 @@ const Modal = styled.div`
       justify-content: center;
       padding: 10px;
       cursor: pointer;
+      // 첫번째 li css 효과 제거
       &:first-child {
+        cursor: default;
+        &:hover {
+          background-color: inherit;
+          color: #000;
+        }
+      }
+      &:first-child,
+      &:nth-child(2) {
         border-bottom: 1px solid #d4d4d4;
       }
       &:hover {

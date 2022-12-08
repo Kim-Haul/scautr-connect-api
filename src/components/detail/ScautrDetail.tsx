@@ -25,9 +25,7 @@ const ScautrDetail = () => {
     getNoticeScautrDetail,
     {
       refetchOnWindowFocus: false,
-      onSuccess: (data) => {
-        console.log(data);
-      },
+      onSuccess: () => {},
       onError: () => {
         console.error('스카우터 공지 세부사항을 불러오는데 실패했습니다.');
       },

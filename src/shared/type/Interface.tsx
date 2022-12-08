@@ -213,6 +213,7 @@ export interface IManagementTableProps {
   customerCode: string | null;
   error: boolean;
   alarm: boolean;
+  serialNumber: string;
 }
 // ------------------------ Management.tsx & Switch.tsx
 export interface ISwitchProps {

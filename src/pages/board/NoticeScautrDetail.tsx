@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import ScautrDetail from '../../components/post/ScautrDetail';
+import ScautrDetail from '../../components/detail/ScautrDetail';
 
 const NoticeScautrDetail = () => {
   const navigate = useNavigate();

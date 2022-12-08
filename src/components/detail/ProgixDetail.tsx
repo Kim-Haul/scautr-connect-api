@@ -110,11 +110,15 @@ const ProgixDetail = () => {
                   onClick={() => {
                     navigate('/scautr/board/notice/progix/post', {
                       state: {
-                        classificationId: NoticeProgixDetailQuery?.data.result[0].classificationId,
+                        classificationId:
+                          NoticeProgixDetailQuery?.data.result[0]
+                            .classificationId,
                         title: NoticeProgixDetailQuery?.data.result[0].title,
                         top: NoticeProgixDetailQuery?.data.result[0].top,
-                        content: NoticeProgixDetailQuery?.data.result[0].content,
-                        noticeId: NoticeProgixDetailQuery?.data.result[0].noticeId,
+                        content:
+                          NoticeProgixDetailQuery?.data.result[0].content,
+                        noticeId:
+                          NoticeProgixDetailQuery?.data.result[0].noticeId,
                       },
                     });
                   }}

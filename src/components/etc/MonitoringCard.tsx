@@ -1,11 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import apis from '../../shared/apis';
 
 import { IMonitoringCardProps } from '../../shared/type/Interface';
 
 const MonitoringCard = () => {
+  const navigate = useNavigate();
   // 모델별 가동현황 조회 api
   const getModelCardList = async () => {
     try {
@@ -22,7 +24,9 @@ const MonitoringCard = () => {
     getModelCardList,
     {
       refetchOnWindowFocus: false,
-      onSuccess: () => {},
+      onSuccess: (data) => {
+        console.log(data);
+      },
       onError: () => {
         console.error('모델별 상태 카드를 불러오는데 실패했습니다.');
       },
@@ -89,11 +93,25 @@ const MonitoringCard = () => {
                       <div className="middle_left_sub">{v.equipmentCnt}개</div>
                     </div>
                     <div className="middle_right">
-                      <button className="alarm">
+                      <button
+                        className="alarm"
+                        onClick={() => {
+                          navigate(
+                            `/scautr/management?search=${v.model}&searchType=all`
+                          );
+                        }}
+                      >
                         <span className="alarm_title">알람</span>
                         <span className="alarm_content">{v.alarm}</span>
                       </button>
-                      <button className="error">
+                      <button
+                        className="error"
+                        onClick={() => {
+                          navigate(
+                            `/scautr/management?search=${v.model}&searchType=all`
+                          );
+                        }}
+                      >
                         <span className="error_title">에러</span>
                         <span className="error_content">{v.error}</span>
                       </button>
@@ -164,9 +182,9 @@ const Card = styled.div`
     row-gap: 1.5rem;
   }
   .wrap {
-    background-color: #f5f7fa;
+    background-color: #fff;
     border: 1px solid #e1e1e1;
-    min-height: 260px;
+    min-height: 250px;
     display: grid;
     grid-template-rows: min-height(70px) min-height(120px) 1fr;
     .top {
@@ -206,10 +224,10 @@ const Card = styled.div`
           border-radius: 16px;
           padding: 5px;
           // 백앤드 설계 문제로 인하여 버튼 hover 효과 및 cursor 임시 보류
-          cursor: default;
+          /* cursor: default;
           &:hover {
             filter: none;
-          }
+          } */
           // 유동적인 크기를 위해 width 안줌
         }
         .alarm {

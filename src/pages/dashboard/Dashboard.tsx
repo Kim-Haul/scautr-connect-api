@@ -37,7 +37,7 @@ const Dashboard = () => {
           </div> */}
         </LeftContainer>
         <RightContainer>
-          <div className="item">
+          <div className="item upper">
             <Suspense fallback={<SkeletonCard />}>
               <MonitoringCard />
             </Suspense>
@@ -121,6 +121,12 @@ const LeftContainer = styled.div`
 `;
 
 const RightContainer = styled.div`
+  .item.upper {
+    background-color: #f5f7fa;
+    padding: 1rem;
+    border: 1px solid #e1e1e1;
+    min-height: 820px;
+  }
   .item.lower {
     height: 400px;
     background-color: #f5f7fa;

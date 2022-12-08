@@ -69,10 +69,10 @@ const Management = () => {
     }
   };
 
-  // 처음 렌더링 될 때 파라미터 초기화 시켜주기 위함.
-  useEffect(() => {
-    setSearchParams('');
-  }, []);
+  // 처음 마운트 될 때 파라미터 초기화 시켜주기 위함.
+  // useEffect(() => {
+  //   setSearchParams('');
+  // }, []);
 
   return (
     <Wrap>

@@ -25,9 +25,7 @@ const CompanyInfo = () => {
     myPageGetCompanyInfo,
     {
       refetchOnWindowFocus: false,
-      onSuccess: (data) => {
-        console.log(data);
-      },
+      onSuccess: () => {},
       onError: () => {
         console.error('회사 정보를 불러오는데 실패했습니다.');
       },
@@ -63,6 +61,14 @@ const CompanyInfo = () => {
             </li>
             <li>
               <div>
+                <div className="division">연락처</div>
+                <div className="content">
+                  {myPageGetCompanyInfoQuery?.data.result[0].phone}
+                </div>
+              </div>
+            </li>
+            <li>
+              <div>
                 <div className="division">사업자 번호</div>
                 {myPageGetCompanyInfoQuery?.data.result[0].registrationNumber}
               </div>
@@ -71,6 +77,12 @@ const CompanyInfo = () => {
               <div>
                 <div className="division">대표자명</div>
                 {myPageGetCompanyInfoQuery?.data.result[0].representative}
+              </div>
+            </li>
+            <li>
+              <div>
+                <div className="division">회사 관리자 계정</div>
+                {myPageGetCompanyInfoQuery?.data.result[0].user.account}
               </div>
             </li>
           </ul>

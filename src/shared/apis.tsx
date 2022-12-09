@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig } from 'axios';
-import { getCookie, setCookieToken, deleteCookie } from './cookie';
+import { getCookie, setCookieToken, setCookieRefreshToken, deleteCookie } from './cookie';
 import { FormValues, IDeleteRegistrationModelApiProps, IDeleteRegistrationOptionApiProps, IDeleteManagementApiProps } from './type/Interface';
 
 const api = axios.create({
@@ -34,7 +34,9 @@ api.interceptors.response.use(
           deleteCookie('Authorization');
           deleteCookie('RefreshToken');
         }
-        // 새로운 토큰 발행 요청
+
+        if (errorData.message === 'ACCESSTOKEN_EXPRIED_ERR') {
+           // 새로운 토큰 발행 요청
         const res = await axios.get(
           `${process.env.REACT_APP_BACKEND_TEMP_ADDRESS}/auth/reissue`,
           {
@@ -46,13 +48,12 @@ api.interceptors.response.use(
         );
         // 새로받은 토큰 저장
         setCookieToken(res.data.result[0].accessToken);
-        setCookieToken(res.data.result[0].refreshToken);
+        setCookieRefreshToken(res.data.result[0].refreshToken);
         // 헤더에 새로운 token으로 설정
-        prevRequst.headers.Authorization = `Bearer ${getCookie(
-          'Authorization'
-        )}`;
+        prevRequst.headers.Authorization = `Bearer ${res.data.result[0].accessToken}`;
         // 실패했던 기존 request 재시도
         return await axios(prevRequst);
+        }
       } else {
         return Promise.reject(error);
       }

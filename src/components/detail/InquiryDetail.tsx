@@ -214,7 +214,7 @@ const InquiryDetail = () => {
                 </span>
               </div>
               <div className="answer_content">
-                <div className="answer_content_title"></div>
+                {/* <div className="answer_content_title"></div> */}
                 <div className="answer_content_detail">
                   <Viewer
                     initialValue={

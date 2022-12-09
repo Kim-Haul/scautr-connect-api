@@ -68,8 +68,7 @@ function App() {
                 <Route path="/scautr/management/submit" element={<ManagementSubmit />} />
                 <Route path="/scautr/management/edit" element={<ManagementSubmitEdit />} />
                 <Route path="/scautr/management/detail/:idx" element={<Detail />} />
-                <Route path="/scautr/management/registration" element={<Registration />}
-                />
+                <Route path="/scautr/management/registration" element={<Registration />} />
                 <Route path="/scautr/board" element={<NoticeLayout />}>
                   <Route path="/scautr/board/notice/scautr" element={<NoticeScautr />} />
                   <Route path="/scautr/board/notice/scautr/detail/:idx" element={<NoticeScautrDetail />} />

@@ -51,7 +51,9 @@ const Header = (props: IScrollYProps) => {
       deleteCookie('Authorization');
       deleteCookie('RefreshToken');
     } catch (e) {
-      alert('알 수 없는 이유로 로그아웃에 실패했습니다.');
+      deleteCookie('Authorization');
+      deleteCookie('RefreshToken');
+      alert('타 기기에서 로그인하였습니다.');
     }
   };
 

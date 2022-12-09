@@ -50,14 +50,21 @@ const NoticeProgixPost = () => {
       try {
         // 수정
         await apis.editNoticeProgix(content, state.noticeId);
+        // 수정을 해도 캐시데이터가 뿌려지는 것 상쇄
         queryClient.removeQueries({
           queryKey: ['loadNoticeProgixDetail'],
         });
         navigate(`/scautr/board/notice/progix/detail/${state.noticeId}`);
-      } catch (e) {
-        alert(
-          '수정에 실패하였습니다. 문제가 지속되면 담당부서로 연락바랍니다.'
-        );
+      } catch (e: any) {
+        if (e.response.data.message === 'TOP_EXIST_ERR') {
+          alert(
+            '기존에 설정되어있는 대표글이 존재합니다.\n기등록된 대표글 설정 취소 후 다시 시도해주세요.'
+          );
+        } else {
+          alert(
+            '수정에 실패하였습니다. 문제가 지속되면 담당부서로 연락바랍니다.'
+          );
+        }
       }
     }
   };

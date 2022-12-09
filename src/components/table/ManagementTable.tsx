@@ -42,9 +42,7 @@ const ManagementTable = (props: IManagementProps) => {
     getManagementList,
     {
       refetchOnWindowFocus: false,
-      onSuccess: (data) => {
-        console.log(data);
-      },
+      onSuccess: () => {},
       onError: () => {
         console.error('등록된 설비관리 목록을 불러오는데 실패했습니다.');
       },
@@ -112,7 +110,21 @@ const ManagementTable = (props: IManagementProps) => {
                       {v.assignedName}
                     </td>
                     <td>{v.model}</td>
-                    <td>{v.operation}</td>
+                    {/* 기계상태 */}
+                    <td
+                      style={{
+                        backgroundColor:
+                          v.operation === 'ON' ? '#00C875' : 'transparent',
+                        color: v.operation === 'ON' ? '#fff' : 'inherit',
+                      }}
+                    >
+                      {v.operation === 'ON' ? (
+                        <div className="operation_on">{v.operation}</div>
+                      ) : (
+                        <div className="operation_etc">{v.operation}</div>
+                      )}
+                    </td>
+                    {/* 출력 */}
                     <td>
                       <div className="mark">
                         {v.alarm === true ? (
@@ -164,6 +176,29 @@ const Wrap = styled.div`
       padding: 10px;
       border: 1px solid #e9edf3;
       text-align: center;
+      .mark {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        .mark_alarm {
+          border: 1px solid #ffc6c9;
+          background-color: #ffe3e4;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 40px;
+          color: #ff4e59;
+        }
+        .mark_error {
+          border: 1px solid #ffc6c9;
+          background-color: #ffe3e4;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 40px;
+          color: #ff4e59;
+        }
+      }
     }
     .th0 {
       width: 5rem;
@@ -194,34 +229,6 @@ const Wrap = styled.div`
     }
     .th9 {
       width: 10rem;
-    }
-  }
-  td {
-    padding: 10px;
-    border: 1px solid #e9edf3;
-    text-align: center;
-    .mark {
-      display: flex;
-      align-items: center;
-      justify-content: space-around;
-      .mark_alarm {
-        border: 1px solid #ffc6c9;
-        background-color: #ffe3e4;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 40px;
-        color: #ff4e59;
-      }
-      .mark_error {
-        border: 1px solid #ffc6c9;
-        background-color: #ffe3e4;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 40px;
-        color: #ff4e59;
-      }
     }
   }
   tr {

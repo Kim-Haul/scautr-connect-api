@@ -114,7 +114,7 @@ const ManagementSubmit = () => {
   let currentMac = watch('mac_address');
   const macCheck = async () => {
     try {
-      await apis.macCheck({ macAddress : currentMac });
+      await apis.macCheck({ macAddress: currentMac });
       alert('인증되었습니다.');
       setMacCheckOk(true);
       clearErrors('mac_address');
@@ -159,11 +159,17 @@ const ManagementSubmit = () => {
       longitude: geom?.lng,
     };
 
-    console.log(content)
     try {
       await apis.addManagement(content);
       navigate('/scautr/management');
-    } catch (e) {
+    } catch (e: any) {
+      // 주소를 입력안했을 때 geocode에서 좌표를 못받아와서 뜨는 오류
+      if (e.response.data.message === 'LATITUDE_FORMAT_ERR') {
+        alert(
+          '해당 기기의 주소를 받아오지 못했습니다.\n올바른 주소를 입력해주세요.\n구글맵 연동을 위해 인식 가능한 도로명 주소가 필요합니다.\n\n(ex: 서울 금천구 가산디지털1로 165)'
+        );
+      }
+
       alert('등록에 실패하였습니다. 문제가 지속되면 담당부서로 연락바랍니다.');
     }
   };

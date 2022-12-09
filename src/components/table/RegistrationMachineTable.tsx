@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 import Pagination10 from '../pagination/Pagination10';
 import { useQuery } from '@tanstack/react-query';
 import apis from '../../shared/apis';
@@ -10,6 +11,8 @@ import {
 import RegistrationMachineModal from '../modal/RegistrationMachineModal';
 
 const RegistrationMachineTable = (props: IRegistrationMachineProps) => {
+  const navigate = useNavigate();
+
   // 현재 페이지 상태값 및 시작 & 엑티브 페이지 상태값 저장
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [startPage, setStartPage] = useState<number>(1);
@@ -123,7 +126,18 @@ const RegistrationMachineTable = (props: IRegistrationMachineProps) => {
                         style={{ backgroundColor: v.color }}
                       ></div>
                     </td>
-                    <td>{v.model}</td>
+                    <td
+                      className="nav_model"
+                      onClick={() => {
+                        if (v.equipmentCnt! > 0) {
+                          navigate(
+                            `/scautr/management?search=${v.model}&searchType=all`
+                          );
+                        }
+                      }}
+                    >
+                      {v.model}
+                    </td>
                     <td>{v.lifeSpan}개월</td>
                     <td>{v.equipmentCnt}대</td>
                     <td
@@ -248,6 +262,11 @@ const Wrap = styled.div`
         margin-top: 2px;
         margin-left: 8px;
       }
+      &:hover {
+        color: #35a3dc;
+      }
+    }
+    .nav_model {
       &:hover {
         color: #35a3dc;
       }

@@ -94,10 +94,6 @@ const NoticeInquiryTable = (props: INoticeProps) => {
                   <td>{v.title}</td>
                   <td>
                     <div className="writer">
-                      <img
-                        src="/images/board_profile.png"
-                        alt="프로필 이미지"
-                      />
                       <div className="writer_detail">
                         <span className="writer_detail_company">
                           {v.customerCompany}
@@ -177,10 +173,10 @@ const Wrap = styled.div`
     // td 내부에서 작성자 왼쪽 정렬 통일성을 위한 마진 추가
     justify-content: left;
     margin-left: 20px;
-    img {
+    /* img {
       margin-right: 5px;
       width: 20px;
-    }
+    } */
     .writer_detail {
       display: flex;
       flex-direction: column;
@@ -188,6 +184,7 @@ const Wrap = styled.div`
       font-size: 1.5rem;
       .writer_detail_company {
         margin-bottom: -5px;
+        font-weight: bold;
       }
     }
   }

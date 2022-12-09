@@ -91,7 +91,7 @@ const ProgixDetail = () => {
             {NoticeProgixDetailQuery?.data.result[0].name} (
             {NoticeProgixDetailQuery?.data.result[0].account})
           </div>
-          <div className="div">
+          <div className="div regdate">
             {NoticeProgixDetailQuery?.data.result[0].regdate}
           </div>
           {/* 권한 여부 검사 후 수정&삭제 버튼 노출 */}
@@ -102,7 +102,6 @@ const ProgixDetail = () => {
               }}
             />
           ) : null}
-
           {open_modal ? (
             <Modal>
               <ul>
@@ -174,10 +173,10 @@ const Content = styled.div`
     display: flex;
     align-items: center;
     justify-content: end;
-    padding: 10px;
-    font-size: 1.3rem;
+    padding: 10px 20px;
+    font-size: 1.4rem;
     gap: 0.5rem;
-    font-weight: 500;
+    border-bottom: 1px solid #ced4da;
     svg {
       font-size: 2.5rem;
       cursor: pointer;
@@ -194,6 +193,9 @@ const Content = styled.div`
         content: '';
         margin: 0rem;
       }
+    }
+    .div.regdate {
+      color: #979797;
     }
   }
   .row.content {

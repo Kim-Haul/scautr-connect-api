@@ -7,9 +7,9 @@ import { useParams } from 'react-router-dom';
 import apis from '../../shared/apis';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import jwtDecode from 'jwt-decode';
+import { Viewer } from '@toast-ui/react-editor';
 import { getCookie } from '../../shared/cookie';
 import { ITokenProps } from '../../shared/type/Interface';
-import Dompurify from 'dompurify';
 
 const InquiryDetail = () => {
   // url에 id값 받아오기
@@ -157,12 +157,14 @@ const InquiryDetail = () => {
             {NoticeInquiryDetailQuery?.data.result[0].customerName}(
             {NoticeInquiryDetailQuery?.data.result[0].customerAccount})
           </div>
-          <div className="div">
+          <div className="div regdate">
             {NoticeInquiryDetailQuery?.data.result[0].questionRegdate}
           </div>
         </div>
         <div className="row content">
-          {NoticeInquiryDetailQuery?.data.result[0].question}
+          <Viewer
+            initialValue={NoticeInquiryDetailQuery?.data.result[0].question}
+          />
         </div>
       </Content>
       <Answer>
@@ -207,19 +209,19 @@ const InquiryDetail = () => {
               <div className="answer_title">
                 <span className="answer_title_left">답변</span>
                 <span>
-                  {NoticeInquiryDetailQuery?.data.result[0].supplierName}
+                  {NoticeInquiryDetailQuery?.data.result[0].supplierName}(
+                  {NoticeInquiryDetailQuery?.data.result[0].supplierAccount})
                 </span>
               </div>
               <div className="answer_content">
-                <div className="answer_content_title">답변입니다.</div>
-                <div
-                  dangerouslySetInnerHTML={{
-                    __html: Dompurify.sanitize(
+                <div className="answer_content_title"></div>
+                <div className="answer_content_detail">
+                  <Viewer
+                    initialValue={
                       NoticeInquiryDetailQuery?.data.result[0].answer
-                    ),
-                  }}
-                  className="answer_content_detail"
-                ></div>
+                    }
+                  />
+                </div>
                 {isAuth ===
                 NoticeInquiryDetailQuery?.data.result[0].supplierAccount ? (
                   <React.Fragment>
@@ -301,10 +303,10 @@ const Content = styled.div`
     display: flex;
     align-items: center;
     justify-content: end;
-    padding: 10px;
-    font-size: 1.3rem;
+    padding: 10px 20px;
+    font-size: 1.4rem;
     gap: 0.5rem;
-    font-weight: 500;
+    border-bottom: 1px solid #ced4da;
     .div {
       &::after {
         content: '｜';
@@ -314,6 +316,9 @@ const Content = styled.div`
         content: '';
         margin: 0rem;
       }
+    }
+    .div.regdate {
+      color: #979797;
     }
   }
   .row.content {

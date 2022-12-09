@@ -101,10 +101,10 @@ const NoticeProgixTable = (props: INoticeProps) => {
                     <td style={{ color: '#000', fontWeight: 'normal' }}>
                       <div className="writer">
                         <div className="writer_wrap">
-                          <img
+                          {/* <img
                             src="/images/board_profile.png"
                             alt="프로필 이미지"
-                          />
+                          /> */}
                           <span>
                             {v.name}({v.account})
                           </span>
@@ -129,10 +129,10 @@ const NoticeProgixTable = (props: INoticeProps) => {
                     <td>
                       <div className="writer">
                         <div className="writer_wrap">
-                          <img
+                          {/* <img
                             src="/images/board_profile.png"
                             alt="프로필 이미지"
-                          />
+                          /> */}
                           <span>
                             {v.name}({v.account})
                           </span>
@@ -207,12 +207,12 @@ const Wrap = styled.div`
       width: 100%;
       display: flex;
       justify-content: center;
-      img {
+      /* img {
         margin-right: 5px;
         width: 20px;
         // img가 글자보다 살짝 위로 있는 느낌이 들어서 margin-top
         margin-top: 3px;
-      }
+      } */
     }
   }
   // 대표글 설정시 하이라이트 효과

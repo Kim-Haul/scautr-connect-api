@@ -30,7 +30,8 @@ const DountRunChart = () => {
 
   const on: number = totalStatusQueryData?.data.result[0].on;
   const off: number = totalStatusQueryData?.data.result[0].off;
-  const unregistered: number = totalStatusQueryData?.data.result[0].unregistered;
+  const unregistered: number =
+    totalStatusQueryData?.data.result[0].unregistered;
   const total: number = on / (on + off + unregistered);
 
   const state: any = {

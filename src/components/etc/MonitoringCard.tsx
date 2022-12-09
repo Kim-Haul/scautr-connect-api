@@ -24,9 +24,7 @@ const MonitoringCard = () => {
     getModelCardList,
     {
       refetchOnWindowFocus: false,
-      onSuccess: (data) => {
-        console.log(data);
-      },
+      onSuccess: () => {},
       onError: () => {
         console.error('모델별 상태 카드를 불러오는데 실패했습니다.');
       },
@@ -64,7 +62,16 @@ const MonitoringCard = () => {
                 <div className="wrap">
                   <div className="top">
                     <div className="top_left">
-                      <div className="top_left_title">{v.model}</div>
+                      <div
+                        className="top_left_title"
+                        onClick={() => {
+                          navigate(
+                            `/scautr/management?search=${v.model}&searchType=all`
+                          );
+                        }}
+                      >
+                        {v.model}
+                      </div>
                       <div className="top_left_sub">{v.assignedName}</div>
                     </div>
                     <div className="top_right">
@@ -195,11 +202,18 @@ const Card = styled.div`
       .top_left_title {
         font-weight: 700;
         font-size: 2.08rem;
+        &:hover {
+          color: #35a3dc;
+          cursor: pointer;
+        }
       }
       .top_right {
         img {
           cursor: pointer;
         }
+      }
+      &:hover {
+        background-color: rgba(0, 123, 255, 0.1);
       }
     }
     .middle {

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { INoticeProps } from '../../shared/type/Interface';
 import Pagination10 from '../pagination/Pagination10';
 import apis from '../../shared/apis';

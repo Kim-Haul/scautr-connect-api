@@ -8,7 +8,6 @@ import { useQuery } from '@tanstack/react-query';
 
 const NoticeScautrTable = (props: INoticeProps) => {
   const navigate = useNavigate();
-  const location = useLocation();
   // 현재 페이지 상태값 및 시작 & 엑티브 페이지 상태값 저장
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [startPage, setStartPage] = useState<number>(1);

@@ -41,7 +41,7 @@ const getReissueToken = mem(
     } catch (error) {
       deleteCookie('Authorization');
       deleteCookie('RefreshToken');
-      alert('타 기기에서 로그인 하였습니다.\n로그인 화면으로 이동합니다.')
+      alert('타 기기에서 로그인 하였습니다.\nERROR CODE : 003')
     }
   },
   { maxAge: 1000 }
@@ -61,7 +61,7 @@ api.interceptors.response.use(
     if (data.message === 'USER_DISCREPANCY_ERR') {
       deleteCookie('Authorization');
       deleteCookie('RefreshToken');
-      alert('타 기기에서 로그인 하였습니다.\n로그인 화면으로 이동합니다.');
+      alert('타 기기에서 로그인 하였습니다.\nERROR CODE : 001');
     }
 
     if (data.message === 'ACCESSTOKEN_EXPRIED_ERR') {

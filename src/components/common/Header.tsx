@@ -53,7 +53,7 @@ const Header = (props: IScrollYProps) => {
     } catch (e) {
       deleteCookie('Authorization');
       deleteCookie('RefreshToken');
-      alert('타 기기에서 로그인하였습니다.');
+      alert('타 기기에서 로그인하였습니다.ERROR : 003');
     }
   };
 

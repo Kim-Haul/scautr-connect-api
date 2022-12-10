@@ -73,7 +73,7 @@ const RegistrationMachine = (props: IRegistrationProps) => {
     if (checkBoxArr.length === 0) {
       alert('삭제할 설비를 먼저 선택해주세요.');
     } else {
-      if (window.confirm('정말 삭제하시겠습니까?') == true) {
+      if (window.confirm('정말 삭제하시겠습니까?') === true) {
         deleteRegistrationModelMutate();
       } else {
         return false;
@@ -81,8 +81,11 @@ const RegistrationMachine = (props: IRegistrationProps) => {
     }
   };
 
+  // 상위탭으로 이동시, setSearchParmas로 설정한 값은 초기화 안되는 상황 핸들링
   useEffect(() => {
     setSearchParams('');
+    // useEffect의 missing dependency 문제 임시 block 설정
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.click_tab]);
 
   return (

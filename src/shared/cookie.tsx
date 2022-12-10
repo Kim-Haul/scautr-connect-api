@@ -11,7 +11,7 @@ const getCookie = (token: string) => {
 };
 
 const setCookieToken = (token: string) => {
-  document.cookie = `Authorization=${token}; max-age=1800; path=/`;
+  document.cookie = `Authorization=${token}; max-age=3600; path=/`;
 };
 
 const setCookieRefreshToken = (token: string) => {

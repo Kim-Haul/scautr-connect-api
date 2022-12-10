@@ -1,10 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
+import FadeLoader from 'react-spinners/FadeLoader';
 
 const SkeletonTable = () => {
   return (
     <Wrap>
-      <Table></Table>
+      <Table>
+        <FadeLoader color="#00c7ae" />
+      </Table>
     </Wrap>
   );
 };
@@ -23,7 +26,11 @@ const Wrap = styled.div`
 const Table = styled.div`
   width: 100%;
   height: 500px;
-  background-color: #f5f7fa;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  // 해당 UI에서는 스켈레톤 UI보다 로딩 스피너를 사용하는게 더욱 사용자경험이 좋을 것으로 예상.
+  /* background-color: #f5f7fa;
   animation: skeleton-gradient 1.8s infinite ease-in-out;
   @keyframes skeleton-gradient {
     0% {
@@ -35,5 +42,5 @@ const Table = styled.div`
     100% {
       background-color: rgba(165, 165, 165, 0.1);
     }
-  }
+  } */
 `;

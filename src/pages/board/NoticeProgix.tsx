@@ -1,8 +1,9 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, Suspense } from 'react';
 import styled from 'styled-components';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import Mobile from '../../components/exception/Mobile';
 import NoticeProgixTable from '../../components/table/NoticeProgixTable';
+import SkeletonTable from '../../components/suspense/SkeletonTable';
 
 const NoticeProgix = () => {
   const navigate = useNavigate();
@@ -91,12 +92,14 @@ const NoticeProgix = () => {
           </div>
         </Top>
         <Content>
-          {/* -------- 프로직스 공지사항 -------- */}
-          <NoticeProgixTable
-            searchTypeUrl={searchTypeUrl}
-            searchInputUrl={searchInputUrl}
-            setExistTop={setExistTop}
-          />
+          {/* -------- 프로직스 공지사항 목록 테이블 -------- */}
+          <Suspense fallback={<SkeletonTable />}>
+            <NoticeProgixTable
+              searchTypeUrl={searchTypeUrl}
+              searchInputUrl={searchInputUrl}
+              setExistTop={setExistTop}
+            />
+          </Suspense>
           <Mobile />
         </Content>
       </Container>

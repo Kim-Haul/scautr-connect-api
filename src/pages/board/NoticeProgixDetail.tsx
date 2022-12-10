@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import ProgixDetail from '../../components/detail/ProgixDetail';
+import SkeletonTable from '../../components/suspense/SkeletonTable';
 
 const NoticeProgixDetail = () => {
   const navigate = useNavigate();
@@ -31,7 +32,10 @@ const NoticeProgixDetail = () => {
             </button>
           </div>
         </Top>
-        <ProgixDetail />
+        {/* -------- 프로직스 공지사항 세부사항 보기 -------- */}
+        <Suspense fallback={<SkeletonTable />}>
+          <ProgixDetail />
+        </Suspense>
       </Container>
     </Wrap>
   );

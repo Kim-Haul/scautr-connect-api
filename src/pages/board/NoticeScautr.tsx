@@ -1,8 +1,9 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, Suspense } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 import Mobile from '../../components/exception/Mobile';
 import NoticeScautrTable from '../../components/table/NoticeScautrTable';
+import SkeletonTable from '../../components/suspense/SkeletonTable';
 
 const NoticeScautr = () => {
   // 검색 input, 조건 select 상태관리
@@ -74,10 +75,12 @@ const NoticeScautr = () => {
         </Top>
         <Content>
           {/* -------- 스카우터 공지사항 -------- */}
-          <NoticeScautrTable
-            searchTypeUrl={searchTypeUrl}
-            searchInputUrl={searchInputUrl}
-          />
+          <Suspense fallback={<SkeletonTable />}>
+            <NoticeScautrTable
+              searchTypeUrl={searchTypeUrl}
+              searchInputUrl={searchInputUrl}
+            />
+          </Suspense>
           <Mobile />
         </Content>
       </Container>

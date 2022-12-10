@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import InquiryDetail from '../../components/detail/InquiryDetail';
+import SkeletonTable from '../../components/suspense/SkeletonTable';
 
 const NoticeInquiryDetail = () => {
   const navigate = useNavigate();
@@ -31,7 +32,10 @@ const NoticeInquiryDetail = () => {
             </button>
           </div>
         </Top>
-        <InquiryDetail />
+        {/* -------- 문의사항 세부사항 보기 -------- */}
+        <Suspense fallback={<SkeletonTable />}>
+          <InquiryDetail />
+        </Suspense>
       </Container>
     </Wrap>
   );

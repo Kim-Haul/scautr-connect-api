@@ -54,7 +54,7 @@ const DetailParameter = (props: IParamsProps) => {
                     <tr>
                       <td>{v.name}</td>
                       <td>{v.uid}</td>
-                      <td>{v.value}</td>
+                      <td className="value_hover">{v.value}</td>
                       <td>{v.unit}</td>
                     </tr>
                   </React.Fragment>
@@ -115,6 +115,12 @@ const Wrap = styled.div`
       padding: 10px;
       border: 1px solid #ced4da;
       text-align: center;
+    }
+    .value_hover {
+      &:hover {
+        background-color: rgba(0, 123, 255, 0.1);
+        color: #35a3dc;
+      }
     }
     .th0 {
       width: 25rem;

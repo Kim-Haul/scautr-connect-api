@@ -61,7 +61,7 @@ const DetailParameterHistoryTable = (props: IParamsProps) => {
                       <tr>
                         <td>{v.tsAsiaSeoulDatetime}</td>
                         <td>{v.name}</td>
-                        <td>{v.value}</td>
+                        <td className="value_hover">{v.value}</td>
                         <td>{v.unit}</td>
                       </tr>
                     </React.Fragment>

@@ -133,6 +133,9 @@ const ManagementTable = (props: IManagementProps) => {
                         {v.error === true ? (
                           <div className="mark_error">에러</div>
                         ) : null}
+                        {v.operation === '미등록' ? (
+                          <div className="mark_unknown">미등록</div>
+                        ) : null}
                       </div>
                     </td>
                     <td>{v.serialNumber}</td>
@@ -197,6 +200,15 @@ const Wrap = styled.div`
           align-items: center;
           width: 40px;
           color: #ff4e59;
+        }
+        .mark_unknown {
+          border: 1px solid #e9edf3;
+          background-color: #f6f7fb;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 50px;
+          color: #afafaf;
         }
       }
     }

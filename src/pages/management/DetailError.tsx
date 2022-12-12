@@ -113,7 +113,7 @@ const DetailError = (props: IParamsProps) => {
                     <tr>
                       <td>{v.ts}</td>
                       <td>{v.tf}</td>
-                      <td>{v.name}</td>
+                      <td className="value_hover">{v.name}</td>
                     </tr>
                   </React.Fragment>
                 );
@@ -187,6 +187,12 @@ const Wrap = styled.div`
     padding: 10px;
     border: 1px solid #ced4da;
     text-align: center;
+  }
+  .value_hover {
+    &:hover {
+      background-color: rgba(0, 123, 255, 0.1);
+      color: #35a3dc;
+    }
   }
   .th0 {
     width: 12rem;

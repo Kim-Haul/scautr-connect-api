@@ -234,7 +234,8 @@ const Wrap = styled.div`
       width: 10rem;
     }
     .th7 {
-      width: 10rem;
+      // 노트북 사이즈에서 알람 & 에러 사이의 여백을 위해 width : 10rem -> 11rem 변경
+      width: 11rem;
     }
     .th8 {
       width: 20rem;

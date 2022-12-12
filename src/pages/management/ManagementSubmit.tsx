@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { IoIosArrowForward } from 'react-icons/io';
+import { HiOutlineExternalLink } from 'react-icons/hi';
 import { useForm } from 'react-hook-form';
 import {
   FormValues,
@@ -272,6 +273,18 @@ const ManagementSubmit = () => {
                     setSelectModelState(e.value);
                   }}
                 />
+                <div
+                  className="machine_registration_link"
+                  onClick={() => {
+                    window.open(
+                      'https://scautr.com/scautr/management/registration',
+                      '_blank'
+                    );
+                  }}
+                >
+                  <HiOutlineExternalLink />
+                  설비 템플릿 등록하러 가기
+                </div>
               </div>
               <div className="content_right">
                 <label htmlFor="inputMachineSerialNumber">S/N</label>
@@ -638,6 +651,14 @@ const Line = styled.div`
     .content_left {
       display: flex;
       flex-direction: column;
+      .machine_registration_link {
+        display: flex;
+        align-items: center;
+        font-size: 1.4rem;
+        color: gray;
+        cursor: pointer;
+        margin-top: 5px;
+      }
     }
     .content_right {
       display: flex;

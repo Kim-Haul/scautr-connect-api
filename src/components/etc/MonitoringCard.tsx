@@ -53,113 +53,148 @@ const MonitoringCard = () => {
   });
 
   return (
-    <Wrap>
-      <Card>
-        {ModelCardListQueryData?.data.result.map(
-          (v: IMonitoringCardProps, i: number) => {
-            return (
-              <React.Fragment key={i}>
-                <div className="wrap">
-                  <div className="top">
-                    <div className="top_left">
-                      <div
-                        className="top_left_title"
-                        onClick={() => {
-                          navigate(
-                            `/scautr/management?search=${v.model}&searchType=all`
-                          );
-                        }}
-                      >
-                        {v.model}
-                      </div>
-                      <div className="top_left_sub">{v.assignedName}</div>
-                    </div>
-                    <div className="top_right">
-                      {v.boardMark === 1 ? (
-                        <img
-                          src="/images/exclamation-thick-fill.png"
-                          alt="즐겨찾기"
-                          onClick={() => {
-                            toogleBookmarkMutation(v.modelId);
-                          }}
-                        />
-                      ) : (
-                        <img
-                          src="/images/exclamation-thick.png"
-                          alt="즐겨찾기"
-                          onClick={() => {
-                            toogleBookmarkMutation(v.modelId);
-                          }}
-                        />
-                      )}
-                    </div>
-                  </div>
-                  <div className="middle">
-                    <div className="middle_left">
-                      <div className="middle_left_title">장비수량</div>
-                      <div className="middle_left_sub">{v.equipmentCnt}개</div>
-                    </div>
-                    <div className="middle_right">
-                      <button
-                        className="alarm"
-                        onClick={() => {
-                          navigate(
-                            `/scautr/management?search=${v.model}&searchType=all`
-                          );
-                        }}
-                      >
-                        <span className="alarm_title">알람</span>
-                        <span className="alarm_content">{v.alarm}</span>
-                      </button>
-                      <button
-                        className="error"
-                        onClick={() => {
-                          navigate(
-                            `/scautr/management?search=${v.model}&searchType=all`
-                          );
-                        }}
-                      >
-                        <span className="error_title">에러</span>
-                        <span className="error_content">{v.error}</span>
-                      </button>
-                    </div>
-                  </div>
-                  <div className="bottom">
-                    <div className="run">
-                      <div className="bottom_title">
-                        <div className="img">
-                          <img src="/images/green_circle.png" alt="즐겨찾기" />
+    <React.Fragment>
+      {ModelCardListQueryData?.data.result.length > 0 ? (
+        <Wrap>
+          <Card>
+            {ModelCardListQueryData?.data.result.map(
+              (v: IMonitoringCardProps, i: number) => {
+                return (
+                  <React.Fragment key={i}>
+                    <div className="wrap">
+                      <div className="top">
+                        <div className="top_left">
+                          <div
+                            className="top_left_title"
+                            onClick={() => {
+                              navigate(
+                                `/scautr/management?search=${v.model}&searchType=all`
+                              );
+                            }}
+                          >
+                            {v.model}
+                          </div>
+                          <div className="top_left_sub">{v.assignedName}</div>
                         </div>
-                        <span>가동</span>
-                      </div>
-                      <div className="bottom_sub">{v.on}</div>
-                    </div>
-                    <div className="stop">
-                      <div className="bottom_title">
-                        <div className="img">
-                          <img src="/images/gray_circle.png" alt="즐겨찾기" />
+                        <div className="top_right">
+                          {v.boardMark === 1 ? (
+                            <img
+                              src="/images/exclamation-thick-fill.png"
+                              alt="즐겨찾기"
+                              onClick={() => {
+                                toogleBookmarkMutation(v.modelId);
+                              }}
+                            />
+                          ) : (
+                            <img
+                              src="/images/exclamation-thick.png"
+                              alt="즐겨찾기"
+                              onClick={() => {
+                                toogleBookmarkMutation(v.modelId);
+                              }}
+                            />
+                          )}
                         </div>
-                        <span>비가동</span>
                       </div>
-                      <div className="bottom_sub">{v.off}</div>
-                    </div>
-                    <div className="unconnect">
-                      <div className="bottom_title">
-                        <div className="img">
-                          <img src="/images/orange_circle.png" alt="즐겨찾기" />
+                      <div className="middle">
+                        <div className="middle_left">
+                          <div className="middle_left_title">장비수량</div>
+                          <div className="middle_left_sub">
+                            {v.equipmentCnt}개
+                          </div>
                         </div>
-                        <span>미등록</span>
+                        <div className="middle_right">
+                          <button
+                            className="alarm"
+                            onClick={() => {
+                              navigate(
+                                `/scautr/management?search=${v.model}&searchType=all`
+                              );
+                            }}
+                          >
+                            <span className="alarm_title">알람</span>
+                            <span className="alarm_content">{v.alarm}</span>
+                          </button>
+                          <button
+                            className="error"
+                            onClick={() => {
+                              navigate(
+                                `/scautr/management?search=${v.model}&searchType=all`
+                              );
+                            }}
+                          >
+                            <span className="error_title">에러</span>
+                            <span className="error_content">{v.error}</span>
+                          </button>
+                        </div>
                       </div>
-                      <div className="bottom_sub">{v.unregistered}</div>
+                      <div className="bottom">
+                        <div className="run">
+                          <div className="bottom_title">
+                            <div className="img">
+                              <img
+                                src="/images/green_circle.png"
+                                alt="즐겨찾기"
+                              />
+                            </div>
+                            <span>가동</span>
+                          </div>
+                          <div className="bottom_sub">{v.on}</div>
+                        </div>
+                        <div className="stop">
+                          <div className="bottom_title">
+                            <div className="img">
+                              <img
+                                src="/images/gray_circle.png"
+                                alt="즐겨찾기"
+                              />
+                            </div>
+                            <span>비가동</span>
+                          </div>
+                          <div className="bottom_sub">{v.off}</div>
+                        </div>
+                        <div className="unconnect">
+                          <div className="bottom_title">
+                            <div className="img">
+                              <img
+                                src="/images/orange_circle.png"
+                                alt="즐겨찾기"
+                              />
+                            </div>
+                            <span>미등록</span>
+                          </div>
+                          <div className="bottom_sub">{v.unregistered}</div>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-              </React.Fragment>
-            );
-          }
-        )}
-      </Card>
-    </Wrap>
+                  </React.Fragment>
+                );
+              }
+            )}
+          </Card>
+        </Wrap>
+      ) : (
+        <InitialWrap>
+          <div className="notice_card">
+            <div className="title">데이터를 연동해주세요.</div>
+            <div className="content">
+              데이터 모니터링을 위해서는 우선 설비 등록이 필요합니다. 설비 등록
+              후, 연동된 모드링크의 시리얼번호를 기입하면 해당 기기에 대한
+              상태를 모니터링 할 수 있습니다.
+            </div>
+            <div className="btn">
+              <button
+                onClick={() => {
+                  navigate('/scautr/management/submit');
+                }}
+              >
+                설비등록 페이지로 이동
+              </button>
+            </div>
+          </div>
+        </InitialWrap>
+      )}
+    </React.Fragment>
   );
 };
 
@@ -167,6 +202,40 @@ export default MonitoringCard;
 
 const Wrap = styled.div`
   width: 100%;
+`;
+
+const InitialWrap = styled.div`
+  width: 100%;
+  min-height: 800px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #e1e1e1;
+  .notice_card {
+    width: 300px;
+    height: 230px;
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #000;
+    .title {
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+    .content {
+      margin-bottom: 20px;
+    }
+    .btn {
+      display: flex;
+      justify-content: center;
+      button {
+        color: #108af9;
+        background: #eff7ff;
+        border: 1px solid #108af9;
+        width: 250px;
+        font-size: 1.6rem;
+      }
+    }
+  }
 `;
 
 const Card = styled.div`

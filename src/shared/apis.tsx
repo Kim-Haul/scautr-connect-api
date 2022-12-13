@@ -126,7 +126,7 @@ const apis = {
   // addRegistrationOption: 별도의 content-type 설정을 위해 RegistrationMachineModal 컴포넌트에서 따로 선언
   deleteRegistrationOptionFiles: (data: number[]) => api.delete('/option/file', { data: data }),
   //MANAGEMENT
-  getManagementList: (currentPage: number, searchType: string, search: string) => api.post(`/equipment/filter?searchType=${searchType}&search=${search}&orderType=&page=${currentPage}&size=10`),
+  getManagementList: (currentPage: number, searchType: string, search: string, order: string, orderType: string) => api.post(`/equipment/filter?searchType=${searchType}&search=${search}&orderType=${orderType}&order=${order}&page=${currentPage}&size=10`),
   deleteManagement: (data: IDeleteManagementApiProps) => api.delete('/equipment', { data: data }), // delete 요청에서 body값을 넘기려면 객체로 한번 감싸주어야 핢.
   addManagement: (data: any) => api.post('/equipment', data),
   editManagement: (data: any) => api.put('/equipment', data),

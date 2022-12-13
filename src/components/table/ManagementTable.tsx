@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import apis from '../../shared/apis';
 import { useQuery } from '@tanstack/react-query';
 import {
@@ -11,6 +11,11 @@ import Pagination10 from '../pagination/Pagination10';
 
 const ManagementTable = (props: IManagementProps) => {
   const navigate = useNavigate();
+
+  // 정렬 기능 추가 url parameter 설정
+  const [searchParams, setSearchParams] = useSearchParams('');
+  const order = searchParams.get('order') || '';
+  const orderType = searchParams.get('orderType') || '';
 
   // 현재 페이지 상태값 및 시작 & 엑티브 페이지 상태값 저장
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -23,7 +28,9 @@ const ManagementTable = (props: IManagementProps) => {
       const res = await apis.getManagementList(
         currentPage,
         props.searchTypeUrl,
-        props.searchInputUrl
+        props.searchInputUrl,
+        order,
+        orderType
       );
       return res;
     } catch (err) {
@@ -38,6 +45,8 @@ const ManagementTable = (props: IManagementProps) => {
       currentPage,
       props.searchTypeUrl,
       props.searchInputUrl,
+      orderType,
+      order,
     ],
     getManagementList,
     {
@@ -66,9 +75,84 @@ const ManagementTable = (props: IManagementProps) => {
           <tr>
             <th className="th0"></th>
             <th className="th1"></th>
-            <th className="th2">출고일</th>
-            <th className="th3">거래처명</th>
-            <th className="th4">기계명</th>
+            {/* 클릭시 출고일별 정렬 적용 */}
+            <th
+              className="th2 filter"
+              onClick={() => {
+                if (orderType !== 'installedDate') {
+                  setSearchParams(
+                    `search=${props.searchInputUrl}&searchType=${props.searchTypeUrl}&orderType=installedDate&order=ASC`
+                  );
+                } else if (orderType === 'installedDate' && order === 'ASC') {
+                  setSearchParams(
+                    `search=${props.searchInputUrl}&searchType=${props.searchTypeUrl}&orderType=installedDate&order=DESC`
+                  );
+                } else if (orderType === 'installedDate' && order === 'DESC') {
+                  setSearchParams(
+                    `search=${props.searchInputUrl}&searchType=${props.searchTypeUrl}`
+                  );
+                }
+              }}
+            >
+              출고일
+              {orderType === 'installedDate' && order === 'ASC'
+                ? '▴'
+                : orderType === 'installedDate' && order === 'DESC'
+                ? '▾'
+                : null}
+            </th>
+            {/* 클릭시 거래처명별 정렬 적용 */}
+            <th
+              className="th3 filter"
+              onClick={() => {
+                if (orderType !== 'companyName') {
+                  setSearchParams(
+                    `search=${props.searchInputUrl}&searchType=${props.searchTypeUrl}&orderType=companyName&order=ASC`
+                  );
+                } else if (orderType === 'companyName' && order === 'ASC') {
+                  setSearchParams(
+                    `search=${props.searchInputUrl}&searchType=${props.searchTypeUrl}&orderType=companyName&order=DESC`
+                  );
+                } else if (orderType === 'companyName' && order === 'DESC') {
+                  setSearchParams(
+                    `search=${props.searchInputUrl}&searchType=${props.searchTypeUrl}`
+                  );
+                }
+              }}
+            >
+              거래처명
+              {orderType === 'companyName' && order === 'ASC'
+                ? '▴'
+                : orderType === 'companyName' && order === 'DESC'
+                ? '▾'
+                : null}
+            </th>
+            {/* 클릭시 기계명별 정렬 적용 */}
+            <th
+              className="th4 filter"
+              onClick={() => {
+                if (orderType !== 'assignedName') {
+                  setSearchParams(
+                    `search=${props.searchInputUrl}&searchType=${props.searchTypeUrl}&orderType=assignedName&order=ASC`
+                  );
+                } else if (orderType === 'assignedName' && order === 'ASC') {
+                  setSearchParams(
+                    `search=${props.searchInputUrl}&searchType=${props.searchTypeUrl}&orderType=assignedName&order=DESC`
+                  );
+                } else if (orderType === 'assignedName' && order === 'DESC') {
+                  setSearchParams(
+                    `search=${props.searchInputUrl}&searchType=${props.searchTypeUrl}`
+                  );
+                }
+              }}
+            >
+              기계명
+              {orderType === 'assignedName' && order === 'ASC'
+                ? '▴'
+                : orderType === 'assignedName' && order === 'DESC'
+                ? '▾'
+                : null}
+            </th>
             <th className="th5">모델명</th>
             <th className="th6">기계상태</th>
             <th className="th7">출력</th>
@@ -184,22 +268,24 @@ const Wrap = styled.div`
         align-items: center;
         justify-content: space-around;
         .mark_alarm {
-          border: 1px solid #ffc6c9;
-          background-color: #ffe3e4;
+          border: 1px solid #a25ddc;
+          background-color: #f6effc;
           display: flex;
           justify-content: center;
           align-items: center;
-          width: 40px;
-          color: #ff4e59;
+          width: 50px;
+          color: #a25ddc;
+          border-radius: 16px;
         }
         .mark_error {
-          border: 1px solid #ffc6c9;
-          background-color: #ffe3e4;
+          border: 1px solid #e2445c;
+          background-color: #fdeaed;
           display: flex;
           justify-content: center;
           align-items: center;
-          width: 40px;
+          width: 50px;
           color: #ff4e59;
+          border-radius: 16px;
         }
         .mark_unknown {
           border: 1px solid #e9edf3;
@@ -235,7 +321,8 @@ const Wrap = styled.div`
     }
     .th7 {
       // 노트북 사이즈에서 알람 & 에러 사이의 여백을 위해 width : 10rem -> 11rem 변경
-      width: 11rem;
+      width: 12rem;
+      min-width: 12rem;
     }
     .th8 {
       width: 20rem;
@@ -249,7 +336,8 @@ const Wrap = styled.div`
     &:hover {
       background-color: rgba(0, 123, 255, 0.1);
     }
-    .nav_companyName {
+    .nav_companyName,
+    .filter {
       &:hover {
         color: #35a3dc;
       }

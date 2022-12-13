@@ -273,17 +273,25 @@ const ManagementSubmit = () => {
                     setSelectModelState(e.value);
                   }}
                 />
-                <div
-                  className="machine_registration_link"
-                  onClick={() => {
-                    window.open(
-                      'https://scautr.com/scautr/management/registration',
-                      '_blank'
-                    );
-                  }}
-                >
-                  <HiOutlineExternalLink />
-                  설비 템플릿 등록하러 가기
+                <div className="registration_link">
+                  <HiOutlineExternalLink
+                    onClick={() => {
+                      window.open(
+                        'https://scautr.com/scautr/management/registration',
+                        '_blank'
+                      );
+                    }}
+                  />
+                  <span
+                    onClick={() => {
+                      window.open(
+                        'https://scautr.com/scautr/management/registration',
+                        '_blank'
+                      );
+                    }}
+                  >
+                    설비 템플릿 등록하러 가기
+                  </span>
                 </div>
               </div>
               <div className="content_right">
@@ -651,12 +659,18 @@ const Line = styled.div`
     .content_left {
       display: flex;
       flex-direction: column;
-      .machine_registration_link {
+      .registration_link {
+        svg {
+          margin-right: 3px;
+          cursor: pointer;
+        }
+        span {
+          cursor: pointer;
+        }
         display: flex;
         align-items: center;
         font-size: 1.4rem;
         color: gray;
-        cursor: pointer;
         margin-top: 5px;
       }
     }

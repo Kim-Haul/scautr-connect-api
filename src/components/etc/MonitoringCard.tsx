@@ -47,7 +47,7 @@ const MonitoringCard = () => {
 
   const { mutate: toogleBookmarkMutation } = useMutation(toogleBookmark, {
     onSuccess: () => {
-      alert('즐겨찾기로 등록/해제 되었습니다!');
+      alert('즐겨찾기 상태가 변경되었습니다!');
       queryClient.invalidateQueries({ queryKey: ['loadModelCardListQuery'] });
     },
   });
@@ -212,7 +212,7 @@ const InitialWrap = styled.div`
   justify-content: center;
   background-color: #e1e1e1;
   .notice_card {
-    width: 300px;
+    width: 320px;
     height: 230px;
     padding: 10px;
     background-color: #fff;

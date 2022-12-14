@@ -57,6 +57,37 @@ const Login = () => {
     }
   };
 
+  const DemoOnSumit = async () => {
+    // 0~5 난수 생성
+    const lastNum = Math.floor(Math.random() * 11);
+    const info = {
+      account: `demo0${lastNum}`,
+      password: 'demo000!',
+    };
+    // 로그인 로직
+    try {
+      const res = await apis.login(info);
+      setCookieToken(res.data.result[0].accessToken);
+      setCookieRefreshToken(res.data.result[0].refreshToken);
+      window.location.reload();
+    } catch (e: any) {
+      if (e.response?.data.message === 'ACCOUNT_UNAPPROVED_ERR') {
+        alert('승인 대기중인 계정입니다.');
+      } else if (e.response?.data.message === 'ACCOUNT_NOTFOUND_ERR') {
+        alert('등록되지 않은 아이디입니다.');
+      } else if (
+        e.response?.data.message === 'PASSWORD_DISCREPANCY_ERR' ||
+        e.response?.data.message === 'PASSWORD_FORMAT_ERR'
+      ) {
+        alert('올바른 비밀번호를 입력해주세요.');
+      } else if (e.response?.data.message === 'ACCOUNT_LOCKED_ERR') {
+        alert('비밀번호를 5회 이상 잘못 입력하여 잠긴 계정입니다.');
+      } else {
+        alert('아이디 혹은 비밀번호를 다시 확인해주세요.');
+      }
+    }
+  };
+
   // 아이디 저장 체크박스 여부 검증
   useEffect(() => {
     if (getCookie('ID')) {
@@ -146,6 +177,15 @@ const Login = () => {
             </div>
           </div>
           <button className="btn-login">로그인</button>
+          <button
+            className="btn-login-demo"
+            onClick={(e) => {
+              e.preventDefault();
+              DemoOnSumit();
+            }}
+          >
+            데모 체험용 로그인
+          </button>
           <div className="link-agree">
             <span
               onClick={() => {
@@ -160,13 +200,13 @@ const Login = () => {
       <Footer>
         <div>
           <ul>
-            <li>주식회사 빛컨</li>
+            <li>주식회사 엣지크로스</li>
             <li>스카우터</li>
             <li>사업자등록번호 119-87-05616</li>
           </ul>
         </div>
         <div className="copyright">
-          <div>Copyright © VITCON Corp. All Rights Reserved.</div>
+          <div>Copyright © EdgeCross Inc. All Rights Reserved.</div>
         </div>
       </Footer>
     </Wrap>
@@ -237,6 +277,9 @@ const PostForm = styled.form`
       display: flex;
       align-items: center;
       justify-content: center;
+    }
+    .btn-login-demo {
+      background-color: #108af9;
     }
     .link-agree {
       font-size: 1.3rem;

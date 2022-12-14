@@ -114,13 +114,13 @@ const Mypage = () => {
         <Footer>
           <div>
             <ul>
-              <li>주식회사 빛컨</li>
+              <li>주식회사 엣지크로스</li>
               <li>스카우터</li>
               <li>사업자등록번호 119-87-05616</li>
             </ul>
           </div>
           <div className="copyright">
-            <div>Copyright © VITCON Corp. All Rights Reserved.</div>
+            <div>Copyright © EdgeCross Inc. All Rights Reserved.</div>
           </div>
         </Footer>
       </Container>

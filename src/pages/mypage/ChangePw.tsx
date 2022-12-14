@@ -18,7 +18,10 @@ const ChangePw = () => {
     formState: { errors },
   } = useForm<FormValues>({ mode: 'onChange' });
 
-  const onSubmit = async (data: { password?: string | undefined; new_password?: string | undefined }) => {
+  const onSubmit = async (data: {
+    password?: string | undefined;
+    new_password?: string | undefined;
+  }) => {
     const info = {
       account: state.account,
       password: data.password,
@@ -144,13 +147,13 @@ const ChangePw = () => {
         <Footer>
           <div>
             <ul>
-              <li>주식회사 빛컨</li>
+              <li>주식회사 엣지크로스</li>
               <li>스카우터</li>
               <li>사업자등록번호 119-87-05616</li>
             </ul>
           </div>
           <div className="copyright">
-            <div>Copyright © VITCON Corp. All Rights Reserved.</div>
+            <div>Copyright © EdgeCross Inc. All Rights Reserved.</div>
           </div>
         </Footer>
       </Container>

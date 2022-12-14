@@ -57,11 +57,12 @@ const Login = () => {
     }
   };
 
+  // 데모 체험용 계정 로그인 동작
   const DemoOnSumit = async () => {
     // 0~5 난수 생성
-    const lastNum = Math.floor(Math.random() * 11);
+    const lastNum = Math.floor(Math.random() * 81) + 10;
     const info = {
-      account: `demo0${lastNum}`,
+      account: `demo${lastNum}`,
       password: 'demo000!',
     };
     // 로그인 로직

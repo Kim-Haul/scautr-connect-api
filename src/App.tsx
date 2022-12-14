@@ -22,6 +22,7 @@ import ChangePw from './pages/mypage/ChangePw';
 import NoticeLayout from './pages/board/NoticeLayout';
 import NoticeScautr from './pages/board/NoticeScautr';
 import NoticeScautrDetail from './pages/board/NoticeScautrDetail';
+import NoticeScautrPost from './pages/board/NoticeScautrPost';
 import NoticeProgix from './pages/board/NoticeProgix';
 import NoticeProgixDetail from './pages/board/NoticeProgixDetail';
 import NoticeProgixPost from './pages/board/NoticeProgixPost';
@@ -72,6 +73,7 @@ function App() {
                 <Route path="/scautr/board" element={<NoticeLayout />}>
                   <Route path="/scautr/board/notice/scautr" element={<NoticeScautr />} />
                   <Route path="/scautr/board/notice/scautr/detail/:idx" element={<NoticeScautrDetail />} />
+                  <Route path="/scautr/board/notice/scautr/post" element={<NoticeScautrPost />} />
                   <Route path="/scautr/board/notice/progix" element={<NoticeProgix />} />
                   <Route path="/scautr/board/notice/progix/detail/:idx" element={<NoticeProgixDetail />} />
                   <Route path="/scautr/board/notice/progix/post" element={<NoticeProgixPost />} />

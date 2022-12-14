@@ -145,6 +145,9 @@ const apis = {
   //BOARD NOTICE SCAUTR
   getNoticeScautr: (currentPage: number, searchType: string, search: string) => api.get(`/notice/scautr?page=${currentPage}&size=10&searchType=${searchType}&search=${search}`),
   getNoticeScautrDetail: (id : string | undefined) => api.get(`/notice/scautr/${id}`),
+  addNoticeScautr: (data: any) => api.post('/notice/scautr', data),
+  editNoticeScautr: (data: any, id : string | undefined) => api.put(`/notice/scautr/${id}`, data),
+  deleteNoticeScautr: (id : string | undefined) => api.delete(`/notice/scautr/${id}`),
   //BOARD NOTICE PROGIX
   getNoticeProgix: (currentPage: number, searchType: string, search: string) => api.get(`/notice?page=${currentPage}&size=10&searchType=${searchType}&search=${search}`),
   getNoticeProgixDetail: (id : string | undefined) => api.get(`/notice/${id}`),

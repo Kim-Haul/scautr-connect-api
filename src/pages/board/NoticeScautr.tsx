@@ -1,11 +1,15 @@
-import React, { useState, useRef, Suspense } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import React, { useState, useRef, Suspense, useEffect } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 import Mobile from '../../components/exception/Mobile';
 import NoticeScautrTable from '../../components/table/NoticeScautrTable';
 import SkeletonTable from '../../components/suspense/SkeletonTable';
+import jwtDecode from 'jwt-decode';
+import { getCookie } from '../../shared/cookie';
+import { ITokenProps } from '../../shared/type/Interface';
 
 const NoticeScautr = () => {
+  const navigate = useNavigate();
   // 검색 input, 조건 select 상태관리
   const [searchInput, setSearchInput] = useState<string>('');
   const [searchType, setSearchType] = useState<string>('all');
@@ -16,6 +20,18 @@ const NoticeScautr = () => {
   const [searchParams, setSearchParams] = useSearchParams('');
   const searchTypeUrl = searchParams.get('searchType') || 'all';
   const searchInputUrl = searchParams.get('search') || '';
+
+  // 토큰 payload에 담겨오는 정보를 바탕으로 글쓰기 버튼 노출 검증
+  const [isAuth, setIsAuth] = useState<string>('');
+  useEffect(() => {
+    const accessToken = getCookie('Authorization');
+    let authority: ITokenProps;
+
+    if (accessToken) {
+      authority = jwtDecode(accessToken);
+      setIsAuth(authority.sub);
+    }
+  }, [isAuth]);
 
   return (
     <Wrap>
@@ -72,6 +88,19 @@ const NoticeScautr = () => {
               초기화
             </button>
           </div>
+          {/* 관리자 계정으로 접속시에만 스카우터 공지사항 글쓰기 버튼 활성화 */}
+          {isAuth === 'scautr' ? (
+            <div className="top_right">
+              <button
+                className="btn_left"
+                onClick={() => {
+                  navigate('/scautr/board/notice/scautr/post');
+                }}
+              >
+                <span>글쓰기</span>
+              </button>
+            </div>
+          ) : null}
         </Top>
         <Content>
           {/* -------- 스카우터 공지사항 -------- */}
@@ -137,6 +166,13 @@ const Top = styled.div`
         margin-right: 10px;
       }
     }
+  }
+  .top_right {
+    @media (max-width: 1300px) {
+      //1100px보다 작아지면 display none;
+      display: none;
+    }
+    display: flex;
   }
 
   button {

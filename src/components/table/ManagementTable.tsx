@@ -217,6 +217,11 @@ const ManagementTable = (props: IManagementProps) => {
                         {v.error === true ? (
                           <div className="mark_error">에러</div>
                         ) : null}
+                        {v.alarm === false &&
+                        v.error === false &&
+                        v.operation === 'ON' ? (
+                          <div className="mark_normal">정상</div>
+                        ) : null}
                         {v.operation === '미등록' ? (
                           <div className="mark_unknown">미등록</div>
                         ) : null}
@@ -285,6 +290,16 @@ const Wrap = styled.div`
           align-items: center;
           width: 50px;
           color: #ff4e59;
+          border-radius: 16px;
+        }
+        .mark_normal {
+          border: 1px solid #00c875;
+          background-color: rgba(0, 200, 117, 0.1);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 50px;
+          color: #00c875;
           border-radius: 16px;
         }
         .mark_unknown {

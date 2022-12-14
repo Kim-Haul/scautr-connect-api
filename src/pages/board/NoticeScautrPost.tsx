@@ -2,11 +2,11 @@ import React, { useRef, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Switch from '../../components/etc/Switch';
-import ProgixToastEditor from '../../components/detail/ProgixToastEditor';
+import ScautrToastEditor from '../../components/detail/ScautrToastEditor';
 import apis from '../../shared/apis';
 import { useQueryClient } from '@tanstack/react-query';
 
-const NoticeProgixPost = () => {
+const NoticeScautrPost = () => {
   const navigate = useNavigate();
   // 제목 가져오기
   const titleRef = useRef<HTMLInputElement | any>(null);
@@ -18,10 +18,9 @@ const NoticeProgixPost = () => {
   const editorRef = useRef<any>();
   // 이미지 가로채기
   const [imgList, SetImgList] = useState<string[]>([]);
-  // 대표글 여부 확인
+  // 수정 클릭시 기존 state값 받아오기
   const location = useLocation();
   const state = location.state;
-  const existTop = state.existTop;
 
   // 쿼리 클라이언트 정의
   const queryClient = useQueryClient();
@@ -36,11 +35,11 @@ const NoticeProgixPost = () => {
       images: imgList,
     };
 
-    if (state.title === undefined) {
+    if (state?.title === undefined) {
       try {
         // 추가
-        await apis.addNoticeProgix(content);
-        navigate('/scautr/board/notice/progix');
+        await apis.addNoticeScautr(content);
+        navigate('/scautr/board/notice/scautr');
       } catch (e) {
         alert(
           '등록에 실패하였습니다. 문제가 지속되면 담당부서로 연락바랍니다.'
@@ -49,39 +48,33 @@ const NoticeProgixPost = () => {
     } else {
       try {
         // 수정
-        await apis.editNoticeProgix(content, state.noticeId);
+        await apis.editNoticeScautr(content, state.noticeId);
         // 수정을 해도 캐시데이터가 뿌려지는 것 상쇄
         queryClient.removeQueries({
-          queryKey: ['loadNoticeProgixDetail'],
+          queryKey: ['loadNoticeScautrDetail'],
         });
-        navigate(`/scautr/board/notice/progix/detail/${state.noticeId}`);
+        navigate(`/scautr/board/notice/scautr/detail/${state.noticeId}`);
       } catch (e: any) {
-        if (e.response.data.message === 'TOP_EXIST_ERR') {
-          alert(
-            '기존에 설정되어있는 대표글이 존재합니다.\n기등록된 대표글 설정 취소 후 다시 시도해주세요.'
-          );
-        } else {
-          alert(
-            '수정에 실패하였습니다. 문제가 지속되면 담당부서로 연락바랍니다.'
-          );
-        }
+        alert(
+          '수정에 실패하였습니다. 문제가 지속되면 담당부서로 연락바랍니다.'
+        );
       }
     }
   };
 
   // 수정시 기존 분류값 가져오기
   useEffect(() => {
-    if (state.classificationId !== undefined) {
+    if (state?.classificationId !== undefined) {
       setSelectSort(state.classificationId);
     }
-  }, [state.classificationId]);
+  }, [state?.classificationId]);
 
   // 기존 대표글 인지 확인
   useEffect(() => {
-    if (state.top === true) {
+    if (state?.top === true) {
       _setClick(true);
     }
-  }, [state.top]);
+  }, [state?.top]);
 
   return (
     <Wrap>
@@ -101,7 +94,7 @@ const NoticeProgixPost = () => {
             <button
               className="btn_left"
               onClick={() => {
-                navigate('/scautr/board/notice/progix');
+                navigate('/scautr/board/notice/scautr');
               }}
             >
               목록
@@ -117,7 +110,7 @@ const NoticeProgixPost = () => {
           </div>
         </Top>
         <Content>
-          <div className="row title">기계사 공지사항 작성</div>
+          <div className="row title">스카우터 공지사항 작성</div>
           <div className="row grid">
             <div className="grid_left">분류</div>
             <div className="grid_right">
@@ -125,7 +118,7 @@ const NoticeProgixPost = () => {
                 onChange={(e: React.ChangeEvent<HTMLSelectElement> | any) => {
                   setSelectSort(e.target.value);
                 }}
-                defaultValue={state.classificationId}
+                defaultValue={state?.classificationId}
               >
                 <option value="1">공지사항</option>
                 <option value="2">이벤트</option>
@@ -138,28 +131,20 @@ const NoticeProgixPost = () => {
           <div className="row grid">
             <div className="grid_left">제목</div>
             <div className="grid_right">
-              <input type="text" defaultValue={state.title} ref={titleRef} />
+              <input type="text" defaultValue={state?.title} ref={titleRef} />
             </div>
           </div>
           <div className="row grid">
             <div className="grid_left">대표글 설정</div>
             <div className="grid_right">
-              <Switch
-                _click={_click}
-                _setClick={_setClick}
-                existTop={existTop}
-              />
-              <span className="desc">
-                대표글은 1개만 설정이 가능합니다. 기존에 대표글이 있는경우
-                설정이 불가능합니다.
-              </span>
+              <Switch _click={_click} _setClick={_setClick} />
             </div>
           </div>
           <div className="row editor">
-            <ProgixToastEditor
+            <ScautrToastEditor
               editorRef={editorRef}
               SetImgList={SetImgList}
-              defaultValue={state.content}
+              defaultValue={state?.content}
             />
           </div>
         </Content>
@@ -168,7 +153,7 @@ const NoticeProgixPost = () => {
   );
 };
 
-export default NoticeProgixPost;
+export default NoticeScautrPost;
 
 const Wrap = styled.div`
   width: 100%;
@@ -185,7 +170,6 @@ const Top = styled.div`
   justify-content: space-between;
   width: 100%;
   margin-bottom: 10px;
-
   button {
     width: 106.1px;
     height: 40px;
@@ -271,11 +255,6 @@ const Content = styled.div`
       input {
         width: 100%;
       }
-    }
-    .desc {
-      margin-left: 10px;
-      font-size: 1.2rem;
-      color: gray;
     }
   }
   .row.editor {

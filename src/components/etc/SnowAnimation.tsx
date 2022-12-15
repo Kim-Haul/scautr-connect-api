@@ -27,8 +27,9 @@ export const FallingSnow = () => (
 );
 
 const Snow = styled.p`
-  color: #007bff;
-  animation: fall 12s linear infinite;
+  /* color: #007bff; */
+  color: #fff;
+  animation: fall 15s linear infinite;
   visibility: hidden;
   @keyframes fall {
     0% {
@@ -43,7 +44,7 @@ const Snow = styled.p`
     }
     100% {
       opacity: 0;
-      transform: translate(0, 500px);
+      transform: translate(0, 900px);
     }
   }
 `;
@@ -52,6 +53,7 @@ const SnowContainer = styled.div`
   display: flex;
   justify-content: space-between;
   position: absolute;
-  width: 38rem;
+  width: 22rem;
+  left: 1rem;
   top: 0;
 `;

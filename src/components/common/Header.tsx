@@ -11,6 +11,9 @@ import apis from '../../shared/apis';
 import jwtDecode from 'jwt-decode';
 import { getCookie } from '../../shared/cookie';
 import { ITokenProps } from '../../shared/type/Interface';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
 const Header = (props: IScrollYProps) => {
   const navigate = useNavigate();
@@ -57,6 +60,19 @@ const Header = (props: IScrollYProps) => {
     }
   };
 
+  // 캐러셀 세팅
+  const settings = {
+    dots: false,
+    arrows: false,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    speed: 1500,
+    autoplay: true,
+    autoplaySpeed: 4000,
+    infinite: true,
+    vertical: true,
+  };
+
   return (
     <Wrap ScrollY={props.ScrollY}>
       <ResponsiveHeader>
@@ -85,7 +101,10 @@ const Header = (props: IScrollYProps) => {
               <FcSpeaker style={{ marginRight: '10px' }} />
             </div>
             <div className="notice content">
-              [공지] 정기적으로 서비스 안정화 작업이 진행중입니다.
+              <StyledSlider {...settings}>
+                <div>데모 계정은 일부 기능이 제한됩니다.</div>
+                <div>[공지] 정기적으로 서비스 안정화 작업이 진행중입니다.</div>
+              </StyledSlider>
             </div>
           </div>
         </NavLeft>
@@ -199,16 +218,22 @@ const Navbar = styled.nav`
 
 const NavLeft = styled.div`
   width: 80%;
-  display: flex;
-  align-items: center;
   .notice {
+    width: 100%;
+    height: 100%;
     display: flex;
     align-items: center;
     .notice.content {
+      // 좌측 svg와 높이를 맞추기 위해 padding 지정
       padding-bottom: 4px;
     }
   }
 `;
+
+const StyledSlider = styled(Slider)`
+  width: 100%;
+`;
+
 const NavRight = styled.div`
   width: 20%;
   display: flex;

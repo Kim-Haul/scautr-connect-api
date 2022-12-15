@@ -103,7 +103,7 @@ const ManagementTable = (props: IManagementProps) => {
             </th>
             {/* 클릭시 거래처명별 정렬 적용 */}
             <th
-              className="th3 filter"
+              className="th3 filter desc"
               onClick={() => {
                 if (orderType !== 'companyName') {
                   setSearchParams(
@@ -126,6 +126,10 @@ const ManagementTable = (props: IManagementProps) => {
                 : orderType === 'companyName' && order === 'DESC'
                 ? '▾'
                 : null}
+              <div className="desc">
+                특정 컬럼명을 클릭시 해당 컬럼으로 모아보기(오름차순,
+                내림차순)가 가능합니다.
+              </div>
             </th>
             {/* 클릭시 기계명별 정렬 적용 */}
             <th
@@ -185,7 +189,7 @@ const ManagementTable = (props: IManagementProps) => {
                       onClick={() => {
                         navigate(`/scautr/management/detail/${v.equipmentId}`);
                       }}
-                      className="nav_companyName"
+                      className="nav_detail"
                     >
                       {v.companyName}
                     </td>
@@ -351,10 +355,45 @@ const Wrap = styled.div`
     &:hover {
       background-color: rgba(0, 123, 255, 0.1);
     }
-    .nav_companyName,
+    .nav_detail,
     .filter {
       &:hover {
         color: #35a3dc;
+      }
+    }
+    .th3.filter.desc {
+      position: relative;
+      .desc {
+        display: none;
+        font-size: 1.4rem;
+        position: absolute;
+        width: 490px;
+        padding: 8px;
+        top: 55px;
+        left: 20%;
+        border-radius: 8px;
+        -webkit-border-radius: 8px;
+        -moz-border-radius: 8px;
+        background: #333;
+        color: #fff;
+      }
+      .desc:after {
+        position: absolute;
+        bottom: 100%;
+        left: 15%;
+        width: 0;
+        height: 0;
+        border: solid transparent;
+        border-color: rgba(51, 51, 51, 0);
+        border-bottom-color: #333;
+        border-width: 10px;
+        pointer-events: none;
+        content: ' ';
+      }
+      &:hover {
+        .desc {
+          display: block;
+        }
       }
     }
   }

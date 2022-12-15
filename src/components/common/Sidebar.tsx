@@ -5,7 +5,6 @@ import { AiOutlineHome } from 'react-icons/ai';
 import { BsClipboardData, BsShareFill } from 'react-icons/bs';
 import { BiLogOut } from 'react-icons/bi';
 import { IViewProps, IPathProps } from '../../shared/type/Interface';
-import { FallingSnow } from '../etc/SnowAnimation';
 
 const Sidebar = (props: IViewProps) => {
   const navigate = useNavigate();
@@ -13,8 +12,6 @@ const Sidebar = (props: IViewProps) => {
 
   return (
     <Wrap open_side_bar={props.open_side_bar}>
-      {/* 눈이와요! */}
-      <FallingSnow />
       <Title onClick={() => navigate('/scautr/dashboard')}>
         <img src="/images/side_bar_logo_white_big.png" alt="스카우터 로고" />
       </Title>

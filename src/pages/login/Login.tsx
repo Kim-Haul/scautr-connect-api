@@ -72,7 +72,10 @@ const Login = () => {
       setCookieRefreshToken(res.data.result[0].refreshToken);
       window.location.reload();
     } catch (e: any) {
-      if (e.response?.data.message === 'ACCOUNT_UNAPPROVED_ERR') {
+      if (
+        e.response?.data.message === 'ACCOUNT_UNAPPROVED_ERR' ||
+        e.response?.data.message === 'COMPANY_UNAPPROVED_ERR'
+      ) {
         alert('승인 대기중인 계정입니다.');
       } else if (e.response?.data.message === 'ACCOUNT_NOTFOUND_ERR') {
         alert('등록되지 않은 아이디입니다.');

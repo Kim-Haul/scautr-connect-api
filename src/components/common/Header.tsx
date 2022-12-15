@@ -68,7 +68,7 @@ const Header = (props: IScrollYProps) => {
     slidesToScroll: 1,
     speed: 1500,
     autoplay: true,
-    autoplaySpeed: 4000,
+    autoplaySpeed: 3500,
     infinite: true,
     vertical: true,
   };

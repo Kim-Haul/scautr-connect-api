@@ -72,7 +72,11 @@ const RegistrationOptionModal = (props: IModalProps) => {
       // 등록 후, 기본 조회 쿼리 재호출
       queryClient.invalidateQueries({ queryKey: ['loadRegistrationOption'] });
     } catch (e: any) {
-      alert('실패하였습니다. 문제가 지속되면 담당부서로 연락바랍니다.');
+      if (e.response?.data.message === 'DEMO_NOTALLOWED_ERR') {
+        alert('데모계정은 일부 기능이 제한됩니다.');
+      } else {
+        alert('실패하였습니다. 문제가 지속되면 담당부서로 연락바랍니다.');
+      }
     }
   };
 

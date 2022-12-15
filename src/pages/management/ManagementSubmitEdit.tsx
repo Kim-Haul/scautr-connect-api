@@ -178,8 +178,14 @@ const ManagementSubmitEdit = () => {
     try {
       await apis.editManagement(content);
       navigate('/scautr/management');
-    } catch (e) {
-      alert('수정에 실패하였습니다. 문제가 지속되면 담당부서로 연락바랍니다.');
+    } catch (e: any) {
+      if (e.response?.data.message === 'DEMO_NOTALLOWED_ERR') {
+        alert('데모계정은 일부 기능이 제한됩니다.');
+      } else {
+        alert(
+          '수정에 실패하였습니다. 문제가 지속되면 담당부서로 연락바랍니다.'
+        );
+      }
     }
   };
 

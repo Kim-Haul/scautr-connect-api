@@ -47,6 +47,8 @@ const RegistrationOption = (props: IRegistrationProps) => {
         alert(
           '특정 설비에서 사용되고 있는 옵션입니다.\n설비관리 탭에서 설비에 사용중인 옵션을 먼저 삭제 후 다시 진행해주세요.'
         );
+      } else if (e.response?.data.message === 'DEMO_NOTALLOWED_ERR') {
+        alert('데모계정은 일부 기능이 제한됩니다.');
       } else {
         alert(
           '삭제에 실패했습니다. 관련 문제가 지속되면 관리자에게 문의 바랍니다.'

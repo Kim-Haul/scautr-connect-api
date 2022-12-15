@@ -39,10 +39,12 @@ const Management = () => {
       const res = await apis.deleteManagement(list);
       setCheckBoxArr([]);
       return res;
-    } catch (e) {
-      alert(
-        '삭제에 실패했습니다. 관련 문제가 지속되면 담당부서로 문의 바랍니다.'
-      );
+    } catch (e: any) {
+      if (e.response?.data.message === 'DEMO_NOTALLOWED_ERR') {
+        alert('데모계정은 일부 기능이 제한됩니다.');
+      } else {
+        alert('실패하였습니다. 문제가 지속되면 담당부서로 연락바랍니다.');
+      }
     }
   };
 

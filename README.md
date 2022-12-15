@@ -19,6 +19,8 @@ $ yarn add @toast-ui/react-editor
 $ yarn add jwt-decode
 $ yarn add react-geocode
 $ yarn add mem
+$ yarn add react-slick @types/react-slick slick-carousel
+$ yarn add slick-carousel
 
 // package.json
 $ @types/styled-components : ^5.1.26
@@ -38,6 +40,10 @@ $ @toast-ui/react-editor : ^3.2.2
 $ jwt-decode : ^3.1.2
 $ react-geocode : ^0.2.3
 $ mem : ^9.0.2
+$ react-slick : ^0.29.0
+$ @types/react-slick : ^0.23.10
+$ slick-carousel : ^1.8.1
+
 
 // remove
 $ yarn remove dompurify

@@ -83,7 +83,7 @@ const RegistrationMachineModal = (props: IModalProps) => {
       // 등록 후, 기본 조회 쿼리 재호출
       queryClient.invalidateQueries({ queryKey: ['loadRegistrationModel'] });
     } catch (e) {
-      console.log('설비 등록/수정에 실패했습니다.');
+      alert('실패하였습니다. 문제가 지속되면 담당부서로 연락바랍니다.');
     }
   };
 

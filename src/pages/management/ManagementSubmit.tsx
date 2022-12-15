@@ -72,7 +72,7 @@ const ManagementSubmit = () => {
   const SelectModel = [
     getSelectModelQuery?.data.result.map(
       (v: IRegistrationMachineTableProps, i: number) => {
-        return { value: v.modelId, label: v.assignedName };
+        return { value: v.modelId, label: `${v.assignedName}(${v.model})` };
       }
     ),
   ];

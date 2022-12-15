@@ -31,6 +31,7 @@ const DetailDefaultInfo = (props: IParamsProps) => {
     }
   );
 
+
   return (
     <Wrap>
       <CustomerInfo>
@@ -126,6 +127,16 @@ const DetailDefaultInfo = (props: IParamsProps) => {
                   {detailMachineInfoQuery?.data.result[0].customerPhone}
                 </td>
               </tr>
+              <tr>
+                <td className="table_title">담당자 이메일</td>
+                <td className="table_content">
+                  {detailMachineInfoQuery?.data.result[0].customerEmail}
+                </td>
+                <td className="table_title">회사 이메일</td>
+                <td className="table_content">
+                  {detailMachineInfoQuery?.data.result[0].companyEmail}
+                </td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -214,13 +225,13 @@ const DetailDefaultInfo = (props: IParamsProps) => {
                 <td className="table_content">
                   {detailMachineInfoQuery?.data.result[0].supplierName}
                 </td>
-                <td className="table_title">비고</td>
+                <td className="table_title">관리자 이메일</td>
                 <td className="table_content">
-                  {detailMachineInfoQuery?.data.result[0].note}
+                  {detailMachineInfoQuery?.data.result[0].supplierEmail}
                 </td>
               </tr>
               <tr>
-                <td className="table_title">관리자 소속</td>
+                <td className="table_title">소속</td>
                 <td className="table_content">
                   {detailMachineInfoQuery?.data.result[0].supplierDepartment}
                 </td>

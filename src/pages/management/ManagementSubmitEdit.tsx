@@ -159,6 +159,7 @@ const ManagementSubmitEdit = () => {
       customerDepartment: data.customer_department,
       customerPhone: data.customer_contact,
       customerEmail: data.customer_email,
+      customerId: state.customerId,
 
       supplierName: data.company_manager,
       supplierDepartment: data.manager_department,
@@ -174,12 +175,11 @@ const ManagementSubmitEdit = () => {
       // longitude: geom?.lng || state.longitude
     };
 
-    console.log(content);
     try {
       await apis.editManagement(content);
       navigate('/scautr/management');
     } catch (e) {
-      alert('등록에 실패하였습니다. 문제가 지속되면 담당부서로 연락바랍니다.');
+      alert('수정에 실패하였습니다. 문제가 지속되면 담당부서로 연락바랍니다.');
     }
   };
 

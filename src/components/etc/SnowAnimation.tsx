@@ -42,8 +42,8 @@ const Snow = styled.p`
       opacity: 0.9;
     }
     100% {
-      transform: translate(0, 500px);
       opacity: 0;
+      transform: translate(0, 500px);
     }
   }
 `;

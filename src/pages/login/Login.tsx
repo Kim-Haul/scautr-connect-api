@@ -9,7 +9,7 @@ import {
   setCookieToken,
   setCookieRefreshToken,
 } from '../../shared/cookie';
-import { FallingSnow } from '../../components/etc/Snowflake';
+import { FallingSnow } from '../../components/etc/SnowAnimation';
 
 const Login = () => {
   const navigate = useNavigate();

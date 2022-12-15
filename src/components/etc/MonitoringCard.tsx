@@ -38,9 +38,8 @@ const MonitoringCard = () => {
       const res = await apis.toogleBookmark(id);
       return res;
     } catch (err) {
-      console.log('호출에러');
       alert(
-        '즐겨찾기 등록에 실패했습니다. 관련 문제가 지속되면 관리자에게 문의 바랍니다.'
+        '즐겨찾기 상태 변경에 실패하였습니다. \n관련 문제가 지속되면 관리자에게 문의 바랍니다.'
       );
     }
   };

@@ -58,8 +58,12 @@ const ProgixDetail = () => {
       alert('삭제가 완료되었습니다.');
       navigate('/scautr/board/notice/progix');
       return res;
-    } catch (e) {
-      console.log('해당 공지사항 삭제에 실패하였습니다.');
+    } catch (e: any) {
+      if (e.response?.data.message === 'DEMO_NOTALLOWED_ERR') {
+        alert('데모계정은 일부 기능이 제한됩니다.');
+      } else {
+        alert('실패하였습니다. 문제가 지속되면 담당부서로 연락바랍니다.');
+      }
     }
   };
 

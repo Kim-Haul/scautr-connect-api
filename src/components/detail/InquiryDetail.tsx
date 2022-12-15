@@ -59,8 +59,12 @@ const InquiryDetail = () => {
       const res = await apis.deleteNoticeInquiry(id);
       alert('삭제가 완료되었습니다.');
       return res;
-    } catch (e) {
-      console.log('문의사항 답변 삭제에 실패하였습니다.');
+    } catch (e: any) {
+      if (e.response?.data.message === 'DEMO_NOTALLOWED_ERR') {
+        alert('데모계정은 일부 기능이 제한됩니다.');
+      } else {
+        alert('실패하였습니다. 문제가 지속되면 담당부서로 연락바랍니다.');
+      }
     }
   };
 
@@ -96,8 +100,12 @@ const InquiryDetail = () => {
     try {
       const res = await apis.addNoticeInquiry(content);
       return res;
-    } catch (err) {
-      console.log('답변 등록에 실패하였습니다.');
+    } catch (e: any) {
+      if (e.response?.data.message === 'DEMO_NOTALLOWED_ERR') {
+        alert('데모계정은 일부 기능이 제한됩니다.');
+      } else {
+        alert('실패하였습니다. 문제가 지속되면 담당부서로 연락바랍니다.');
+      }
     }
   };
 
@@ -118,8 +126,12 @@ const InquiryDetail = () => {
       const res = await apis.editNoticeInquiry(content);
       setIsEdit(false);
       return res;
-    } catch (err) {
-      console.log('답변 등록에 실패하였습니다.');
+    } catch (e: any) {
+      if (e.response?.data.message === 'DEMO_NOTALLOWED_ERR') {
+        alert('데모계정은 일부 기능이 제한됩니다.');
+      } else {
+        alert('실패하였습니다. 문제가 지속되면 담당부서로 연락바랍니다.');
+      }
     }
   };
 

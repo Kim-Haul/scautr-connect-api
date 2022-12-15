@@ -41,7 +41,9 @@ const Approve = () => {
       alert('권한요청을 거절하였습니다.');
       return res;
     } catch (err) {
-      console.log('요청거부에 실패하였습니다.');
+      alert(
+        '요청거부에 실패하셨습니다. 문제가 지속되면 담당부서로 연락바랍니다.'
+      );
     }
   };
 
@@ -60,7 +62,9 @@ const Approve = () => {
       alert('정상적으로 승인되었습니다.');
       return res;
     } catch (err) {
-      console.log('요청승인에 실패하였습니다.');
+      alert(
+        '요청승인에 실패하셨습니다. 문제가 지속되면 담당부서로 연락바랍니다.'
+      );
     }
   };
 

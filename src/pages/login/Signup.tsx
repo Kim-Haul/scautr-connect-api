@@ -315,60 +315,60 @@ const Signup = () => {
             )}
           </Line>
           <Line>
-            <div className="overlap">
-              <label htmlFor="inputEmail">이메일</label>
-              <div
-                className="overlap check"
-                onClick={() => {
+            <label htmlFor="inputEmail">이메일</label>
+            <div className="email">
+              <Input
+                type="email"
+                autoComplete="off"
+                placeholder="이메일을 입력해주세요"
+                isInvalid={!!errors.email}
+                disabled={emailOk}
+                id="inputEmail"
+                {...register('email', {
+                  required: '이메일을 입력해주세요.',
+                  validate: () => emailOk || '이메일 인증이 필요합니다.',
+                })}
+              />
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
                   checkEmail();
                 }}
               >
-                인증코드
-              </div>
+                인증
+              </button>
             </div>
-            <Input
-              type="email"
-              autoComplete="off"
-              placeholder="이메일을 입력해주세요"
-              isInvalid={!!errors.email}
-              disabled={emailOk}
-              id="inputEmail"
-              {...register('email', {
-                required: '이메일을 입력해주세요.',
-                validate: () => emailOk || '이메일 인증이 필요합니다.',
-              })}
-            />
+
             {errors.email && <div className="err">{errors.email.message}</div>}
           </Line>
           {/* 유효한 이메일 입력 후 인증코드 발송시, 인증코드 입력란 활성 */}
           {emailOk ? (
             <Line>
-              <div className="overlap">
-                <label htmlFor="inputMailCode">인증코드</label>
-                <div
-                  className="overlap check"
-                  onClick={() => {
+              <label htmlFor="inputMailCode">인증코드</label>
+              <div className="email">
+                <Input
+                  type="text"
+                  autoComplete="off"
+                  placeholder="인증코드를 입력해주세요"
+                  isInvalid={!!errors.mailCode}
+                  disabled={emailCodeCheck}
+                  id="inputMailCode"
+                  {...register('mailCode', {
+                    required: '메일로 전송된 인증코드를 입력해주세요.',
+                    validate: () =>
+                      emailCodeCheck ||
+                      '올바른 인증코드를 입력 후 인증확인 버튼을 눌러주세요.',
+                  })}
+                />
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
                     checkEmailCode();
                   }}
                 >
-                  인증확인
-                </div>
+                  확인
+                </button>
               </div>
-
-              <Input
-                type="text"
-                autoComplete="off"
-                placeholder="인증코드를 입력해주세요"
-                isInvalid={!!errors.mailCode}
-                disabled={emailCodeCheck}
-                id="inputMailCode"
-                {...register('mailCode', {
-                  required: '메일로 전송된 인증코드를 입력해주세요.',
-                  validate: () =>
-                    emailCodeCheck ||
-                    '올바른 인증코드를 입력 후 인증확인 버튼을 눌러주세요.',
-                })}
-              />
               {errors.mailCode && (
                 <div className="err">{errors.mailCode.message}</div>
               )}
@@ -681,6 +681,14 @@ const Line = styled.div`
     input {
       width: 28%;
       text-align: center;
+    }
+  }
+  .email {
+    display: grid;
+    grid-template-columns: 5fr 1fr;
+    column-gap: 0.5rem;
+    button {
+      background-color: #35a3dc;
     }
   }
   .registrationNumber {

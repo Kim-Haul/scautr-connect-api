@@ -71,19 +71,48 @@ const NoticeScautrTable = (props: INoticeProps) => {
           {NoticeScautrQuery?.data.result.map((v: any, i: number) => {
             return (
               <React.Fragment key={i}>
-                <tr
-                  onClick={() => {
-                    navigate(
-                      `/scautr/board/notice/scautr/detail/${v.noticeId}`
-                    );
-                  }}
-                >
-                  <td>{v.no}</td>
-                  <td>{v.classification}</td>
-                  <td>{v.title}</td>
-                  <td>{v.name}</td>
-                  <td>{v.regdate}</td>
-                </tr>
+                {v.top === true ? (
+                  <tr
+                    onClick={() => {
+                      navigate(
+                        `/scautr/board/notice/scautr/detail/${v.noticeId}`
+                      );
+                    }}
+                    style={{
+                      backgroundColor: '#f9f9f8',
+                      fontWeight: 'bold',
+                      color: '#ff4e59',
+                    }}
+                  >
+                    <td className="top_td">
+                      <div className="top_div">
+                        <span className="top_span">대표</span>
+                      </div>
+                    </td>
+                    <td>{v.classification}</td>
+                    <td>{v.title}</td>
+                    <td style={{ color: '#000', fontWeight: 'normal' }}>
+                      {v.name}
+                    </td>
+                    <td style={{ color: '#000', fontWeight: 'normal' }}>
+                      {v.regdate}
+                    </td>
+                  </tr>
+                ) : (
+                  <tr
+                    onClick={() => {
+                      navigate(
+                        `/scautr/board/notice/scautr/detail/${v.noticeId}`
+                      );
+                    }}
+                  >
+                    <td>{v.no}</td>
+                    <td>{v.classification}</td>
+                    <td>{v.title}</td>
+                    <td>{v.name}</td>
+                    <td>{v.regdate}</td>
+                  </tr>
+                )}
               </React.Fragment>
             );
           })}
@@ -137,6 +166,25 @@ const Wrap = styled.div`
     padding: 10px;
     border: 1px solid #e9edf3;
     text-align: center;
+  }
+  // 대표글 설정시 하이라이트 효과
+  .top_td {
+    padding: 8px;
+    .top_div {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .top_span {
+      border: 1px solid #ffc6c9;
+      background-color: #ffe3e4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 56px;
+      padding: 3px;
+    }
   }
   tr {
     cursor: pointer;

@@ -67,7 +67,7 @@ const DetailError = (props: IParamsProps) => {
     <Wrap>
       <div className="item">
         <div className="title">
-          <div className="top_left">에러내역</div>
+          <div className="top_left">에러내역 히스토리</div>
           <div className="top_right">
             <input
               type="date"
@@ -103,7 +103,7 @@ const DetailError = (props: IParamsProps) => {
               <tr>
                 <th className="th0">발생일자</th>
                 <th className="th1">종료일자</th>
-                <th className="th2">알람내역</th>
+                <th className="th2">내역</th>
               </tr>
             </thead>
             <tbody>
@@ -144,6 +144,9 @@ const Wrap = styled.div`
   .item {
     background-color: #f5f7fa;
     border: 1px solid #e1e1e1;
+    &:hover {
+      border: 1px solid #35a3dc;
+    }
     padding: 20px;
     .title {
       display: flex;

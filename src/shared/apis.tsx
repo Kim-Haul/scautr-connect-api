@@ -136,6 +136,8 @@ const apis = {
   macCheck: (data: { macAddress : string | undefined, equipmentId? : string | undefined }) => api.post('/equipment/mac', data),
   //MANAGEMENT DETAIL
   getDetailMachineInfo: (id: string | undefined) => api.get(`/equipment/${id}`),
+  getRunningAlarm: (id : string | undefined) => api.get(`/equipment/${id}/alarm`),
+  getRunningError: (id : string | undefined) => api.get(`/equipment/${id}/error`),
   plcInputData: (id: string | undefined) => api.get(`/equipment/${id}/input`),
   plcOutputData: (id: string | undefined)=> api.get(`/equipment/${id}/output`),
   getParameterData: (id: string | undefined) => api.get(`/equipment/${id}/parameter`),

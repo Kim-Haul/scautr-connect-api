@@ -50,9 +50,7 @@ const NoticeScautrPost = () => {
         // 수정
         await apis.editNoticeScautr(content, state.noticeId);
         // 수정을 해도 캐시데이터가 뿌려지는 것 상쇄
-        queryClient.removeQueries({
-          queryKey: ['loadNoticeScautrDetail'],
-        });
+        queryClient.removeQueries({ queryKey: ['loadNoticeScautrDetail'] });
         navigate(`/scautr/board/notice/scautr/detail/${state.noticeId}`);
       } catch (e: any) {
         alert(

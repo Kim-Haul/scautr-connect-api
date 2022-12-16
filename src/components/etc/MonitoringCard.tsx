@@ -46,8 +46,9 @@ const MonitoringCard = () => {
 
   const { mutate: toogleBookmarkMutation } = useMutation(toogleBookmark, {
     onSuccess: () => {
-      alert('즐겨찾기 상태가 변경되었습니다!');
-      queryClient.invalidateQueries({ queryKey: ['loadModelCardListQuery'] });
+      alert('즐겨찾기 상태가 변경되었습니다.');
+      queryClient.removeQueries({ queryKey: ['loadModelCardListQuery'] });
+      // queryClient.invalidateQueries({ queryKey: ['loadModelCardListQuery'] });
     },
   });
 

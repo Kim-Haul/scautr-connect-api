@@ -55,9 +55,7 @@ const NoticeProgixPost = () => {
         // 수정
         await apis.editNoticeProgix(content, state.noticeId);
         // 수정을 해도 캐시데이터가 뿌려지는 것 상쇄
-        queryClient.removeQueries({
-          queryKey: ['loadNoticeProgixDetail'],
-        });
+        queryClient.removeQueries({ queryKey: ['loadNoticeProgixDetail'] });
         navigate(`/scautr/board/notice/progix/detail/${state.noticeId}`);
       } catch (e: any) {
         if (e.response.data.message === 'TOP_EXIST_ERR') {

@@ -94,7 +94,9 @@ const NoticeProgixTable = (props: INoticeProps) => {
                     }}
                   >
                     <td className="top_td">
-                      <span className="top_span">대표</span>
+                      <div className="top_div">
+                        <span className="top_span">대표</span>
+                      </div>
                     </td>
                     <td>{v.classification}</td>
                     <td>{v.title}</td>
@@ -217,13 +219,13 @@ const Wrap = styled.div`
   }
   // 대표글 설정시 하이라이트 효과
   .top_td {
-    // 해당 td에만 flex를 주니 border가 겹치는 효과 발생
-    display: flex;
-    justify-content: center;
-    align-items: center;
     padding: 8px;
-    border: none;
-    border-left: 1px solid #e9edf3;
+    .top_div {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
     .top_span {
       border: 1px solid #ffc6c9;
       background-color: #ffe3e4;

@@ -9,7 +9,7 @@ import {
   setCookieToken,
   setCookieRefreshToken,
 } from '../../shared/cookie';
-import { FallingSnow } from '../../components/etc/SnowAnimation';
+// import { FallingSnow } from '../../components/etc/SnowAnimation';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -201,7 +201,8 @@ const Login = () => {
             </span>
           </div>
         </div>
-        <FallingSnow />
+        {/* 눈이 와요 ! */}
+        {/* <FallingSnow /> */}
       </PostForm>
       <Footer>
         <div>
@@ -234,7 +235,7 @@ const Wrap = styled.div`
 
 const PostForm = styled.form`
   // 눈내리는 날 애니메이션 효과 relative
-  position: relative;
+  /* position: relative; */
   display: flex;
   justify-content: center;
   align-items: center;

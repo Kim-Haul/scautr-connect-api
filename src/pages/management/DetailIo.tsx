@@ -133,6 +133,9 @@ const Wrap = styled.div`
     /* position: relative; */
     background-color: #f5f7fa;
     border: 1px solid #e1e1e1;
+    &:hover {
+      border: 1px solid #35a3dc;
+    }
     padding: 20px;
     // 데이터양에 따른 사이즈 조절 및 스크롤 설정
     max-height: 400px;

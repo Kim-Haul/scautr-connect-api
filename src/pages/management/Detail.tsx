@@ -3,6 +3,7 @@ import { IoIosArrowForward } from 'react-icons/io';
 import styled from 'styled-components';
 import DetailDefaultInfo from './DetailDefaultInfo';
 import Mobile from '../../components/exception/Mobile';
+import DetailState from './DetailState';
 import DetailIo from './DetailIo';
 import DetailParameter from './DetailParameter';
 import DetailAlarm from './DetailAlarm';
@@ -38,6 +39,9 @@ const Detail = () => {
         </div>
         <PartialError>
           <Content>
+            <Suspense fallback={<SkeletonItem />}>
+              <DetailState view={view.idx} />
+            </Suspense>
             <Suspense fallback={<SkeletonItem />}>
               <DetailIo view={view.idx} />
             </Suspense>

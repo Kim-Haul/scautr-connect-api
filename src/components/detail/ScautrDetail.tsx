@@ -56,7 +56,7 @@ const ScautrDetail = () => {
     try {
       const res = await apis.deleteNoticeScautr(id);
       alert('삭제가 완료되었습니다.');
-      navigate('/scautr/board/notice/progix');
+      navigate('/scautr/board/notice/scautr');
       return res;
     } catch (e: any) {
       if (e.response?.data.message === 'DEMO_NOTALLOWED_ERR') {

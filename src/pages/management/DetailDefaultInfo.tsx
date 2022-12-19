@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import apis from '../../shared/apis';
 import { IParamsProps } from '../../shared/type/Interface';
+import AsHistoryModal from '../../components/modal/as/AsHistoryModal';
 
 const DetailDefaultInfo = (props: IParamsProps) => {
+  // 등록 모달창 토글
+  const [is_open, setIsOpen] = useState<boolean>(false);
   const navigate = useNavigate();
 
   // 디테일 페이지 기계 기본 정보 호출 api
@@ -82,7 +85,10 @@ const DetailDefaultInfo = (props: IParamsProps) => {
             >
               수정하기
             </button>
-            <button className="btn_left">A/S 이력</button>
+            <button className="btn_left"
+              onClick={() => {
+                setIsOpen(true);
+              }}>A/S 이력</button>
             <button className="btn_right">알림전송</button>
           </div>
         </div>
@@ -244,6 +250,14 @@ const DetailDefaultInfo = (props: IParamsProps) => {
           </table>
         </div>
       </ManagementInfo>
+
+    {/* A/S 이력 모달창 */}
+      <AsHistoryModal
+        open={is_open}
+        setIsOpen={setIsOpen}
+        header="A/S 이력"
+        model={detailMachineInfoQuery?.data.result[0].model}
+      />
     </Wrap>
   );
 };

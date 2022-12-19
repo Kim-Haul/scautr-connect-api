@@ -100,6 +100,7 @@ export interface IModalProps {
   header?: string;
   setColor?: Dispatch<SetStateAction<string>>;
   info?: any | undefined;
+  model?: string;
 }
 export interface FormValues {
   assignedName?: string;
@@ -304,4 +305,11 @@ export interface ICheckStateProps {
 // ------------------------ Detail.tsx
 export interface IParamsProps {
   view: string | undefined;
+}
+
+// ------------------------ A/S.tsx
+export interface FormValues {
+  manager?: string;
+  title?: string;
+  time?: string;
 }

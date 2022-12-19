@@ -142,22 +142,22 @@ const Wrap = styled.div`
     }
 
     .th0 {
-      width: 5rem;
+      width: 8%;
     }
     .th1 {
-      width: 10rem;
+      width: 8%;
     }
     .th2 {
-      width: 10rem;
+      width: 8%;
     }
     .th3 {
-      width: 33rem;
+      width: 52%;
     }
     .th4 {
-      width: 11rem;
+      width: 14%;
     }
     .th5 {
-      width: 10rem;
+      width: 10%;
     }
   }
   td {

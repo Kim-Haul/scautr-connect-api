@@ -141,25 +141,26 @@ const Wrap = styled.div`
     @media (max-width: 1400px) {
       display: none;
     }
+    table-layout: fixed;
     th {
       padding: 10px;
       background-color: #f6f7fb;
       border: 1px solid #e9edf3;
     }
     .th0 {
-      width: 5rem;
+      width: 8%;
     }
     .th1 {
-      width: 10rem;
+      width: 8%;
     }
     .th2 {
-      width: 43rem;
+      width: 60%;
     }
     .th3 {
-      width: 11rem;
+      width: 14%;
     }
     .th4 {
-      width: 10rem;
+      width: 10%;
     }
   }
   td {
@@ -169,7 +170,7 @@ const Wrap = styled.div`
   }
   // 대표글 설정시 하이라이트 효과
   .top_td {
-    padding: 8px;
+    padding: 7px;
     .top_div {
       width: 100%;
       display: flex;

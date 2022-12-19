@@ -178,20 +178,19 @@ const Wrap = styled.div`
       border: 1px solid #e9edf3;
     }
     .th0 {
-      width: 5rem;
+      width: 8%;
     }
     .th1 {
-      width: 10rem;
+      width: 8%;
     }
     .th2 {
-      width: 43rem;
+      width: 60%;
     }
     .th3 {
-      width: 15rem;
-      min-width: 15rem;
+      width: 14%;
     }
     .th4 {
-      width: 10rem;
+      width: 10%;
     }
   }
   td {

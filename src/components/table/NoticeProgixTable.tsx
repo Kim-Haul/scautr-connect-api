@@ -5,6 +5,7 @@ import { INoticeProps } from '../../shared/type/Interface';
 import Pagination10 from '../pagination/Pagination10';
 import apis from '../../shared/apis';
 import { useQuery } from '@tanstack/react-query';
+import { FcSpeaker } from 'react-icons/fc';
 
 const NoticeProgixTable = (props: INoticeProps) => {
   const navigate = useNavigate();
@@ -87,35 +88,22 @@ const NoticeProgixTable = (props: INoticeProps) => {
                         `/scautr/board/notice/progix/detail/${v.noticeId}`
                       );
                     }}
-                    style={{
-                      backgroundColor: '#f9f9f8',
-                      fontWeight: 'bold',
-                      color: '#ff4e59',
-                    }}
                   >
-                    <td className="top_td">
-                      <div className="top_div">
-                        <span className="top_span">대표</span>
+                    <td>
+                      <div className="td_notice_svg">
+                        <FcSpeaker />
                       </div>
                     </td>
-                    <td>{v.classification}</td>
-                    <td>{v.title}</td>
-                    <td style={{ color: '#000', fontWeight: 'normal' }}>
-                      <div className="writer">
-                        <div className="writer_wrap">
-                          {/* <img
-                            src="/images/board_profile.png"
-                            alt="프로필 이미지"
-                          /> */}
-                          <span>
-                            {v.name}({v.account})
-                          </span>
-                        </div>
-                      </div>
+                    <td style={{ color: '#000', fontWeight: '700' }}>
+                      {v.classification}
                     </td>
-                    <td style={{ color: '#000', fontWeight: 'normal' }}>
-                      {v.regdate}
+                    <td style={{ color: '#000', fontWeight: '700' }}>
+                      [공지] {v.title}
                     </td>
+                    <td>
+                      {v.name}({v.account})
+                    </td>
+                    <td>{v.regdate}</td>
                   </tr>
                 ) : (
                   <tr
@@ -216,29 +204,15 @@ const Wrap = styled.div`
       } */
     }
   }
-  // 대표글 설정시 하이라이트 효과
-  .top_td {
-    padding: 8px;
-    .top_div {
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    .top_span {
-      border: 1px solid #ffc6c9;
-      background-color: #ffe3e4;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 56px;
-      padding: 3px;
-    }
-  }
   tr {
     cursor: pointer;
     &:hover {
       background-color: rgba(0, 123, 255, 0.1);
     }
+  }
+  .td_notice_svg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 `;

@@ -257,6 +257,7 @@ const DetailDefaultInfo = (props: IParamsProps) => {
         setIsOpen={setIsOpen}
         header="A/S 이력"
         model={detailMachineInfoQuery?.data.result[0].model}
+        view={props.view}
       />
     </Wrap>
   );

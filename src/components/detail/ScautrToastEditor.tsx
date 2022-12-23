@@ -14,7 +14,7 @@ const ScautrToastEditor = (props: any) => {
       const formData = new FormData();
       formData.append('file', blob);
       const url = await axios.post(
-        `${process.env.REACT_APP_BACKEND_TEMP_ADDRESS}/notice/scautr/image`,
+        `${process.env.REACT_APP_BACKEND_TEST_ADDRESS}/notice/scautr/image`,
         formData,
         {
           headers: {

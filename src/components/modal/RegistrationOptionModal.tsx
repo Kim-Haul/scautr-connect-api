@@ -40,7 +40,7 @@ const RegistrationOptionModal = (props: IModalProps) => {
       if (props.info !== undefined) {
         // 수정
         await axios.post(
-          `${process.env.REACT_APP_BACKEND_TEMP_ADDRESS}/option/${props.info?.optionId}`,
+          `${process.env.REACT_APP_BACKEND_TEST_ADDRESS}/option/${props.info?.optionId}`,
           formData,
           {
             headers: {
@@ -55,7 +55,7 @@ const RegistrationOptionModal = (props: IModalProps) => {
       } else {
         // 추가
         await axios.post(
-          `${process.env.REACT_APP_BACKEND_TEMP_ADDRESS}/option`,
+          `${process.env.REACT_APP_BACKEND_TEST_ADDRESS}/option`,
           formData,
           {
             headers: {

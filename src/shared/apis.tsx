@@ -6,7 +6,7 @@ import mem from 'mem'
 const api = axios.create({
   // axios 버전이 바뀌면서 기존 문법이 안먹히던 이슈 발생
   // headers의 Content-Type와 Accpet 설정 & config.headers 설정
-  baseURL: process.env.REACT_APP_BACKEND_TEMP_ADDRESS,
+  baseURL: process.env.REACT_APP_BACKEND_TEST_ADDRESS,
   headers: {
     'Content-Type': 'application/json;charset=UTF-8',
     Accept: 'application/json,',
@@ -26,7 +26,7 @@ const getReissueToken = mem(
     const RefreshToken = getCookie('RefreshToken');
     try {
       const reissue = await axios({
-        url:  `${process.env.REACT_APP_BACKEND_TEMP_ADDRESS}/auth/reissue`,
+        url:  `${process.env.REACT_APP_BACKEND_TEST_ADDRESS}/auth/reissue`,
         method: 'get',
         headers: {
           Authorization: `Bearer ${AccessToken}`,
@@ -144,6 +144,12 @@ const apis = {
   getParameterHistoryData: (id: string | undefined, currentPage: number | undefined) => api.get(`/equipment/${id}/parameter/history?page=${currentPage}&size=5&startDate=${`${year}-${lastMonth}-${day}`}&endDate=${`${year}-${currentMonth}-${day}`}`),
   getAlarmHistoryData: (id : string | undefined, currentPage: number, last: string | undefined, current: string | undefined) => api.get(`/equipment/${id}/alarm/history?page=${currentPage}&size=5&startDate=${last}&endDate=${current}`),
   getErrorHistoryData: (id : string | undefined, currentPage: number, last: string | undefined, current: string | undefined) => api.get(`/equipment/${id}/error/history?page=${currentPage}&size=5&startDate=${last}&endDate=${current}`),
+  //A/S HISTORY
+  getAsHistory: (id: string | undefined, currentPage: number | undefined) => api.get(`/equipment/${id}/repair?page=${currentPage}&size=10`),
+  getAsDetail: (id: string | undefined, postId: string | undefined) => api.get(`/equipment/${id}/repair/${postId}`),
+  addAsHistory: (id: string | undefined, data: any) => api.post(`/equipment/${id}/repair`, data),
+  editAsHistory: (id: string | undefined, postId: string | undefined, data: any) => api.put(`/equipment/${id}/repair/${postId}`, data),
+  deleteAsHistory: (id: string | undefined, data: any) => api.delete(`/equipment/${id}/repair`, { data: data }),
   //BOARD NOTICE SCAUTR
   getNoticeScautr: (currentPage: number, searchType: string, search: string) => api.get(`/notice/scautr?page=${currentPage}&size=10&searchType=${searchType}&search=${search}`),
   getNoticeScautrDetail: (id : string | undefined) => api.get(`/notice/scautr/${id}`),

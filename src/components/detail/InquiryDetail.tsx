@@ -138,7 +138,8 @@ const InquiryDetail = () => {
   // 문의 세부사항 답변 수정 쿼리
   const { mutate: editNoticeInquiryMutate } = useMutation(editNoticeInquiry, {
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['loadNoticeInquiryDetail'] });
+      // -------------------------------- toast Viewer 갱신을 위해 removeQueries 사용.
+      queryClient.removeQueries({ queryKey: ['loadNoticeInquiryDetail'] });
     },
   });
 

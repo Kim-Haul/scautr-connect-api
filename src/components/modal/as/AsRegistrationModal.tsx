@@ -3,11 +3,17 @@ import styled from 'styled-components';
 import { IModalProps, IStyleProps } from '../../../shared/type/Interface';
 import { useForm } from 'react-hook-form';
 import { FormValues } from '../../../shared/type/Interface';
+import apis from '../../../shared/apis';
+import { useQueryClient } from '@tanstack/react-query';
+
 const AsRegistrationModal = (props: IModalProps) => {
   // 비고 input 내용 담기
   const noteRef = useRef<HTMLInputElement | any>(null);
   // select 선택 값 담기
   const selectRef = useRef<HTMLSelectElement | any>(null);
+  // 쿼리 클라이언트 정의
+  const queryClient = useQueryClient();
+
   const {
     register,
     handleSubmit,
@@ -15,7 +21,38 @@ const AsRegistrationModal = (props: IModalProps) => {
     formState: { errors },
   } = useForm<FormValues>({ mode: 'onChange' });
 
-  const onSubmit = () => {};
+  const onSubmit = async (data: any) => {
+    const content = {
+      title: data.title,
+      content: noteRef.current.value,
+      name: data.manager,
+      repairDate: data.date,
+      repairTime: data.time,
+      classificationId: selectRef.current.value,
+    };
+
+    if (props.content) {
+      // 수정
+      try {
+        await apis.editAsHistory(props.view, props.postId, content);
+        props.setIsOpen(false);
+        reset();
+        queryClient.removeQueries({ queryKey: ['loadAsDetail'] });
+      } catch (e: any) {
+        alert('조치유형을 선택해주세요.');
+      }
+    } else {
+      // 추가
+      try {
+        await apis.addAsHistory(props.view, content);
+        props.setIsOpen(false);
+        reset();
+        queryClient.invalidateQueries({ queryKey: ['loadAsHistory'] });
+      } catch (e: any) {
+        alert('조치유형을 선택해주세요.');
+      }
+    }
+  };
 
   return (
     <Wrap>
@@ -44,6 +81,7 @@ const AsRegistrationModal = (props: IModalProps) => {
                     autoComplete="off"
                     isInvalid={!!errors.date}
                     id="inputDate"
+                    defaultValue={props.content?.repairDate}
                     {...register('date', {
                       required: '날짜를 입력해주세요.',
                     })}
@@ -60,6 +98,7 @@ const AsRegistrationModal = (props: IModalProps) => {
                     autoComplete="off"
                     isInvalid={!!errors.time}
                     id="inputTime"
+                    defaultValue={props.content?.repairTime}
                     {...register('time', {
                       required: '시간을 입력해주세요.',
                     })}
@@ -77,6 +116,7 @@ const AsRegistrationModal = (props: IModalProps) => {
                     placeholder="홍길동"
                     isInvalid={!!errors.manager}
                     id="inputManager"
+                    defaultValue={props.content?.name}
                     {...register('manager', {
                       required: '담당자를 입력해주세요.',
                     })}
@@ -94,6 +134,7 @@ const AsRegistrationModal = (props: IModalProps) => {
                     placeholder="파워 연결선 교체"
                     isInvalid={!!errors.title}
                     id="inputTitle"
+                    defaultValue={props.content?.title}
                     {...register('title', {
                       required: '모델명을 입력해주세요.',
                     })}
@@ -105,7 +146,14 @@ const AsRegistrationModal = (props: IModalProps) => {
                 {/* -------------------- 5 --------------------  */}
                 <Line>
                   <label>조치 유형</label>
-                  <select ref={selectRef} defaultValue={'default'}>
+                  <select
+                    ref={selectRef}
+                    defaultValue={
+                      props.content?.classificationId
+                        ? props.content?.classificationId
+                        : 'default'
+                    }
+                  >
                     <option value="default" disabled hidden>
                       선택
                     </option>
@@ -121,10 +169,11 @@ const AsRegistrationModal = (props: IModalProps) => {
                     autoComplete="off"
                     id="inputTextarea"
                     ref={noteRef}
+                    defaultValue={props.content?.content}
                   />
                 </Line>
                 <div className="check">
-                  <button>등록</button>
+                  <button>{props.content ? '수정' : '등록'}</button>
                 </div>
               </PostForm>
             </main>
@@ -153,7 +202,7 @@ const Wrap = styled.div`
   }
 
   section {
-    width: 450px;
+    width: 600px;
     @media (max-width: ${(props) => props.theme.breakpoints.Mobile}) {
       width: 360px;
     }
@@ -213,7 +262,7 @@ const Line = styled.div`
   }
   textarea {
     border: 1px solid #ced4da;
-    height: 8rem;
+    height: 15rem;
     padding: 1rem;
     font-size: 1.5rem;
     font-family: 'Noto Sans KR', sans-serif;

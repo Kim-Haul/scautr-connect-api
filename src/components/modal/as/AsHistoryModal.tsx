@@ -1,15 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, Suspense } from 'react';
 import styled from 'styled-components';
 import { IModalProps } from '../../../shared/type/Interface';
 import AsHistoryTable from '../../table/AsHistoryTable';
 import AsDetailTable from '../../table/AsDetailTable';
 import AsRegistrationModal from './AsRegistrationModal';
+import SkeletonTable from '../../suspense/SkeletonTable';
 
 const AsHistoryModal = (props: IModalProps) => {
   // A/S 작성 모달창
   const [is_open, setIsOpen] = useState<boolean>(false);
   // A/S 목록 세부사항 클릭 여부
   const [detail_click, setDetailClick] = useState<boolean>(false);
+  // A/S 목록 세부사항 클릭시 id 값 받아오기
+  const [postId, setPostId] = useState<string>('');
+  // A/S 목록 세부사항 클릭시 작성일자 받아오기
+  const [postRepairDate, setpostRepairDate] = useState<string>('');
   return (
     <Wrap>
       <div className={props.open ? 'openModal modal' : 'modal'}>
@@ -32,7 +37,9 @@ const AsHistoryModal = (props: IModalProps) => {
                 <span>
                   모델명 : <strong>{props.model}</strong>
                 </span>
-                {detail_click ? null : (
+                {detail_click ? (
+                  postRepairDate
+                ) : (
                   <button
                     onClick={() => {
                       setIsOpen(true);
@@ -44,9 +51,22 @@ const AsHistoryModal = (props: IModalProps) => {
               </div>
               <div className="main_content">
                 {detail_click ? (
-                  <AsDetailTable setDetailClick={setDetailClick} />
+                  <Suspense fallback={<SkeletonTable />}>
+                    <AsDetailTable
+                      setDetailClick={setDetailClick}
+                      postId={postId}
+                      view={props.view}
+                      setpostRepairDate={setpostRepairDate}
+                    />
+                  </Suspense>
                 ) : (
-                  <AsHistoryTable setDetailClick={setDetailClick} />
+                  <Suspense fallback={<SkeletonTable />}>
+                    <AsHistoryTable
+                      setDetailClick={setDetailClick}
+                      setPostId={setPostId}
+                      view={props.view}
+                    />
+                  </Suspense>
                 )}
               </div>
             </main>
@@ -58,6 +78,7 @@ const AsHistoryModal = (props: IModalProps) => {
         open={is_open}
         setIsOpen={setIsOpen}
         header="A/S 이력"
+        view={props.view}
       />
     </Wrap>
   );
@@ -81,7 +102,7 @@ const Wrap = styled.div`
   }
 
   section {
-    width: 450px;
+    width: 600px;
     @media (max-width: ${(props) => props.theme.breakpoints.Mobile}) {
       width: 360px;
     }

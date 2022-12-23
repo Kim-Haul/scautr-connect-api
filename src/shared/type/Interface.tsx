@@ -101,6 +101,9 @@ export interface IModalProps {
   setColor?: Dispatch<SetStateAction<string>>;
   info?: any | undefined;
   model?: string;
+  view?: string;
+  postId?: string;
+  content?: any;
 }
 export interface FormValues {
   assignedName?: string;

@@ -14,7 +14,7 @@ const ProgixToastEditor = (props: any) => {
       const formData = new FormData();
       formData.append('file', blob);
       const url = await axios.post(
-        `${process.env.REACT_APP_BACKEND_TEMP_ADDRESS}/notice/image`,
+        `${process.env.REACT_APP_BACKEND_TEST_ADDRESS}/notice/image`,
         formData,
         {
           headers: {

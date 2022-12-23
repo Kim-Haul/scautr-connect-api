@@ -50,7 +50,7 @@ const RegistrationMachineModal = (props: IModalProps) => {
       if (props.info !== undefined) {
         // 수정
         await axios.post(
-          `${process.env.REACT_APP_BACKEND_TEMP_ADDRESS}/model/${props.info?.modelId}`,
+          `${process.env.REACT_APP_BACKEND_TEST_ADDRESS}/model/${props.info?.modelId}`,
           formData,
           {
             headers: {
@@ -65,7 +65,7 @@ const RegistrationMachineModal = (props: IModalProps) => {
       } else {
         // 추가
         await axios.post(
-          `${process.env.REACT_APP_BACKEND_TEMP_ADDRESS}/model`,
+          `${process.env.REACT_APP_BACKEND_TEST_ADDRESS}/model`,
           formData,
           {
             headers: {

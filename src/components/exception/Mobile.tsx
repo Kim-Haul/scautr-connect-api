@@ -4,7 +4,7 @@ import styled from 'styled-components';
 const Mobile = () => {
   return (
     <Alarm>
-      <img src="/images/mobile.gif" alt="모바일" />
+      <img src="/images/mobile.png" alt="모바일" />
       <div className="mention">모바일 화면은 준비중입니다!</div>
       <div className="sub_mention">
         표 형식의 데이터는 1400px 이상의 디스플레이에서 확인 가능합니다.
@@ -26,7 +26,7 @@ const Alarm = styled.div`
   flex-direction: column;
   margin: 50px 0;
   img {
-    width: 200px;
+    width: 300px;
   }
   .mention {
     color: red;

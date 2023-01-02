@@ -141,7 +141,7 @@ const apis = {
   plcInputData: (id: string | undefined) => api.get(`/equipment/${id}/input`),
   plcOutputData: (id: string | undefined)=> api.get(`/equipment/${id}/output`),
   getParameterData: (id: string | undefined) => api.get(`/equipment/${id}/parameter`),
-  getParameterHistoryData: (id: string | undefined, currentPage: number | undefined) => api.get(`/equipment/${id}/parameter/history?page=${currentPage}&size=5&startDate=${`${year}-${lastMonth}-${day}`}&endDate=${`${year}-${currentMonth}-${day}`}`),
+  getParameterHistoryData: (id: string | undefined, currentPage: number | undefined) => api.get(`/equipment/${id}/parameter/history?page=${currentPage}&size=5&startDate=${`2022-${lastMonth}-${day}`}&endDate=${`${year}-${currentMonth}-${day}`}`),
   getAlarmHistoryData: (id : string | undefined, currentPage: number, last: string | undefined, current: string | undefined) => api.get(`/equipment/${id}/alarm/history?page=${currentPage}&size=5&startDate=${last}&endDate=${current}`),
   getErrorHistoryData: (id : string | undefined, currentPage: number, last: string | undefined, current: string | undefined) => api.get(`/equipment/${id}/error/history?page=${currentPage}&size=5&startDate=${last}&endDate=${current}`),
   //A/S HISTORY

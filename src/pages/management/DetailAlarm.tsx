@@ -26,7 +26,7 @@ const DetailAlarm = (props: IParamsProps) => {
   const lastRef = useRef<HTMLInputElement | any>();
   const currentRef = useRef<HTMLInputElement | any>();
 
-  const [lastDate, setLastDate] = useState(`${year}-${lastMonth}-${day}`);
+  const [lastDate, setLastDate] = useState(`2022-${lastMonth}-${day}`);
   const [curDate, setCurDate] = useState(`${year}-${currentMonth}-${day}`);
   const [clickBtnAlarm, setClickBtnAlarm] = useState(false);
 

@@ -5,10 +5,13 @@ import { useNavigate } from 'react-router-dom';
 import apis from '../../shared/apis';
 import { IParamsProps } from '../../shared/type/Interface';
 import AsHistoryModal from '../../components/modal/as/AsHistoryModal';
+import AlarmHistoryModal from '../../components/modal/alarm/AlarmHistoryModal';
 
 const DetailDefaultInfo = (props: IParamsProps) => {
-  // 등록 모달창 토글
-  const [is_open, setIsOpen] = useState<boolean>(false);
+  // A/S 이력 모달창 토글
+  const [is_open_as, setIsOpenAs] = useState<boolean>(false);
+  // 알림전송 모달창 토글
+  const [is_open_alarm, setIsOpenAlarm] = useState<boolean>(false);
   const navigate = useNavigate();
 
   // 디테일 페이지 기계 기본 정보 호출 api
@@ -87,9 +90,12 @@ const DetailDefaultInfo = (props: IParamsProps) => {
             </button>
             <button className="btn_left"
               onClick={() => {
-                setIsOpen(true);
+                setIsOpenAs(true);
               }}>A/S 이력</button>
-            <button className="btn_right">알림전송</button>
+            <button className="btn_right"  
+              onClick={() => {
+                setIsOpenAlarm(true);
+              }}>알림전송</button>
           </div>
         </div>
         <div className="customer_info_table">
@@ -253,9 +259,18 @@ const DetailDefaultInfo = (props: IParamsProps) => {
 
     {/* A/S 이력 모달창 */}
       <AsHistoryModal
-        open={is_open}
-        setIsOpen={setIsOpen}
+        open={is_open_as}
+        setIsOpen={setIsOpenAs}
         header="A/S 이력"
+        model={detailMachineInfoQuery?.data.result[0].model}
+        view={props.view}
+      />
+
+    {/* 알림전송 모달창 */}
+      <AlarmHistoryModal
+        open={is_open_alarm}
+        setIsOpen={setIsOpenAlarm}
+        header="메세지 전송 내역"
         model={detailMachineInfoQuery?.data.result[0].model}
         view={props.view}
       />

@@ -13,6 +13,8 @@ const Signup = () => {
   // ~Ok : 아이디 중복체크 및 이메일 인증코드 발송 확인
   const [idOk, setIdOk] = useState<boolean>(false);
   const [emailOk, setEmailOk] = useState<boolean>(false);
+  // 추천인 input 값 가져오기
+  const recommenderRef = useRef<HTMLInputElement>(null);
 
   const {
     register,
@@ -562,6 +564,16 @@ const Signup = () => {
                     <div className="err">사업자 등록번호를 입력해주세요.</div>
                   </>
                 )}
+              </Line>
+              <Line>
+                <label htmlFor="inputRecommender">추천인</label>
+                <Input
+                  type="text"
+                  autoComplete="off"
+                  placeholder="추천인 존재시 아이디를 입력해주세요."
+                  id="inputRecommender"
+                  ref={recommenderRef}
+                />
               </Line>
             </React.Fragment>
           )}

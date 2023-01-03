@@ -10,25 +10,27 @@ const AlarmTansferDetailTable = (props: {
   view: string | undefined;
   setpostRepairDate: Dispatch<SetStateAction<string>>;
 }) => {
-  // A/S 이력 상세 내용 호출 api
-  const getAsDetail = async () => {
+  // 알람 전송 이력 상세 내용 호출 api
+  const getMessageDetail = async () => {
     try {
-      const res = await apis.getAsDetail(props.view, props.postId);
+      const res = await apis.getMessageDetail(props.view, props.postId);
       return res;
     } catch (err) {
-      console.error('A/S 상세 내용을 불러오는데 실패했습니다.');
+      console.error('알람 전송 이력 상세 내용을 불러오는데 실패했습니다.');
     }
   };
 
-  // A/S 이력 상세 내용 호출 쿼리
-  const { data: AsDetailQuery } = useQuery(
-    ['loadAsDetail', props.postId],
-    getAsDetail,
+  // 알람 전송 이력 상세 내용 호출 쿼리
+  const { data: MessageDetailQuery } = useQuery(
+    ['loadMessageDetail', props.postId],
+    getMessageDetail,
     {
       refetchOnWindowFocus: false,
-      onSuccess: () => {},
+      onSuccess: (data) => {
+        console.log(data);
+      },
       onError: () => {
-        console.error('A/S 상세 내용을 불러오는데 실패했습니다.');
+        console.error('알람 전송 이력 상세 내용을 불러오는데 실패했습니다.');
       },
     }
   );
@@ -71,15 +73,13 @@ const AlarmTansferDetailTable = (props: {
   // };
 
   useEffect(() => {
-    props.setpostRepairDate(
-      `${AsDetailQuery?.data.result[0].repairDate} ${AsDetailQuery?.data.result[0].repairTime}`
-    );
-  }, [AsDetailQuery?.data.result, props]);
+    props.setpostRepairDate(`${MessageDetailQuery?.data.result[0].regdate}`);
+  }, [MessageDetailQuery?.data.result, props]);
 
   return (
     <Wrap>
       <div className="title">
-        <strong>{AsDetailQuery?.data.result[0].title}</strong>
+        <strong>{MessageDetailQuery?.data.result[0].title}</strong>
       </div>
       <div className="content">
         {/* // viewer는  queryClient.invalidateQueries를 먹여도 왜 갱신이 제대로 안될까? */}
@@ -87,14 +87,16 @@ const AlarmTansferDetailTable = (props: {
 
         {/* DB 저장시, \n과 함께 저장이 되는데 React.js에서는 이 취약점을 원천차단하기 위하여 무조건 텍스트형태로만 렌더링하게 설정. */}
         {/* 불러 올때 \n을 처리 안 해주기 때문에, \n을 기준으로 split 처리를 하여 <br/> 태그를 삽입하는 식으로 일단 처리. */}
-        {AsDetailQuery?.data.result[0].content.split('\n').map((v: any) => {
-          return (
-            <span>
-              {v}
-              <br />
-            </span>
-          );
-        })}
+        {MessageDetailQuery?.data.result[0].content
+          .split('\n')
+          .map((v: any) => {
+            return (
+              <span>
+                {v}
+                <br />
+              </span>
+            );
+          })}
       </div>
       <div className="bottom">
         <div className="bottom_left">

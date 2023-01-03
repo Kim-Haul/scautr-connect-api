@@ -17,7 +17,8 @@ const DetailError = (props: IParamsProps) => {
   const lastMonthCal = new Date();
   lastMonthCal.setMonth(lastMonthCal.getMonth() - 2);
 
-  const year = date.getFullYear();
+  const currentYear = date.getFullYear();
+  const lastYear = lastMonthCal.getFullYear();
   const lastMonth = ('0' + lastMonthCal.getMonth()).slice(-2);
   const currentMonth = ('0' + (date.getMonth() + 1)).slice(-2);
   const day = ('0' + date.getDate()).slice(-2);
@@ -26,8 +27,8 @@ const DetailError = (props: IParamsProps) => {
   const lastRef = useRef<HTMLInputElement | any>();
   const currentRef = useRef<HTMLInputElement | any>();
 
-  const [lastDate, setLastDate] = useState(`2022-${lastMonth}-${day}`);
-  const [curDate, setCurDate] = useState(`${year}-${currentMonth}-${day}`);
+  const [lastDate, setLastDate] = useState(`${lastYear}-${lastMonth}-${day}`);
+  const [curDate, setCurDate] = useState(`${currentYear}-${currentMonth}-${day}`);
   const [clickBtnError, setClickBtnError] = useState(false);
 
   // 에러 히스토리 호출 api

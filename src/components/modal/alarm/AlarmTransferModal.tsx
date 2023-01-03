@@ -4,12 +4,37 @@ import { IModalProps, IStyleProps } from '../../../shared/type/Interface';
 import { useForm } from 'react-hook-form';
 import { FormValues } from '../../../shared/type/Interface';
 import apis from '../../../shared/apis';
+import { useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 
 const AlarmTransferModal = (props: IModalProps) => {
   // 비고 input 내용 담기
   const noteRef = useRef<HTMLInputElement | any>(null);
   // select 선택 값 담기
   const selectRef = useRef<HTMLSelectElement | any>(null);
+
+  // 수신자명 호출 api
+  const CheckReceiver = async () => {
+    try {
+      const res = await apis.CheckReceiver(props.view);
+      return res;
+    } catch (err) {
+      console.error('수신자명을 호출하는데 실패했습니다.');
+    }
+  };
+
+  // 수신자명 호출 쿼리
+  const { data: CheckReceiverQuery } = useQuery(
+    ['loadCheckReceiver', props.view],
+    CheckReceiver,
+    {
+      refetchOnWindowFocus: false,
+      onSuccess: () => {},
+      onError: () => {
+        console.error('수신자명을 호출하는데 실패했습니다.');
+      },
+    }
+  );
 
   const {
     register,
@@ -18,11 +43,14 @@ const AlarmTransferModal = (props: IModalProps) => {
     formState: { errors },
   } = useForm<FormValues>({ mode: 'onChange' });
 
+  // 쿼리 클라이언트 정의
+  const queryClient = useQueryClient();
+
   const onSubmit = async (data: any) => {
     const content = {
       title: data.title,
       content: noteRef.current.value,
-      name: data.manager,
+      sender: data.manager,
       // repairDate: data.date,
       // repairTime: data.time,
       classificationId: selectRef.current.value,
@@ -30,9 +58,10 @@ const AlarmTransferModal = (props: IModalProps) => {
 
     // 추가
     try {
-      await apis.addAsHistory(props.view, content);
+      await apis.PostMessage(props.view, content);
       props.setIsOpen(false);
       reset();
+      queryClient.invalidateQueries({ queryKey: ['loadMessageHistory'] });
     } catch (e: any) {
       alert('조치유형을 선택해주세요.');
     }
@@ -93,7 +122,13 @@ const AlarmTransferModal = (props: IModalProps) => {
                 </Line> */}
                 {/* -------------------- 3 --------------------  */}
                 <Line>
-                  <label htmlFor="inputManager">발송자</label>
+                  <div className="overlap">
+                    <label htmlFor="inputManager">발송자</label>
+                    <div className="receiver">
+                      수신자 : {CheckReceiverQuery?.data.result}
+                    </div>
+                  </div>
+
                   <Input
                     type="text"
                     autoComplete="off"
@@ -259,6 +294,15 @@ const Line = styled.div`
       border: 2px solid rgb(0, 123, 255);
       box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
       outline: none;
+    }
+  }
+  .overlap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .receiver {
+      font-size: 1.2rem;
+      color: ${(props) => props.theme.color.PastelBlue};
     }
   }
 `;

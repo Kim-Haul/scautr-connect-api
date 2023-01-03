@@ -14,31 +14,31 @@ const AlarmTransferHistroyTable = (props: {
   const [startPage, setStartPage] = useState<number>(1);
   const [active, setActive] = useState<string>('1');
 
-  // A/S 이력 목록 호출 api
-  const getAsHistory = async () => {
+  // 알림 전송 이력 목록 호출 api
+  const getMessageHistory = async () => {
     try {
-      const res = await apis.getAsHistory(props.view, currentPage);
+      const res = await apis.getMessageHistory(props.view, currentPage);
       return res;
     } catch (err) {
-      console.error('A/S 이력 목록을 불러오는데 실패했습니다.');
+      console.error('알림 전송 이력 목록을 불러오는데 실패했습니다.');
     }
   };
 
-  // A/S 이력 목록 호출 쿼리
-  const { data: AsHistoryQuery } = useQuery(
-    ['loadAsHistory', currentPage, props.view],
-    getAsHistory,
+  // 알림 전송 이력 목록 호출 쿼리
+  const { data: MessageHistoryQuery } = useQuery(
+    ['loadMessageHistory', currentPage, props.view],
+    getMessageHistory,
     {
       refetchOnWindowFocus: false,
       onSuccess: () => {},
       onError: () => {
-        console.error('A/S 이력 목록을 불러오는데 실패했습니다.');
+        console.error('알림 전송 이력 목록을 불러오는데 실패했습니다.');
       },
     }
   );
 
   // 페이지네이션 처리를 위한 토탈값
-  const total = AsHistoryQuery?.data.count;
+  const total = MessageHistoryQuery?.data.count;
 
   return (
     <Wrap>
@@ -51,18 +51,18 @@ const AlarmTransferHistroyTable = (props: {
           </tr>
         </thead>
         <tbody>
-          {AsHistoryQuery?.data.result.map((v: any, i: number) => {
+          {MessageHistoryQuery?.data.result.map((v: any, i: number) => {
             return (
               <React.Fragment key={i}>
                 <tr
                   onClick={() => {
                     props.setDetailClick(true);
-                    props.setPostId(v.repairId);
+                    props.setPostId(v.messageId);
                   }}
                 >
                   <td>{v.title}</td>
-                  <td className="none">{v.name}</td>
-                  <td>{v.repairDate.substr(2)}</td>
+                  <td className="none">{v.sender}</td>
+                  <td>{v.regdate.substr(2, 8)}</td>
                 </tr>
               </React.Fragment>
             );

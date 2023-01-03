@@ -40,7 +40,7 @@ const DetailDefaultInfo = (props: IParamsProps) => {
 
   return (
     <Wrap>
-      <CustomerInfo>
+      <CustomerInfo> 
         <div className="customer_info_title">
           <div className="top_left">거래처 정보</div>
           <div className="top_right">

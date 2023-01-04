@@ -75,6 +75,7 @@ const Header = (props: IScrollYProps) => {
 
   return (
     <Wrap ScrollY={props.ScrollY}>
+      {/* 모바일 반응형 헤더 */}
       <ResponsiveHeader>
         <div
           className="bar"
@@ -91,7 +92,11 @@ const Header = (props: IScrollYProps) => {
           alt="스카우터 로고"
         />
         <div className="logout">
-          <BiLogOut />
+          <BiLogOut
+            onClick={() => {
+              logout();
+            }}
+          />
         </div>
       </ResponsiveHeader>
       <Navbar>

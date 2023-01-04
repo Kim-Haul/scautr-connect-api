@@ -6,7 +6,7 @@ import mem from 'mem'
 const api = axios.create({
   // axios 버전이 바뀌면서 기존 문법이 안먹히던 이슈 발생
   // headers의 Content-Type와 Accpet 설정 & config.headers 설정
-  baseURL: process.env.REACT_APP_BACKEND_TEMP_ADDRESS,
+  baseURL: process.env.REACT_APP_BACKEND_TEST_ADDRESS,
   headers: {
     'Content-Type': 'application/json;charset=UTF-8',
     Accept: 'application/json,',
@@ -26,7 +26,7 @@ const getReissueToken = mem(
     const RefreshToken = getCookie('RefreshToken');
     try {
       const reissue = await axios({
-        url:  `${process.env.REACT_APP_BACKEND_TEMP_ADDRESS}/auth/reissue`,
+        url:  `${process.env.REACT_APP_BACKEND_TEST_ADDRESS}/auth/reissue`,
         method: 'get',
         headers: {
           Authorization: `Bearer ${AccessToken}`,

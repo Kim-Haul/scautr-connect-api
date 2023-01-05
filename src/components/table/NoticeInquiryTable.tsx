@@ -59,59 +59,61 @@ const NoticeInquiryTable = (props: INoticeProps) => {
   const total = noticeInquiryQuery?.data.count;
 
   return (
-    <Wrap>
-      <table>
-        <thead>
-          <tr>
-            <th className="th0">NO</th>
-            <th className="th1">분류</th>
-            <th className="th2">답변상태</th>
-            <th className="th3">제목</th>
-            <th className="th4">작성자</th>
-            <th className="th5">작성일</th>
-          </tr>
-        </thead>
-        <tbody>
-          {noticeInquiryQuery?.data.result.map((v: any, i: number) => {
-            return (
-              <React.Fragment key={i}>
-                <tr
-                  onClick={() => {
-                    navigate(`/scautr/board/inquiry/detail/${v.inquiryId}`);
-                  }}
-                >
-                  <td>{v.inquiryId}</td>
-                  <td>{v.classification}</td>
-                  {v.status === '답변 대기' ? (
-                    <td style={{ backgroundColor: '#E2445C', color: '#fff' }}>
-                      {v.status}
-                    </td>
-                  ) : (
-                    <td style={{ backgroundColor: '#00C875', color: '#fff' }}>
-                      {v.status}
-                    </td>
-                  )}
-                  <td>{v.title}</td>
-                  <td>
-                    <div className="writer">
-                      <div className="writer_detail">
-                        <span className="writer_detail_company">
-                          {v.customerCompany}
-                        </span>
-                        <span>
-                          {v.customerName}(
-                          {v.customerAccount.substr(0, 3) + '***'})
-                        </span>
+    <React.Fragment>
+      <Wrap>
+        <table>
+          <thead>
+            <tr>
+              <th className="th0">NO</th>
+              <th className="th1">분류</th>
+              <th className="th2">답변상태</th>
+              <th className="th3">제목</th>
+              <th className="th4">작성자</th>
+              <th className="th5">작성일</th>
+            </tr>
+          </thead>
+          <tbody>
+            {noticeInquiryQuery?.data.result.map((v: any, i: number) => {
+              return (
+                <React.Fragment key={i}>
+                  <tr
+                    onClick={() => {
+                      navigate(`/scautr/board/inquiry/detail/${v.inquiryId}`);
+                    }}
+                  >
+                    <td>{v.inquiryId}</td>
+                    <td>{v.classification}</td>
+                    {v.status === '답변 대기' ? (
+                      <td style={{ backgroundColor: '#E2445C', color: '#fff' }}>
+                        {v.status}
+                      </td>
+                    ) : (
+                      <td style={{ backgroundColor: '#00C875', color: '#fff' }}>
+                        {v.status}
+                      </td>
+                    )}
+                    <td>{v.title}</td>
+                    <td>
+                      <div className="writer">
+                        <div className="writer_detail">
+                          <span className="writer_detail_company">
+                            {v.customerCompany}
+                          </span>
+                          <span>
+                            {v.customerName}(
+                            {v.customerAccount.substr(0, 3) + '***'})
+                          </span>
+                        </div>
                       </div>
-                    </div>
-                  </td>
-                  <td>{v.questionRegdate}</td>
-                </tr>
-              </React.Fragment>
-            );
-          })}
-        </tbody>
-      </table>
+                    </td>
+                    <td>{v.questionRegdate}</td>
+                  </tr>
+                </React.Fragment>
+              );
+            })}
+          </tbody>
+        </table>
+      </Wrap>
       <Pagination10
         total={total}
         setCurrentPage={setCurrentPage}
@@ -120,21 +122,27 @@ const NoticeInquiryTable = (props: INoticeProps) => {
         active={active}
         setActive={setActive}
       />
-    </Wrap>
+    </React.Fragment>
   );
 };
 
 export default NoticeInquiryTable;
 
 const Wrap = styled.div`
+  @media (max-width: 1400px) {
+    overflow-x: auto;
+  }
   table {
+    @media (max-width: 1400px) {
+      width: 1200px;
+    }
     width: 100%;
     margin-top: 10px;
     border-collapse: collapse;
     // 화면 축소시 테이블 column 깨지는거 방지
-    @media (max-width: 1400px) {
+    /* @media (max-width: 1400px) {
       display: none;
-    }
+    } */
     th {
       padding: 10px;
       background-color: #f6f7fb;

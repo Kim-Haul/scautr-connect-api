@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, Suspense } from 'react';
 import styled from 'styled-components';
-import Mobile from '../../components/exception/Mobile';
+// import Mobile from '../../components/exception/Mobile';
 import RegistrationMachineTable from '../../components/table/RegistrationMachineTable';
 import RegistrationMachineModal from './../../components/modal/RegistrationMachineModal';
 import SkeletonTable from '../../components/suspense/SkeletonTable';
@@ -177,10 +177,9 @@ const RegistrationMachine = (props: IRegistrationProps) => {
               clickCheckBox={clickCheckBox}
             />
           </Suspense>
-          <Mobile />
+          {/* <Mobile /> */}
         </Content>
       </Container>
-
       <RegistrationMachineModal
         open={is_open}
         setIsOpen={setIsOpen}

@@ -57,63 +57,65 @@ const NoticeScautrTable = (props: INoticeProps) => {
   const total = 10;
 
   return (
-    <Wrap>
-      <table>
-        <thead>
-          <tr>
-            <th className="th0">NO</th>
-            <th className="th1">분류</th>
-            <th className="th2">제목</th>
-            <th className="th3">작성자</th>
-            <th className="th4">작성일</th>
-          </tr>
-        </thead>
-        <tbody>
-          {NoticeScautrQuery?.data.result.map((v: any, i: number) => {
-            return (
-              <React.Fragment key={i}>
-                {v.top === true ? (
-                  <tr
-                    onClick={() => {
-                      navigate(
-                        `/scautr/board/notice/scautr/detail/${v.noticeId}`
-                      );
-                    }}
-                  >
-                    <td>
-                      <div className="td_notice_svg">
-                        <FcSpeaker />
-                      </div>
-                    </td>
-                    <td style={{ color: '#000', fontWeight: '700' }}>
-                      {v.classification}
-                    </td>
-                    <td style={{ color: '#000', fontWeight: '700' }}>
-                      [공지] {v.title}
-                    </td>
-                    <td>{v.name}</td>
-                    <td>{v.regdate}</td>
-                  </tr>
-                ) : (
-                  <tr
-                    onClick={() => {
-                      navigate(
-                        `/scautr/board/notice/scautr/detail/${v.noticeId}`
-                      );
-                    }}
-                  >
-                    <td>{v.no}</td>
-                    <td>{v.classification}</td>
-                    <td>{v.title}</td>
-                    <td>{v.name}</td>
-                    <td>{v.regdate}</td>
-                  </tr>
-                )}
-              </React.Fragment>
-            );
-          })}
-        </tbody>
-      </table>
+    <React.Fragment>
+      <Wrap>
+        <table>
+          <thead>
+            <tr>
+              <th className="th0">NO</th>
+              <th className="th1">분류</th>
+              <th className="th2">제목</th>
+              <th className="th3">작성자</th>
+              <th className="th4">작성일</th>
+            </tr>
+          </thead>
+          <tbody>
+            {NoticeScautrQuery?.data.result.map((v: any, i: number) => {
+              return (
+                <React.Fragment key={i}>
+                  {v.top === true ? (
+                    <tr
+                      onClick={() => {
+                        navigate(
+                          `/scautr/board/notice/scautr/detail/${v.noticeId}`
+                        );
+                      }}
+                    >
+                      <td>
+                        <div className="td_notice_svg">
+                          <FcSpeaker />
+                        </div>
+                      </td>
+                      <td style={{ color: '#000', fontWeight: '700' }}>
+                        {v.classification}
+                      </td>
+                      <td style={{ color: '#000', fontWeight: '700' }}>
+                        [공지] {v.title}
+                      </td>
+                      <td>{v.name}</td>
+                      <td>{v.regdate}</td>
+                    </tr>
+                  ) : (
+                    <tr
+                      onClick={() => {
+                        navigate(
+                          `/scautr/board/notice/scautr/detail/${v.noticeId}`
+                        );
+                      }}
+                    >
+                      <td>{v.no}</td>
+                      <td>{v.classification}</td>
+                      <td>{v.title}</td>
+                      <td>{v.name}</td>
+                      <td>{v.regdate}</td>
+                    </tr>
+                  )}
+                </React.Fragment>
+              );
+            })}
+          </tbody>
+        </table>
+      </Wrap>
       <Pagination10
         total={total}
         setCurrentPage={setCurrentPage}
@@ -122,21 +124,27 @@ const NoticeScautrTable = (props: INoticeProps) => {
         active={active}
         setActive={setActive}
       />
-    </Wrap>
+    </React.Fragment>
   );
 };
 
 export default NoticeScautrTable;
 
 const Wrap = styled.div`
+  @media (max-width: 1400px) {
+    overflow-x: auto;
+  }
   table {
+    @media (max-width: 1400px) {
+      width: 1200px;
+    }
     width: 100%;
     margin-top: 10px;
     border-collapse: collapse;
     // 화면 축소시 테이블 column 깨지는거 방지
-    @media (max-width: 1400px) {
+    /* @media (max-width: 1400px) {
       display: none;
-    }
+    } */
     table-layout: fixed;
     th {
       padding: 10px;

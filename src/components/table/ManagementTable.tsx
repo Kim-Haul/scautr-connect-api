@@ -69,177 +69,184 @@ const ManagementTable = (props: IManagementProps) => {
   const total = ManagementListQuery?.data.count;
 
   return (
-    <Wrap>
-      <table>
-        <thead>
-          <tr>
-            <th className="th0"></th>
-            <th className="th1"></th>
-            {/* 클릭시 출고일별 정렬 적용 */}
-            <th
-              className="th2 filter"
-              onClick={() => {
-                if (orderType !== 'installedDate') {
-                  setSearchParams(
-                    `search=${props.searchInputUrl}&searchType=${props.searchTypeUrl}&orderType=installedDate&order=ASC`
-                  );
-                } else if (orderType === 'installedDate' && order === 'ASC') {
-                  setSearchParams(
-                    `search=${props.searchInputUrl}&searchType=${props.searchTypeUrl}&orderType=installedDate&order=DESC`
-                  );
-                } else if (orderType === 'installedDate' && order === 'DESC') {
-                  setSearchParams(
-                    `search=${props.searchInputUrl}&searchType=${props.searchTypeUrl}`
-                  );
-                }
-              }}
-            >
-              출고일
-              {orderType === 'installedDate' && order === 'ASC'
-                ? '▴'
-                : orderType === 'installedDate' && order === 'DESC'
-                ? '▾'
-                : null}
-            </th>
-            {/* 클릭시 거래처명별 정렬 적용 */}
-            <th
-              className="th3 filter desc"
-              onClick={() => {
-                if (orderType !== 'companyName') {
-                  setSearchParams(
-                    `search=${props.searchInputUrl}&searchType=${props.searchTypeUrl}&orderType=companyName&order=ASC`
-                  );
-                } else if (orderType === 'companyName' && order === 'ASC') {
-                  setSearchParams(
-                    `search=${props.searchInputUrl}&searchType=${props.searchTypeUrl}&orderType=companyName&order=DESC`
-                  );
-                } else if (orderType === 'companyName' && order === 'DESC') {
-                  setSearchParams(
-                    `search=${props.searchInputUrl}&searchType=${props.searchTypeUrl}`
-                  );
-                }
-              }}
-            >
-              거래처명
-              {orderType === 'companyName' && order === 'ASC'
-                ? '▴'
-                : orderType === 'companyName' && order === 'DESC'
-                ? '▾'
-                : null}
-              <div className="desc">
-                특정 컬럼명을 클릭시 해당 컬럼으로 모아보기(오름차순,
-                내림차순)가 가능합니다.
-              </div>
-            </th>
-            {/* 클릭시 기계명별 정렬 적용 */}
-            <th
-              className="th4 filter"
-              onClick={() => {
-                if (orderType !== 'assignedName') {
-                  setSearchParams(
-                    `search=${props.searchInputUrl}&searchType=${props.searchTypeUrl}&orderType=assignedName&order=ASC`
-                  );
-                } else if (orderType === 'assignedName' && order === 'ASC') {
-                  setSearchParams(
-                    `search=${props.searchInputUrl}&searchType=${props.searchTypeUrl}&orderType=assignedName&order=DESC`
-                  );
-                } else if (orderType === 'assignedName' && order === 'DESC') {
-                  setSearchParams(
-                    `search=${props.searchInputUrl}&searchType=${props.searchTypeUrl}`
-                  );
-                }
-              }}
-            >
-              기계명
-              {orderType === 'assignedName' && order === 'ASC'
-                ? '▴'
-                : orderType === 'assignedName' && order === 'DESC'
-                ? '▾'
-                : null}
-            </th>
-            <th className="th5">모델명</th>
-            <th className="th6">기계상태</th>
-            <th className="th7">출력</th>
-            <th className="th8">S/N</th>
-            <th className="th9">PROGIX</th>
-          </tr>
-        </thead>
-        <tbody>
-          {ManagementListQuery?.data.result.map(
-            (v: IManagementTableProps, i: number) => {
-              return (
-                <React.Fragment key={i}>
-                  <tr>
-                    <td>
-                      <input
-                        type="checkbox"
-                        id={String(v.equipmentId)}
-                        checked={props.checkBoxArr.includes(
-                          Number(v.equipmentId)
-                        )}
-                        onClick={(e) => {
-                          props.clickCheckBox(e);
+    <React.Fragment>
+      <Wrap>
+        <table>
+          <thead>
+            <tr>
+              <th className="th0"></th>
+              <th className="th1"></th>
+              {/* 클릭시 출고일별 정렬 적용 */}
+              <th
+                className="th2 filter"
+                onClick={() => {
+                  if (orderType !== 'installedDate') {
+                    setSearchParams(
+                      `search=${props.searchInputUrl}&searchType=${props.searchTypeUrl}&orderType=installedDate&order=ASC`
+                    );
+                  } else if (orderType === 'installedDate' && order === 'ASC') {
+                    setSearchParams(
+                      `search=${props.searchInputUrl}&searchType=${props.searchTypeUrl}&orderType=installedDate&order=DESC`
+                    );
+                  } else if (
+                    orderType === 'installedDate' &&
+                    order === 'DESC'
+                  ) {
+                    setSearchParams(
+                      `search=${props.searchInputUrl}&searchType=${props.searchTypeUrl}`
+                    );
+                  }
+                }}
+              >
+                출고일
+                {orderType === 'installedDate' && order === 'ASC'
+                  ? '▴'
+                  : orderType === 'installedDate' && order === 'DESC'
+                  ? '▾'
+                  : null}
+              </th>
+              {/* 클릭시 거래처명별 정렬 적용 */}
+              <th
+                className="th3 filter desc"
+                onClick={() => {
+                  if (orderType !== 'companyName') {
+                    setSearchParams(
+                      `search=${props.searchInputUrl}&searchType=${props.searchTypeUrl}&orderType=companyName&order=ASC`
+                    );
+                  } else if (orderType === 'companyName' && order === 'ASC') {
+                    setSearchParams(
+                      `search=${props.searchInputUrl}&searchType=${props.searchTypeUrl}&orderType=companyName&order=DESC`
+                    );
+                  } else if (orderType === 'companyName' && order === 'DESC') {
+                    setSearchParams(
+                      `search=${props.searchInputUrl}&searchType=${props.searchTypeUrl}`
+                    );
+                  }
+                }}
+              >
+                거래처명
+                {orderType === 'companyName' && order === 'ASC'
+                  ? '▴'
+                  : orderType === 'companyName' && order === 'DESC'
+                  ? '▾'
+                  : null}
+                <div className="desc">
+                  특정 컬럼명을 클릭시 해당 컬럼으로 모아보기(오름차순,
+                  내림차순)가 가능합니다.
+                </div>
+              </th>
+              {/* 클릭시 기계명별 정렬 적용 */}
+              <th
+                className="th4 filter"
+                onClick={() => {
+                  if (orderType !== 'assignedName') {
+                    setSearchParams(
+                      `search=${props.searchInputUrl}&searchType=${props.searchTypeUrl}&orderType=assignedName&order=ASC`
+                    );
+                  } else if (orderType === 'assignedName' && order === 'ASC') {
+                    setSearchParams(
+                      `search=${props.searchInputUrl}&searchType=${props.searchTypeUrl}&orderType=assignedName&order=DESC`
+                    );
+                  } else if (orderType === 'assignedName' && order === 'DESC') {
+                    setSearchParams(
+                      `search=${props.searchInputUrl}&searchType=${props.searchTypeUrl}`
+                    );
+                  }
+                }}
+              >
+                기계명
+                {orderType === 'assignedName' && order === 'ASC'
+                  ? '▴'
+                  : orderType === 'assignedName' && order === 'DESC'
+                  ? '▾'
+                  : null}
+              </th>
+              <th className="th5">모델명</th>
+              <th className="th6">기계상태</th>
+              <th className="th7">출력</th>
+              <th className="th8">S/N</th>
+              <th className="th9">PROGIX</th>
+            </tr>
+          </thead>
+          <tbody>
+            {ManagementListQuery?.data.result.map(
+              (v: IManagementTableProps, i: number) => {
+                return (
+                  <React.Fragment key={i}>
+                    <tr>
+                      <td>
+                        <input
+                          type="checkbox"
+                          id={String(v.equipmentId)}
+                          checked={props.checkBoxArr.includes(
+                            Number(v.equipmentId)
+                          )}
+                          onClick={(e) => {
+                            props.clickCheckBox(e);
+                          }}
+                          readOnly
+                        />
+                      </td>
+                      <td>{v.no}</td>
+                      <td>{v.installedDate}</td>
+                      <td
+                        onClick={() => {
+                          navigate(
+                            `/scautr/management/detail/${v.equipmentId}`
+                          );
                         }}
-                        readOnly
-                      />
-                    </td>
-                    <td>{v.no}</td>
-                    <td>{v.installedDate}</td>
-                    <td
-                      onClick={() => {
-                        navigate(`/scautr/management/detail/${v.equipmentId}`);
-                      }}
-                      className="nav_detail"
-                    >
-                      {v.companyName}
-                    </td>
-                    {/* 설비등록시 기계명에 설정한 color를 backgroundColor로 뿌려주기 */}
-                    <td style={{ backgroundColor: v.color, color: 'white' }}>
-                      {v.assignedName}
-                    </td>
-                    <td>{v.model}</td>
-                    {/* 기계상태 */}
-                    <td
-                      style={{
-                        backgroundColor:
-                          v.operation === 'ON' ? '#00C875' : 'transparent',
-                        color: v.operation === 'ON' ? '#fff' : 'inherit',
-                      }}
-                    >
-                      {v.operation === 'ON' ? (
-                        <div className="operation_on">{v.operation}</div>
-                      ) : (
-                        <div className="operation_etc">{v.operation}</div>
-                      )}
-                    </td>
-                    {/* 출력 */}
-                    <td>
-                      <div className="mark">
-                        {v.alarm === true ? (
-                          <div className="mark_alarm">알람</div>
-                        ) : null}
-                        {v.error === true ? (
-                          <div className="mark_error">에러</div>
-                        ) : null}
-                        {v.alarm === false &&
-                        v.error === false &&
-                        v.operation === 'ON' ? (
-                          <div className="mark_normal">정상</div>
-                        ) : null}
-                        {v.operation === '미등록' ? (
-                          <div className="mark_unknown">미등록</div>
-                        ) : null}
-                      </div>
-                    </td>
-                    <td>{v.serialNumber}</td>
-                    <td>{v.customerCode === null ? '미사용' : '사용'}</td>
-                  </tr>
-                </React.Fragment>
-              );
-            }
-          )}
-        </tbody>
-      </table>
+                        className="nav_detail"
+                      >
+                        {v.companyName}
+                      </td>
+                      {/* 설비등록시 기계명에 설정한 color를 backgroundColor로 뿌려주기 */}
+                      <td style={{ backgroundColor: v.color, color: 'white' }}>
+                        {v.assignedName}
+                      </td>
+                      <td>{v.model}</td>
+                      {/* 기계상태 */}
+                      <td
+                        style={{
+                          backgroundColor:
+                            v.operation === 'ON' ? '#00C875' : 'transparent',
+                          color: v.operation === 'ON' ? '#fff' : 'inherit',
+                        }}
+                      >
+                        {v.operation === 'ON' ? (
+                          <div className="operation_on">{v.operation}</div>
+                        ) : (
+                          <div className="operation_etc">{v.operation}</div>
+                        )}
+                      </td>
+                      {/* 출력 */}
+                      <td>
+                        <div className="mark">
+                          {v.alarm === true ? (
+                            <div className="mark_alarm">알람</div>
+                          ) : null}
+                          {v.error === true ? (
+                            <div className="mark_error">에러</div>
+                          ) : null}
+                          {v.alarm === false &&
+                          v.error === false &&
+                          v.operation === 'ON' ? (
+                            <div className="mark_normal">정상</div>
+                          ) : null}
+                          {v.operation === '미등록' ? (
+                            <div className="mark_unknown">미등록</div>
+                          ) : null}
+                        </div>
+                      </td>
+                      <td>{v.serialNumber}</td>
+                      <td>{v.customerCode === null ? '미사용' : '사용'}</td>
+                    </tr>
+                  </React.Fragment>
+                );
+              }
+            )}
+          </tbody>
+        </table>
+      </Wrap>
       <Pagination10
         total={total}
         setCurrentPage={setCurrentPage}
@@ -248,21 +255,29 @@ const ManagementTable = (props: IManagementProps) => {
         active={active}
         setActive={setActive}
       />
-    </Wrap>
+    </React.Fragment>
   );
 };
 
 export default ManagementTable;
 
 const Wrap = styled.div`
+  @media (max-width: 1400px) {
+    overflow-x: auto;
+  }
+
   table {
+    @media (max-width: 1400px) {
+      width: 1200px;
+    }
     width: 100%;
     margin-top: 10px;
     border-collapse: collapse;
     // 화면 축소시 테이블 column 깨지는거 방지
-    @media (max-width: 1400px) {
+    // 부모 컴포넌트의 Mobile 컴포넌트와 연계
+    /* @media (max-width: 1400px) {
       display: none;
-    }
+    } */
     th {
       padding: 10px;
       background-color: #f6f7fb;
@@ -337,6 +352,7 @@ const Wrap = styled.div`
     }
     .th6 {
       width: 10rem;
+      min-width: 10rem;
     }
     .th7 {
       // 노트북 사이즈에서 알람 & 에러 사이의 여백을 위해 width : 10rem -> 11rem 변경

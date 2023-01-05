@@ -65,78 +65,80 @@ const NoticeProgixTable = (props: INoticeProps) => {
   }, [props, noticeProgixQuery?.data.result]);
 
   return (
-    <Wrap>
-      <table>
-        <thead>
-          <tr>
-            <th className="th0">NO</th>
-            <th className="th1">분류</th>
-            <th className="th2">제목</th>
-            <th className="th3">작성자</th>
-            <th className="th4">작성일</th>
-          </tr>
-        </thead>
-        <tbody>
-          {noticeProgixQuery?.data.result.map((v: any, i: number) => {
-            return (
-              <React.Fragment key={i}>
-                {/* 대표글 설정 여부 검사 */}
-                {v.top === true ? (
-                  <tr
-                    onClick={() => {
-                      navigate(
-                        `/scautr/board/notice/progix/detail/${v.noticeId}`
-                      );
-                    }}
-                  >
-                    <td>
-                      <div className="td_notice_svg">
-                        <FcSpeaker />
-                      </div>
-                    </td>
-                    <td style={{ color: '#000', fontWeight: '700' }}>
-                      {v.classification}
-                    </td>
-                    <td style={{ color: '#000', fontWeight: '700' }}>
-                      [공지] {v.title}
-                    </td>
-                    <td>
-                      {v.name}({v.account})
-                    </td>
-                    <td>{v.regdate}</td>
-                  </tr>
-                ) : (
-                  <tr
-                    onClick={() => {
-                      navigate(
-                        `/scautr/board/notice/progix/detail/${v.noticeId}`
-                      );
-                    }}
-                  >
-                    <td>{v.no}</td>
-                    <td>{v.classification}</td>
-                    <td>{v.title}</td>
-                    <td>
-                      <div className="writer">
-                        <div className="writer_wrap">
-                          {/* <img
+    <React.Fragment>
+      <Wrap>
+        <table>
+          <thead>
+            <tr>
+              <th className="th0">NO</th>
+              <th className="th1">분류</th>
+              <th className="th2">제목</th>
+              <th className="th3">작성자</th>
+              <th className="th4">작성일</th>
+            </tr>
+          </thead>
+          <tbody>
+            {noticeProgixQuery?.data.result.map((v: any, i: number) => {
+              return (
+                <React.Fragment key={i}>
+                  {/* 대표글 설정 여부 검사 */}
+                  {v.top === true ? (
+                    <tr
+                      onClick={() => {
+                        navigate(
+                          `/scautr/board/notice/progix/detail/${v.noticeId}`
+                        );
+                      }}
+                    >
+                      <td>
+                        <div className="td_notice_svg">
+                          <FcSpeaker />
+                        </div>
+                      </td>
+                      <td style={{ color: '#000', fontWeight: '700' }}>
+                        {v.classification}
+                      </td>
+                      <td style={{ color: '#000', fontWeight: '700' }}>
+                        [공지] {v.title}
+                      </td>
+                      <td>
+                        {v.name}({v.account})
+                      </td>
+                      <td>{v.regdate}</td>
+                    </tr>
+                  ) : (
+                    <tr
+                      onClick={() => {
+                        navigate(
+                          `/scautr/board/notice/progix/detail/${v.noticeId}`
+                        );
+                      }}
+                    >
+                      <td>{v.no}</td>
+                      <td>{v.classification}</td>
+                      <td>{v.title}</td>
+                      <td>
+                        <div className="writer">
+                          <div className="writer_wrap">
+                            {/* <img
                             src="/images/board_profile.png"
                             alt="프로필 이미지"
                           /> */}
-                          <span>
-                            {v.name}({v.account})
-                          </span>
+                            <span>
+                              {v.name}({v.account})
+                            </span>
+                          </div>
                         </div>
-                      </div>
-                    </td>
-                    <td>{v.regdate}</td>
-                  </tr>
-                )}
-              </React.Fragment>
-            );
-          })}
-        </tbody>
-      </table>
+                      </td>
+                      <td>{v.regdate}</td>
+                    </tr>
+                  )}
+                </React.Fragment>
+              );
+            })}
+          </tbody>
+        </table>
+      </Wrap>
       <Pagination10
         total={total}
         setCurrentPage={setCurrentPage}
@@ -145,21 +147,27 @@ const NoticeProgixTable = (props: INoticeProps) => {
         active={active}
         setActive={setActive}
       />
-    </Wrap>
+    </React.Fragment>
   );
 };
 
 export default NoticeProgixTable;
 
 const Wrap = styled.div`
+  @media (max-width: 1400px) {
+    overflow-x: auto;
+  }
   table {
+    @media (max-width: 1400px) {
+      width: 1200px;
+    }
     width: 100%;
     margin-top: 10px;
     border-collapse: collapse;
     // 화면 축소시 테이블 column 깨지는거 방지
-    @media (max-width: 1400px) {
+    /* @media (max-width: 1400px) {
       display: none;
-    }
+    } */
     th {
       padding: 10px;
       background-color: #f6f7fb;

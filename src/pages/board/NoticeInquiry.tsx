@@ -1,6 +1,6 @@
 import React, { useState, useRef, Suspense } from 'react';
 import styled from 'styled-components';
-import Mobile from '../../components/exception/Mobile';
+// import Mobile from '../../components/exception/Mobile';
 import { useSearchParams } from 'react-router-dom';
 import NoticeInquiryTable from '../../components/table/NoticeInquiryTable';
 import SkeletonTable from '../../components/suspense/SkeletonTable';
@@ -82,7 +82,7 @@ const NoticeInquiry = () => {
               searchInputUrl={searchInputUrl}
             />
           </Suspense>
-          <Mobile />
+          {/* <Mobile /> */}
         </Content>
       </Container>
     </Wrap>

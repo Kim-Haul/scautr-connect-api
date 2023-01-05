@@ -1,7 +1,7 @@
 import React, { useState, useRef, Suspense } from 'react';
 import styled from 'styled-components';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import Mobile from '../../components/exception/Mobile';
+// import Mobile from '../../components/exception/Mobile';
 import NoticeProgixTable from '../../components/table/NoticeProgixTable';
 import SkeletonTable from '../../components/suspense/SkeletonTable';
 
@@ -100,7 +100,7 @@ const NoticeProgix = () => {
               setExistTop={setExistTop}
             />
           </Suspense>
-          <Mobile />
+          {/* <Mobile /> */}
         </Content>
       </Container>
     </Wrap>

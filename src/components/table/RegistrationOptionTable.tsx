@@ -63,87 +63,91 @@ const RegistrationOptionTable = (props: IRegistrationOptionProps) => {
   const total = registrationOptionQuery?.data.count;
 
   return (
-    <Wrap>
-      <table>
-        <thead>
-          <tr>
-            <th className="th0"></th>
-            <th className="th1"></th>
-            <th className="th2">그룹</th>
-            <th className="th3">옵션명</th>
-            <th className="th4">모델명</th>
-            <th className="th5">권장사용기간</th>
-            <th className="th6">사용</th>
-            <th className="th7">파일첨부</th>
-            <th className="th8">등록일</th>
-          </tr>
-        </thead>
-        <tbody>
-          {registrationOptionQuery?.data.result.map(
-            (v: IRegistrationOptionTableProps, i: number) => {
-              return (
-                <React.Fragment key={i}>
-                  <tr
-                    onClick={() => {
-                      setInfo({
-                        option: v.option,
-                        model: v.model,
-                        optionId: v.optionId,
-                        lifeSpan: v.lifeSpan,
-                        note: v.note,
-                        multipartFile: v.files[0]?.name,
-                        delfiles: v.files[0]?.fileId,
-                      });
-                    }}
-                  >
-                    <td>
-                      <input
-                        type="checkbox"
-                        id={String(v.optionId)}
-                        checked={props.checkBoxArr.includes(Number(v.optionId))}
-                        onClick={(e) => {
-                          props.clickCheckBox(e);
+    <React.Fragment>
+      <Wrap>
+        <table>
+          <thead>
+            <tr>
+              <th className="th0"></th>
+              <th className="th1"></th>
+              <th className="th2">그룹</th>
+              <th className="th3">옵션명</th>
+              <th className="th4">모델명</th>
+              <th className="th5">권장사용기간</th>
+              <th className="th6">사용</th>
+              <th className="th7">파일첨부</th>
+              <th className="th8">등록일</th>
+            </tr>
+          </thead>
+          <tbody>
+            {registrationOptionQuery?.data.result.map(
+              (v: IRegistrationOptionTableProps, i: number) => {
+                return (
+                  <React.Fragment key={i}>
+                    <tr
+                      onClick={() => {
+                        setInfo({
+                          option: v.option,
+                          model: v.model,
+                          optionId: v.optionId,
+                          lifeSpan: v.lifeSpan,
+                          note: v.note,
+                          multipartFile: v.files[0]?.name,
+                          delfiles: v.files[0]?.fileId,
+                        });
+                      }}
+                    >
+                      <td>
+                        <input
+                          type="checkbox"
+                          id={String(v.optionId)}
+                          checked={props.checkBoxArr.includes(
+                            Number(v.optionId)
+                          )}
+                          onClick={(e) => {
+                            props.clickCheckBox(e);
+                          }}
+                          readOnly
+                        />
+                      </td>
+                      <td>{v.no}</td>
+                      <td>-</td>
+                      <td
+                        className="option_title"
+                        onClick={() => {
+                          setIsOpenEdit(true);
                         }}
-                        readOnly
-                      />
-                    </td>
-                    <td>{v.no}</td>
-                    <td>-</td>
-                    <td
-                      className="option_title"
-                      onClick={() => {
-                        setIsOpenEdit(true);
-                      }}
-                    >
-                      {v.option}
-                    </td>
-                    <td>{v.model}</td>
-                    <td>{v.lifeSpan}개월</td>
-                    <td>{v.equipmentCnt}대</td>
-                    <td
-                      className="file_download"
-                      onClick={() => {
-                        if (v.files[0]?.name === undefined) {
-                          return;
-                        } else {
-                          window.open(
-                            `${process.env.REACT_APP_S3_FILE_UPLOAD}/${v.files[0]?.saveName}`
-                          );
-                        }
-                      }}
-                    >
-                      {v.files[0]?.name.length >= 27
-                        ? v.files[0]?.name.substr(0, 28) + '...'
-                        : v.files[0]?.name}
-                    </td>
-                    <td>{v.regdate}</td>
-                  </tr>
-                </React.Fragment>
-              );
-            }
-          )}
-        </tbody>
-      </table>
+                      >
+                        {v.option}
+                      </td>
+                      <td>{v.model}</td>
+                      <td>{v.lifeSpan}개월</td>
+                      <td>{v.equipmentCnt}대</td>
+                      <td
+                        className="file_download"
+                        onClick={() => {
+                          if (v.files[0]?.name === undefined) {
+                            return;
+                          } else {
+                            window.open(
+                              `${process.env.REACT_APP_S3_FILE_UPLOAD}/${v.files[0]?.saveName}`
+                            );
+                          }
+                        }}
+                      >
+                        {v.files[0]?.name.length >= 27
+                          ? v.files[0]?.name.substr(0, 28) + '...'
+                          : v.files[0]?.name}
+                      </td>
+                      <td>{v.regdate}</td>
+                    </tr>
+                  </React.Fragment>
+                );
+              }
+            )}
+          </tbody>
+        </table>
+      </Wrap>
 
       {/* 수정모달 */}
       <RegistrationOptionModal
@@ -161,21 +165,28 @@ const RegistrationOptionTable = (props: IRegistrationOptionProps) => {
         active={active}
         setActive={setActive}
       />
-    </Wrap>
+    </React.Fragment>
   );
 };
 
 export default RegistrationOptionTable;
 
 const Wrap = styled.div`
+  @media (max-width: 1400px) {
+    overflow-x: auto;
+  }
+
   table {
+    @media (max-width: 1400px) {
+      width: 1200px;
+    }
     width: 100%;
     margin-top: 10px;
     border-collapse: collapse;
     // 화면 축소시 테이블 column 깨지는거 방지
-    @media (max-width: 1400px) {
+    /* @media (max-width: 1400px) {
       display: none;
-    }
+    } */
     th {
       padding: 10px;
       background-color: #f6f7fb;

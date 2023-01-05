@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, Suspense } from 'react';
 import styled from 'styled-components';
-import Mobile from '../../components/exception/Mobile';
+// import Mobile from '../../components/exception/Mobile';
 import RegistrationOptionTable from '../../components/table/RegistrationOptionTable';
 import RegistrationOptionModal from '../../components/modal/RegistrationOptionModal';
 import SkeletonTable from '../../components/suspense/SkeletonTable';
@@ -176,7 +176,7 @@ const RegistrationOption = (props: IRegistrationProps) => {
               clickCheckBox={clickCheckBox}
             />
           </Suspense>
-          <Mobile />
+          {/* <Mobile /> */}
         </Content>
       </Container>
 

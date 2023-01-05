@@ -2,7 +2,7 @@ import React, { useState, useRef, Suspense } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { IoIosArrowForward } from 'react-icons/io';
-import Mobile from '../../components/exception/Mobile';
+// import Mobile from '../../components/exception/Mobile';
 import { useSearchParams } from 'react-router-dom';
 import ManagementTable from '../../components/table/ManagementTable';
 import SkeletonTable from '../../components/suspense/SkeletonTable';
@@ -169,7 +169,7 @@ const Management = () => {
               clickCheckBox={clickCheckBox}
             />
           </Suspense>
-          <Mobile />
+          {/* <Mobile /> */}
         </Content>
       </Container>
     </Wrap>

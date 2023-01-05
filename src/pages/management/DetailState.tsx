@@ -190,6 +190,11 @@ const Wrap = styled.div`
           margin-right: 5px;
           cursor: pointer;
         }
+        span {
+          @media (max-width: ${(props) => props.theme.breakpoints.TabletMin}) {
+            font-size: 1.2rem;
+          }
+        }
       }
     }
     table {

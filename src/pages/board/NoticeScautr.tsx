@@ -1,7 +1,7 @@
 import React, { useState, useRef, Suspense, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
-import Mobile from '../../components/exception/Mobile';
+// import Mobile from '../../components/exception/Mobile';
 import NoticeScautrTable from '../../components/table/NoticeScautrTable';
 import SkeletonTable from '../../components/suspense/SkeletonTable';
 import jwtDecode from 'jwt-decode';
@@ -110,7 +110,7 @@ const NoticeScautr = () => {
               searchInputUrl={searchInputUrl}
             />
           </Suspense>
-          <Mobile />
+          {/* <Mobile /> */}
         </Content>
       </Container>
     </Wrap>

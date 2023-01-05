@@ -199,7 +199,7 @@ const Wrap = styled.div`
 const Container = styled.div`
   width: 55rem;
   @media (max-width: ${(props) => props.theme.breakpoints.TabletMin}) {
-    width: 35rem;
+    width: 38rem;
   }
   .title {
     display: flex;

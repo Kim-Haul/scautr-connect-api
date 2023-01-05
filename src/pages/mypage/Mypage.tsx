@@ -172,6 +172,9 @@ const Info = styled.div`
       width: 6.4rem;
       border-radius: 10px;
       outline: 1px solid #e1e1e1;
+      @media (max-width: ${(props) => props.theme.breakpoints.TabletMin}) {
+        outline: none;
+      }
       margin-right: 2rem;
     }
     .user_info {

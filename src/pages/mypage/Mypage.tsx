@@ -144,12 +144,13 @@ const Wrap = styled.div`
 const Container = styled.div`
   width: 55rem;
   @media (max-width: ${(props) => props.theme.breakpoints.TabletMin}) {
-    width: 35rem;
+    width: 38rem;
   }
   .title {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    padding: 0 1rem;
     svg {
       font-size: 1.92rem;
       cursor: pointer;

@@ -1,14 +1,32 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { AiOutlineHome } from 'react-icons/ai';
 import { BsClipboardData, BsShareFill } from 'react-icons/bs';
 import { BiLogOut } from 'react-icons/bi';
 import { IViewProps, IPathProps } from '../../shared/type/Interface';
+import { IoIosArrowForward } from 'react-icons/io';
+import jwtDecode from 'jwt-decode';
+import { getCookie } from '../../shared/cookie';
+import { ITokenProps } from '../../shared/type/Interface';
 
 const Sidebar = (props: IViewProps) => {
   const navigate = useNavigate();
   const location = useLocation();
+
+  // 토큰 payload에 담겨오는 정보를 바탕으로 사이드바 유저 정보 노출
+  const [isAccount, setIsAccount] = useState<string>('');
+  const [isEmail, setIsEmail] = useState<string>('');
+  useEffect(() => {
+    const accessToken = getCookie('Authorization');
+    let authority: ITokenProps;
+
+    if (accessToken) {
+      authority = jwtDecode(accessToken);
+      setIsAccount(authority.sub);
+      setIsEmail(authority.email);
+    }
+  }, []);
 
   return (
     <Wrap open_side_bar={props.open_side_bar}>
@@ -16,6 +34,23 @@ const Sidebar = (props: IViewProps) => {
         <img src="/images/side_bar_logo_white_big.png" alt="스카우터 로고" />
       </Title>
       <Navbar>
+        <div
+          className="info-wrap"
+          onClick={() => {
+            navigate('/mypage');
+          }}
+        >
+          <div className="info-wrap-left">
+            <img src="/images/sidebar_profile.png" alt="프로필 이미지" />
+            <div className="info">
+              <p className="info-left-title">{isAccount}</p>
+              <p className="info-left-email">{isEmail}</p>
+            </div>
+          </div>
+          <div className="info-wrap-right">
+            <IoIosArrowForward />
+          </div>
+        </div>
         <div className="sidebar-title">
           <span>MENU</span>
           <BiLogOut
@@ -89,6 +124,27 @@ const Wrap = styled.div`
   z-index: 2;
   color: #899dbf;
   font-size: 1.6rem;
+  animation: fade-in 1s;
+
+  // 모바일에서 사이드바 펼칠 때
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  // 모바일에서 사이드바 닫힐 때
+  @keyframes fade-out {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
 `;
 
 const Title = styled.div`
@@ -102,6 +158,53 @@ const Title = styled.div`
   }
 `;
 const Navbar = styled.nav`
+  .info-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #393f5c;
+    border-radius: 8px;
+    height: 58px;
+    padding: 8px;
+    &:hover {
+      cursor: pointer;
+      background-color: #fff;
+      .info-left-title {
+        color: #000 !important;
+      }
+      svg {
+        color: #000 !important;
+      }
+    }
+
+    .info-wrap-left {
+      display: flex;
+      gap: 8px;
+      img {
+        width: 40px;
+        height: 40px;
+      }
+      .info {
+        .info-left-title {
+          color: #fff;
+          font-weight: 700;
+          font-size: 16px;
+        }
+        .info-left-email {
+          color: #9497a8;
+          font-size: 12px;
+          line-height: 14px;
+        }
+      }
+    }
+    .info-wrap-right {
+      svg {
+        color: #fff;
+      }
+    }
+
+    margin-bottom: 20px;
+  }
   padding: 1.2rem;
   .sidebar-title {
     font-size: 1.4rem;

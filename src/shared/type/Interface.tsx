@@ -7,6 +7,7 @@ export interface ITokenProps {
   exp: number;
   sub: string;
   type: string;
+  email: string;
 }
 
 // ------------------------ apis.tsx

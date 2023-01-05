@@ -124,27 +124,6 @@ const Wrap = styled.div`
   z-index: 2;
   color: #899dbf;
   font-size: 1.6rem;
-  animation: fade-in 1s;
-
-  // 모바일에서 사이드바 펼칠 때
-  @keyframes fade-in {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
-
-  // 모바일에서 사이드바 닫힐 때
-  @keyframes fade-out {
-    from {
-      opacity: 1;
-    }
-    to {
-      opacity: 0;
-    }
-  }
 `;
 
 const Title = styled.div`

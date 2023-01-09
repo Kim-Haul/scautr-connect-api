@@ -21,6 +21,10 @@ $ yarn add react-geocode
 $ yarn add mem
 $ yarn add react-slick @types/react-slick slick-carousel
 $ yarn add slick-carousel
+$ yarn add i18next react-i18next
+$ yarn add @types/i18next
+$ yarn add @types/react-i18next
+
 
 // package.json
 $ @types/styled-components : ^5.1.26
@@ -43,6 +47,10 @@ $ mem : ^9.0.2
 $ react-slick : ^0.29.0
 $ @types/react-slick : ^0.23.10
 $ slick-carousel : ^1.8.1
+$ i18next : ^22.4.9
+$ react-i18next : ^12.1.4
+$ @types/react-i18next : ^8.1.0
+$ @types/i18next : ^13.0.0
 
 
 // remove

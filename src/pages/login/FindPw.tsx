@@ -4,9 +4,11 @@ import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 import { FormValues, IStyleProps } from '../../shared/type/Interface';
 import apis from '../../shared/apis';
+import { useTranslation } from 'react-i18next';
 
 const FindPw = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const {
     register,
@@ -44,7 +46,7 @@ const FindPw = () => {
             />
           </div>
           <Line>
-            <label htmlFor="inputId">아이디</label>
+            <label htmlFor="inputId">{t('findPw.id')}</label>
             <Input
               type="text"
               autoComplete="off"
@@ -58,7 +60,7 @@ const FindPw = () => {
             {errors.id && <div className="err">{errors.id.message}</div>}
           </Line>
           <Line>
-            <label htmlFor="inputName">이름</label>
+            <label htmlFor="inputName">{t('findPw.name')}</label>
             <Input
               type="text"
               autoComplete="off"
@@ -72,7 +74,7 @@ const FindPw = () => {
             {errors.name && <div className="err">{errors.name.message}</div>}
           </Line>
           <Line>
-            <label htmlFor="inputEmail">이메일</label>
+            <label htmlFor="inputEmail">{t('findPw.email')}</label>
             <Input
               type="text"
               autoComplete="off"
@@ -100,9 +102,9 @@ const FindPw = () => {
                 navigate('/');
               }}
             >
-              취소
+              {t('findPw.cancel')}
             </button>
-            <button className="btn-login">발송</button>
+            <button className="btn-login">{t('findPw.check')}</button>
           </div>
         </div>
       </PostForm>

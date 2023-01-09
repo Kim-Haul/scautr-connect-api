@@ -9,9 +9,14 @@ import {
   setCookieToken,
   setCookieRefreshToken,
 } from '../../shared/cookie';
+import { useTranslation } from 'react-i18next';
 // import { FallingSnow } from '../../components/etc/SnowAnimation';
 
 const Login = () => {
+  // 리액트의 서스펜스를 사용할 때는 useTranslation의 두번째 매개변수로 useSuspense:false를 넣어줌
+  // 서스펜스 사용안할 시 const { t } = useTranslation('ko', {useSuspense: false});
+  const { t, i18n } = useTranslation();
+
   const navigate = useNavigate();
   const [save_id, SetSaveId] = useState<boolean>(false);
   const [capslock, setCapsLock] = useState<boolean>(false);
@@ -100,6 +105,17 @@ const Login = () => {
     }
   }, []);
 
+  // 언어 변경 설렉트 박스 핸들링
+  const [langSelect, SetLangSelect] = useState<string>('');
+  const localLangChange = (e: string) => {
+    localStorage.setItem('lang', e);
+    SetLangSelect(e);
+  };
+
+  useEffect(() => {
+    i18n.changeLanguage(langSelect);
+  }, [langSelect, i18n]);
+
   return (
     <Wrap>
       <PostForm onSubmit={handleSubmit(onSubmit)}>
@@ -170,7 +186,7 @@ const Login = () => {
                 onClick={() => SetSaveId(!save_id)}
                 readOnly
               />
-              <div>아이디 저장</div>
+              <div>{t('login.saveId')}</div>
             </div>
             <div
               className="find_pw"
@@ -178,10 +194,10 @@ const Login = () => {
                 navigate('/find_pw');
               }}
             >
-              비밀번호 찾기
+              {t('login.findPw')}
             </div>
           </div>
-          <button className="btn-login">로그인</button>
+          <button className="btn-login">{t('login.login')}</button>
           <button
             className="btn-login-demo"
             onClick={(e) => {
@@ -189,7 +205,7 @@ const Login = () => {
               DemoOnSumit();
             }}
           >
-            데모 체험용 로그인
+            {t('login.demo')}
           </button>
           <div className="link-agree">
             <span
@@ -197,13 +213,24 @@ const Login = () => {
                 navigate('/agree');
               }}
             >
-              회원가입
+              {t('login.signUp')}
             </span>
           </div>
         </div>
         {/* 눈이 와요 ! */}
         {/* <FallingSnow /> */}
       </PostForm>
+      <Lang>
+        <select
+          onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+            localLangChange(e.target.value);
+          }}
+          defaultValue={localStorage.getItem('lang') ?? 'ko'}
+        >
+          <option value="ko">{t('ko')}</option>
+          <option value="jp">{t('jp')}</option>
+        </select>
+      </Lang>
       <Footer>
         <div>
           <ul>
@@ -333,6 +360,20 @@ const Input = styled.input`
     color: transparent;
   }
   padding: 1rem;
+`;
+
+const Lang = styled.div`
+  margin-top: 35px;
+  @media (max-width: ${(props) => props.theme.breakpoints.Mobile}) {
+    margin-top: -35px;
+  }
+  select {
+    width: 110px;
+    height: 35px;
+    padding: 5px;
+    border: 1px solid #e1e1e1;
+    font-family: 'Noto Sans KR', sans-serif;
+  }
 `;
 
 const Footer = styled.div`

@@ -5,9 +5,11 @@ import { useForm } from 'react-hook-form';
 import { FormValues, IStyleProps } from '../../shared/type/Interface';
 import { AiOutlineEyeInvisible, AiOutlineEye } from 'react-icons/ai';
 import apis from '../../shared/apis';
+import { useTranslation } from 'react-i18next';
 
 const Signup = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [is_pw_show, setIsPwShow] = useState<string>('password');
   const [click_slave, setClickSlave] = useState<boolean>(true);
   // ~Ok : 아이디 중복체크 및 이메일 인증코드 발송 확인
@@ -155,14 +157,14 @@ const Signup = () => {
           {/*  ----------- 첫번째 INFO ----------- */}
           <Line>
             <div className="overlap">
-              <label htmlFor="inputId">아이디</label>
+              <label htmlFor="inputId">{t('signUp.id')}</label>
               <div
                 className="overlap check"
                 onClick={() => {
                   checkId();
                 }}
               >
-                중복확인
+                {t('signUp.idCheck')}
               </div>
             </div>
             <Input
@@ -191,7 +193,7 @@ const Signup = () => {
           </Line>
           <Line>
             <div className="overlap">
-              <label htmlFor="inputPassword">비밀번호</label>
+              <label htmlFor="inputPassword">{t('signUp.pw')}</label>
               {is_pw_show === 'password' ? (
                 <div
                   className="pw_show"
@@ -239,7 +241,7 @@ const Signup = () => {
             </div>
           </Line>
           <Line>
-            <label htmlFor="inputPasswordCheck">비밀번호 재확인</label>
+            <label htmlFor="inputPasswordCheck">{t('signUp.pwCheck')}</label>
             <Input
               type="password"
               // 비밀번호 입력시 공백 방지
@@ -260,7 +262,7 @@ const Signup = () => {
           </Line>
           {/*  ----------- 두번째 INFO ----------- */}
           <Line>
-            <label htmlFor="inputName">이름</label>
+            <label htmlFor="inputName">{t('signUp.name')}</label>
             <Input
               type="text"
               autoComplete="off"
@@ -274,7 +276,7 @@ const Signup = () => {
             {errors.name && <div className="err">{errors.name.message}</div>}
           </Line>
           <Line>
-            <label htmlFor="inputPhone">휴대전화</label>
+            <label htmlFor="inputPhone">{t('signUp.phone')}</label>
             <div className="phone">
               <Input
                 type="text"
@@ -317,7 +319,7 @@ const Signup = () => {
             )}
           </Line>
           <Line>
-            <label htmlFor="inputEmail">이메일</label>
+            <label htmlFor="inputEmail">{t('signUp.email')}</label>
             <div className="email">
               <Input
                 type="email"
@@ -337,7 +339,7 @@ const Signup = () => {
                   checkEmail();
                 }}
               >
-                인증
+                {t('signUp.emailCheck')}
               </button>
             </div>
 
@@ -346,7 +348,7 @@ const Signup = () => {
           {/* 유효한 이메일 입력 후 인증코드 발송시, 인증코드 입력란 활성 */}
           {emailOk ? (
             <Line>
-              <label htmlFor="inputMailCode">인증코드</label>
+              <label htmlFor="inputMailCode">{t('signUp.emailCode')}</label>
               <div className="email">
                 <Input
                   type="text"
@@ -368,7 +370,7 @@ const Signup = () => {
                     checkEmailCode();
                   }}
                 >
-                  확인
+                  {t('signUp.emailBtn')}
                 </button>
               </div>
               {errors.mailCode && (
@@ -392,7 +394,7 @@ const Signup = () => {
                 backgroundColor: click_slave ? '' : 'rgba(0, 199, 174, 0.3)',
               }}
             >
-              개인
+              {t('signUp.personal')}
             </button>
 
             <button
@@ -405,13 +407,15 @@ const Signup = () => {
                 backgroundColor: click_slave ? 'rgba(253, 171, 61, 0.3)' : '',
               }}
             >
-              기업
+              {t('signUp.company')}
             </button>
           </div>
           {/*  ----------- 세번째 INFO ----------- */}
           {click_slave ? (
             <Line style={{ marginTop: '2.5rem' }}>
-              <label htmlFor="inputCompanyCode">회사코드</label>
+              <label htmlFor="inputCompanyCode">
+                {t('signUp.company.companyCode')}
+              </label>
               <Input
                 type="text"
                 autoComplete="off"
@@ -429,7 +433,9 @@ const Signup = () => {
           ) : (
             <React.Fragment>
               <Line style={{ marginTop: '2.5rem' }}>
-                <label htmlFor="inputCompanyName">회사명</label>
+                <label htmlFor="inputCompanyName">
+                  {t('signUp.company.companyName')}
+                </label>
                 <Input
                   type="text"
                   autoComplete="off"
@@ -445,7 +451,9 @@ const Signup = () => {
                 )}
               </Line>
               <Line>
-                <label htmlFor="inputRepresentative">대표자명</label>
+                <label htmlFor="inputRepresentative">
+                  {t('signUp.company.representativeName')}
+                </label>
                 <Input
                   type="text"
                   autoComplete="off"
@@ -461,7 +469,9 @@ const Signup = () => {
                 )}
               </Line>
               <Line>
-                <label htmlFor="inputPhone">회사 연락처</label>
+                <label htmlFor="inputPhone">
+                  {t('signUp.company.companyNumber')}
+                </label>
                 <div className="phone">
                   <Input
                     type="text"
@@ -506,7 +516,9 @@ const Signup = () => {
                 )}
               </Line>
               <Line>
-                <label htmlFor="inputRegistrationNumber">사업자 등록번호</label>
+                <label htmlFor="inputRegistrationNumber">
+                  {t('signUp.company.companyRegistrationNumber')}
+                </label>
                 <div className="registrationNumber">
                   <Input
                     type="text"
@@ -566,7 +578,9 @@ const Signup = () => {
                 )}
               </Line>
               <Line>
-                <label htmlFor="inputRecommender">추천인</label>
+                <label htmlFor="inputRecommender">
+                  {t('signUp.company.companyRecommender')}
+                </label>
                 <Input
                   type="text"
                   autoComplete="off"
@@ -578,7 +592,7 @@ const Signup = () => {
             </React.Fragment>
           )}
           <button type="submit" className="btn-login">
-            가입하기
+            {t('signUp.button')}
           </button>
         </div>
       </PostForm>

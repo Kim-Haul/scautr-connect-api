@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import DefaultLoading from './components/suspense/DefaultLoading';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import './lang/i18n.tsx';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

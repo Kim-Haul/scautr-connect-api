@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { ICheckStateProps } from '../../shared/type/Interface';
+import { useTranslation } from 'react-i18next';
 
 const Agree = () => {
   const navigate = useNavigate();
-
+  const { t } = useTranslation();
   const [check, setCheck] = useState<ICheckStateProps>({
     first: false,
     second: false,
@@ -38,7 +39,9 @@ const Agree = () => {
                   onClick={() => setCheck({ ...check, first: !check.first })}
                   readOnly
                 />
-                <label htmlFor="inputFirst">개인정보 취급방침</label>
+                <label htmlFor="inputFirst">
+                  {t('agree.privacyandlingPolicy')}
+                </label>
               </div>
 
               <div className="desc">
@@ -77,7 +80,9 @@ const Agree = () => {
                   onClick={() => setCheck({ ...check, second: !check.second })}
                   readOnly
                 />
-                <label htmlFor="inputSecond">온라인 이용약관</label>
+                <label htmlFor="inputSecond">
+                  {t('agree.onlineTermsOfUse')}
+                </label>
               </div>
               <div className="desc">
                 <p>
@@ -100,7 +105,9 @@ const Agree = () => {
                   onClick={() => setCheck({ ...check, third: !check.third })}
                   readOnly
                 />
-                <label htmlFor="inputThird">서비스 수준 협약</label>
+                <label htmlFor="inputThird">
+                  {t('agree.serviceLevelAgreement')}
+                </label>
               </div>
               <div className="desc">
                 <p>
@@ -135,7 +142,7 @@ const Agree = () => {
                   readOnly
                 />
                 <label htmlFor="inputAll">
-                  <strong>약관 전체 동의</strong>
+                  <strong>{t('agree.allAgree')}</strong>
                 </label>
               </div>
             </li>
@@ -147,7 +154,7 @@ const Agree = () => {
                 navigate('/');
               }}
             >
-              취소
+              {t('agree.cancel')}
             </button>
             <button
               className="btn-login"
@@ -156,7 +163,7 @@ const Agree = () => {
               }}
               disabled={!allCheck}
             >
-              확인
+              {t('agree.check')}
             </button>
           </div>
         </form>

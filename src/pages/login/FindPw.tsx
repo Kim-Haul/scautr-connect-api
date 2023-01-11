@@ -32,18 +32,29 @@ const FindPw = () => {
     }
   };
 
+  const darkModeLogo = localStorage.getItem('darkMode');
   return (
     <Wrap>
       <PostForm onSubmit={handleSubmit(onSubmit)}>
         <div className="container">
           <div className="logo">
-            <img
-              src="/images/scautr_dark.svg"
-              alt="스카우터 로고"
-              onClick={() => {
-                navigate('/');
-              }}
-            />
+            {darkModeLogo === 'on' ? (
+              <img
+                src="/images/scautr_light.svg"
+                alt="스카우터 로고"
+                onClick={() => {
+                  window.location.reload();
+                }}
+              />
+            ) : (
+              <img
+                src="/images/scautr_dark.svg"
+                alt="스카우터 로고"
+                onClick={() => {
+                  window.location.reload();
+                }}
+              />
+            )}
           </div>
           <Line>
             <label htmlFor="inputId">{t('findPw.id')}</label>
@@ -133,7 +144,8 @@ const Wrap = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #fff;
+  background-color: ${(props) => props.theme.darkMode.backgroundColor};
+  color: ${(props) => props.theme.darkMode.fontColor};
   font-size: 1.6rem;
 `;
 
@@ -142,7 +154,7 @@ const PostForm = styled.form`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  background-color: #fff;
+  background-color: ${(props) => props.theme.darkMode.backgroundColor};
   padding: 5rem;
   width: 40rem;
   @media (max-width: ${(props) => props.theme.breakpoints.Mobile}) {
@@ -193,6 +205,7 @@ const Line = styled.div`
 `;
 
 const Input = styled.input`
+  background-color: ${(props) => props.theme.darkMode.inputBg};
   border: 1px solid #e1e1e1;
   outline: ${(props: IStyleProps) => props.isInvalid && 'none'};
   border: ${(props: IStyleProps) => props.isInvalid && '1px solid red'};
@@ -217,17 +230,16 @@ const Footer = styled.div`
   align-items: center;
   font-size: 1.3rem;
   margin-bottom: 2rem;
+  color: ${(props) => props.theme.darkMode.descColor};
   .copyright {
     display: flex;
     align-items: center;
     margin-top: 0.3rem;
-    color: #888888;
   }
   ul {
     list-style: none;
     display: flex;
     li {
-      color: gray;
       &::after {
         content: '｜';
         margin: 0.2rem;

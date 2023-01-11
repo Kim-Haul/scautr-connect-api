@@ -1,14 +1,38 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import styled from 'styled-components';
 import apis from '../../shared/apis';
 import { useQuery } from '@tanstack/react-query';
 import { IParamsProps } from '../../shared/type/Interface';
+import { useQueryClient } from '@tanstack/react-query';
+import { AiOutlineClose } from 'react-icons/ai';
 
 const DetailIo = (props: IParamsProps) => {
+  // plc 입력, 출력 검색 키워드 핸들링
+  const [searchInputKeyword, setSearchInputKeyword] = useState<string>('');
+  const [searchOutputKeyword, setSearchOutputKeyword] = useState<string>('');
+  const [searchInput, setSearchInput] = useState<boolean>(false);
+  const [searchOutput, setSearchOutput] = useState<boolean>(false);
+
+  // 쿼리 클라이언트 정의
+  const queryClient = useQueryClient();
+  // plc 입력, 출력 검색창 핸들링
+  const invalidateCashInput = () => {
+    setSearchInput(!searchInput);
+    queryClient.removeQueries({ queryKey: ['loadPlcInputData'] });
+  };
+
+  const invalidateCashOutput = () => {
+    setSearchOutput(!searchOutput);
+    queryClient.removeQueries({ queryKey: ['loadPlcOutputData'] });
+  };
+
+  const inputEl = useRef<HTMLInputElement>(null);
+  const outputEl = useRef<HTMLInputElement>(null);
+
   // plc 입력 호출 api
   const plcInputData = async () => {
     try {
-      const res = await apis.plcInputData(props.view);
+      const res = await apis.plcInputData(props.view, searchInputKeyword);
       return res;
     } catch (err) {
       console.log('설비 입력값을 불러오는데 실패했습니다.');
@@ -17,7 +41,7 @@ const DetailIo = (props: IParamsProps) => {
 
   // plc 입력 호출 쿼리
   const { data: plcInputDataQuery } = useQuery(
-    ['loadPlcInputData', props.view],
+    ['loadPlcInputData', props.view, searchInput],
     plcInputData,
     {
       refetchOnWindowFocus: false,
@@ -31,7 +55,7 @@ const DetailIo = (props: IParamsProps) => {
   // plc 출력 호출 api
   const plcOutputData = async () => {
     try {
-      const res = await apis.plcOutputData(props.view);
+      const res = await apis.plcOutputData(props.view, searchOutputKeyword);
       return res;
     } catch (err) {
       console.log('설비 출력값을 불러오는데 실패했습니다.');
@@ -40,7 +64,7 @@ const DetailIo = (props: IParamsProps) => {
 
   // plc 출력 호출 쿼리
   const { data: plcOutputDataQuery } = useQuery(
-    ['loadPlcOutputData', props.view],
+    ['loadPlcOutputData', props.view, searchOutput],
     plcOutputData,
     {
       refetchOnWindowFocus: false,
@@ -57,6 +81,42 @@ const DetailIo = (props: IParamsProps) => {
       <div className="item input_data">
         <div className="title">
           <div className="top_left">입력값</div>
+          <div className="top_right">
+            <div className="input_wrap">
+              <input
+                type="text"
+                placeholder="검색"
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  setSearchInputKeyword(e.target.value);
+                }}
+                onKeyPress={(e: React.KeyboardEvent<HTMLInputElement>) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                    invalidateCashInput();
+                  }
+                }}
+                ref={inputEl}
+              />
+              {searchInputKeyword.length > 0 ? (
+                <AiOutlineClose
+                  onClick={() => {
+                    setSearchInputKeyword('');
+                    setSearchInput(!searchInput);
+                    if (inputEl.current) {
+                      inputEl.current.value = '';
+                    }
+                  }}
+                />
+              ) : null}
+            </div>
+            <button
+              onClick={() => {
+                invalidateCashInput();
+              }}
+            >
+              검색
+            </button>
+          </div>
         </div>
         <div className="input_data_table">
           <table>
@@ -89,6 +149,42 @@ const DetailIo = (props: IParamsProps) => {
       <div className="item output_data">
         <div className="title">
           <div className="top_left">출력값</div>
+          <div className="top_right">
+            <div className="input_wrap">
+              <input
+                type="text"
+                placeholder="검색"
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  setSearchOutputKeyword(e.target.value);
+                }}
+                onKeyPress={(e: React.KeyboardEvent<HTMLInputElement>) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                    invalidateCashOutput();
+                  }
+                }}
+                ref={outputEl}
+              />
+              {searchOutputKeyword.length > 0 ? (
+                <AiOutlineClose
+                  onClick={() => {
+                    setSearchOutputKeyword('');
+                    setSearchOutput(!searchOutput);
+                    if (outputEl.current) {
+                      outputEl.current.value = '';
+                    }
+                  }}
+                />
+              ) : null}
+            </div>
+            <button
+              onClick={() => {
+                invalidateCashOutput();
+              }}
+            >
+              검색
+            </button>
+          </div>
         </div>
         <div className="output_data_table">
           <table>
@@ -146,6 +242,37 @@ const Wrap = styled.div`
       .top_left {
         font-weight: 600;
         font-size: 1.8rem;
+      }
+      .top_right {
+        display: flex;
+        gap: 10px;
+        .input_wrap {
+          border: 1px solid #e9edf3;
+          background-color: #fff;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 170px;
+          input {
+            border: none;
+            font-size: 1.4rem;
+            &:focus {
+              outline: none;
+            }
+            &:focus::placeholder {
+              color: transparent;
+            }
+            width: 80%;
+            height: 100%;
+          }
+          svg {
+            cursor: pointer;
+          }
+        }
+
+        button {
+          background-color: #35a3dc;
+        }
       }
     }
     table {

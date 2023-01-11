@@ -1,16 +1,34 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useState, useRef } from 'react';
 import styled from 'styled-components';
 import DetailParameterHistoryTable from '../../components/table/DetailParameterHistoryTable';
 import apis from '../../shared/apis';
 import { useQuery } from '@tanstack/react-query';
 import { IParamsProps } from '../../shared/type/Interface';
 import SkeletonItemSingleSm from '../../components/suspense/SkeletonItemSingleSm';
+import { AiOutlineClose } from 'react-icons/ai';
+import { useQueryClient } from '@tanstack/react-query';
 
 const DetailParameter = (props: IParamsProps) => {
+  // plc 입력, 출력 검색 키워드 핸들링
+  const [searchParameter, setSearchParameter] = useState<string>('');
+  const [search, setSearch] = useState<boolean>(false);
+
+  // 쿼리 클라이언트 정의
+  const queryClient = useQueryClient();
+  // plc 입력, 출력 검색창 핸들링
+  const invalidateCashParameter = () => {
+    setSearch(!search);
+    queryClient.removeQueries({
+      queryKey: ['loadParameterData'],
+    });
+  };
+
+  const parameterEl = useRef<HTMLInputElement>(null);
+
   // 기계 세팅 값 호출 api
   const getParameterData = async () => {
     try {
-      const res = await apis.getParameterData(props.view);
+      const res = await apis.getParameterData(props.view, searchParameter);
       return res;
     } catch (err) {
       console.log('기계 세팅 값을 불러오는데 실패했습니다.');
@@ -19,7 +37,7 @@ const DetailParameter = (props: IParamsProps) => {
 
   // 기계 세팅 값 호출 쿼리
   const { data: ParameterDataQuery } = useQuery(
-    ['loadParameterData', props.view],
+    ['loadParameterData', props.view, search],
     getParameterData,
     {
       refetchOnWindowFocus: false,
@@ -36,6 +54,42 @@ const DetailParameter = (props: IParamsProps) => {
       <div className="item parameter_data">
         <div className="title">
           <div className="top_left">기계 세팅 값</div>
+          <div className="top_right">
+            <div className="input_wrap">
+              <input
+                type="text"
+                placeholder="검색"
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  setSearchParameter(e.target.value);
+                }}
+                onKeyPress={(e: React.KeyboardEvent<HTMLInputElement>) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                    invalidateCashParameter();
+                  }
+                }}
+                ref={parameterEl}
+              />
+              {searchParameter.length > 0 ? (
+                <AiOutlineClose
+                  onClick={() => {
+                    setSearchParameter('');
+                    setSearch(!search);
+                    if (parameterEl.current) {
+                      parameterEl.current.value = '';
+                    }
+                  }}
+                />
+              ) : null}
+            </div>
+            <button
+              onClick={() => {
+                invalidateCashParameter();
+              }}
+            >
+              검색
+            </button>
+          </div>
         </div>
         <div className="input_data_table">
           <table>
@@ -99,6 +153,37 @@ const Wrap = styled.div`
       .top_left {
         font-weight: 600;
         font-size: 1.8rem;
+      }
+      .top_right {
+        display: flex;
+        gap: 10px;
+        .input_wrap {
+          border: 1px solid #e9edf3;
+          background-color: #fff;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 170px;
+          input {
+            border: none;
+            font-size: 1.4rem;
+            &:focus {
+              outline: none;
+            }
+            &:focus::placeholder {
+              color: transparent;
+            }
+            width: 80%;
+            height: 100%;
+          }
+          svg {
+            cursor: pointer;
+          }
+        }
+
+        button {
+          background-color: #35a3dc;
+        }
       }
     }
     table {

@@ -1,7 +1,8 @@
-import React  from 'react';
+import React, { useState }  from 'react';
 import { GlobalStyles } from './shared/styles/GlobalStyle';
 import { ThemeProvider } from 'styled-components';
 import Theme from './shared/styles/Theme';
+import darkTheme from './shared/styles/darkTheme';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Login from './pages/login/Login';
 import FindPw from './pages/login/FindPw';
@@ -53,13 +54,17 @@ function App() {
       authority.authority === 'ROLE_SUPPLIER_ADMIN';
   }
 
+  // 다크모드 상태값 세팅
+  const [inputCheck, SetInputCheck] = useState<boolean>(false);
+  const darkMode = localStorage.getItem('darkMode');
+
   return (
     <React.Fragment>
-      <ThemeProvider theme={Theme}>
+      <ThemeProvider theme={darkMode === 'on' ? darkTheme : Theme}>
         <GlobalStyles />
           <ErrorBoundary>
             <Routes>
-              <Route path="/" element={isAuth ? <Navigate to="/scautr/dashboard" /> : <Login />} />
+              <Route path="/" element={isAuth ? <Navigate to="/scautr/dashboard" /> : <Login inputCheck={inputCheck} SetInputCheck={SetInputCheck}/>} />
               <Route path="/find_pw" element={isAuth ? <Navigate to="/scautr/dashboard" /> : <FindPw />} />
               <Route path="/agree" element={isAuth ? <Navigate to="/scautr/dashboard" /> : <Agree />} />
               <Route path="/signup" element={isAuth ? <Navigate to="/scautr/dashboard" /> : <Signup />} />

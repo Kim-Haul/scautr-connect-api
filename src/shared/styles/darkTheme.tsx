@@ -1,4 +1,4 @@
-const Theme = {
+const darkTheme = {
   breakpoints: {
     Mobile: '479px',
     TabletMin: '768px',
@@ -29,11 +29,11 @@ const Theme = {
   },
 
   darkMode: {
-    fontColor: '#000',
-    descColor: '#888888',
-    backgroundColor: '#fff',
-    inputBg: '#fff',
+    fontColor: '#FEFEFE',
+    descColor: '#FEFEFE',
+    backgroundColor: '#212426',
+    inputBg: '#424755',
   },
 };
 
-export default Theme;
+export default darkTheme;

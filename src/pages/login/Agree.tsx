@@ -15,18 +15,28 @@ const Agree = () => {
   });
 
   const allCheck: boolean = check.first && check.second && check.third;
-
+  const darkModeLogo = localStorage.getItem('darkMode');
   return (
     <Wrap>
       <div className="container">
         <div className="logo">
-          <img
-            src="/images/scautr_dark.svg"
-            alt="스카우터 로고"
-            onClick={() => {
-              navigate('/');
-            }}
-          />
+          {darkModeLogo === 'on' ? (
+            <img
+              src="/images/scautr_light.svg"
+              alt="스카우터 로고"
+              onClick={() => {
+                window.location.reload();
+              }}
+            />
+          ) : (
+            <img
+              src="/images/scautr_dark.svg"
+              alt="스카우터 로고"
+              onClick={() => {
+                window.location.reload();
+              }}
+            />
+          )}
         </div>
         <form>
           <ul>
@@ -182,6 +192,8 @@ const Wrap = styled.div`
   justify-content: center;
   align-items: center;
   font-size: 1.6rem;
+  background-color: ${(props) => props.theme.darkMode.backgroundColor};
+  color: ${(props) => props.theme.darkMode.fontColor};
   .container {
     display: flex;
     flex-direction: column;

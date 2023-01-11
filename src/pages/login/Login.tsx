@@ -10,9 +10,14 @@ import {
   setCookieRefreshToken,
 } from '../../shared/cookie';
 import { useTranslation } from 'react-i18next';
+import DarkModeSwitch from '../../components/etc/DarkModeSwitch';
+import { Dispatch, SetStateAction } from 'react';
 // import { FallingSnow } from '../../components/etc/SnowAnimation';
 
-const Login = () => {
+const Login = (props: {
+  inputCheck: boolean;
+  SetInputCheck: Dispatch<SetStateAction<boolean>>;
+}) => {
   // 리액트의 서스펜스를 사용할 때는 useTranslation의 두번째 매개변수로 useSuspense:false를 넣어줌
   // 서스펜스 사용안할 시 const { t } = useTranslation('ko', {useSuspense: false});
   const { t, i18n } = useTranslation();
@@ -121,13 +126,23 @@ const Login = () => {
       <PostForm onSubmit={handleSubmit(onSubmit)}>
         <div className="container">
           <div className="logo">
-            <img
-              src="/images/scautr_dark.svg"
-              alt="스카우터 로고"
-              onClick={() => {
-                window.location.reload();
-              }}
-            />
+            {props.inputCheck === true ? (
+              <img
+                src="/images/scautr_light.svg"
+                alt="스카우터 로고"
+                onClick={() => {
+                  window.location.reload();
+                }}
+              />
+            ) : (
+              <img
+                src="/images/scautr_dark.svg"
+                alt="스카우터 로고"
+                onClick={() => {
+                  window.location.reload();
+                }}
+              />
+            )}
           </div>
           <Line>
             <label htmlFor="inputId">ID</label>
@@ -243,6 +258,14 @@ const Login = () => {
           <div>Copyright © EdgeCross Inc. All Rights Reserved.</div>
         </div>
       </Footer>
+      <Toggle>
+        <div className="darkMode">
+          <DarkModeSwitch
+            inputCheck={props.inputCheck}
+            SetInputCheck={props.SetInputCheck}
+          />
+        </div>
+      </Toggle>
     </Wrap>
   );
 };
@@ -256,7 +279,7 @@ const Wrap = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #fff;
+  background-color: ${(props) => props.theme.darkMode.backgroundColor};
   font-size: 1.6rem;
 `;
 
@@ -267,7 +290,8 @@ const PostForm = styled.form`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  background-color: #fff;
+  background-color: ${(props) => props.theme.darkMode.backgroundColor};
+  color: ${(props) => props.theme.darkMode.fontColor};
   border: 1px solid #e1e1e1;
   border-radius: 5px;
   padding: 5rem;
@@ -319,7 +343,7 @@ const PostForm = styled.form`
     }
     .link-agree {
       font-size: 1.3rem;
-      color: gray;
+      color: ${(props) => props.theme.darkMode.descColor};
       text-align: end;
       span {
         cursor: pointer;
@@ -344,6 +368,7 @@ const Line = styled.div`
 `;
 
 const Input = styled.input`
+  background-color: ${(props) => props.theme.darkMode.inputBg};
   border: 1px solid #e1e1e1;
   outline: ${(props: IStyleProps) => props.isInvalid && 'none'};
   border: ${(props: IStyleProps) => props.isInvalid && '1px solid red'};
@@ -364,15 +389,18 @@ const Input = styled.input`
 
 const Lang = styled.div`
   margin-top: 35px;
-  @media (max-width: ${(props) => props.theme.breakpoints.Mobile}) {
+  // 다크모드 변경시 form border 와 겹쳐서 잠시 css 제거
+  /* @media (max-width: ${(props) => props.theme.breakpoints.Mobile}) {
     margin-top: -35px;
-  }
+  } */
   select {
     width: 110px;
     height: 35px;
     padding: 5px;
     border: 1px solid #e1e1e1;
     font-family: 'Noto Sans KR', sans-serif;
+    background-color: ${(props) => props.theme.darkMode.backgroundColor};
+    color: ${(props) => props.theme.darkMode.fontColor};
   }
 `;
 
@@ -382,17 +410,16 @@ const Footer = styled.div`
   align-items: center;
   font-size: 1.3rem;
   margin: 4rem 0;
+  color: ${(props) => props.theme.darkMode.fontColor};
   .copyright {
     display: flex;
     align-items: center;
     margin-top: 0.3rem;
-    color: #888888;
   }
   ul {
     list-style: none;
     display: flex;
     li {
-      color: gray;
       &::after {
         content: '｜';
         margin: 0.2rem;
@@ -402,5 +429,13 @@ const Footer = styled.div`
         margin: 0rem;
       }
     }
+  }
+`;
+
+const Toggle = styled.div`
+  .darkMode {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
   }
 `;
